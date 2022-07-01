@@ -1,0 +1,12 @@
+{
+    "columns": [
+        "raw_to_sorted ",
+        "sorted_to_bids",
+        "freesurfer_run",
+        "mriqc_run ",
+        "fmriprep_run",
+        "tedana_run",
+        "fmriprep_ok",
+        "tedana_ok"
+    ]
+}

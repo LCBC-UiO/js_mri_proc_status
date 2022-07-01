@@ -1,0 +1,48 @@
+modules := $(modules) \
+	bootstrap
+
+bsversion := 5.1.3
+iconversion := 1.8.3
+
+bssrcs := \
+	https://github.com/twbs/bootstrap/releases/download/v${bsversion}/bootstrap-${bsversion}-dist.zip \
+	https://github.com/twbs/icons/releases/download/v${iconversion}/bootstrap-icons-${iconversion}.zip \
+	https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js
+
+bsdsts := $(patsubst %, ./download/%, $(notdir $(bssrcs))) # get only the filename of the URLs
+
+
+.PHONY: bootstrap_download
+bootstrap_download: $(bsdsts)
+	unzip -o download/bootstrap-${bsversion}-dist.zip -d download/
+	cp -v download/bootstrap-${bsversion}-dist/js/bootstrap.bundle.min* download/
+	cp -v download/bootstrap-${bsversion}-dist/css/bootstrap.min* download/
+	unzip -o download/bootstrap-icons-${iconversion}.zip -d download/
+	$(RM) -r download/bootstrap-${bsversion}-dist*
+	$(RM) -r download/bootstrap-icons-${iconversion}.zip
+
+$(bsdsts): download/%: #to get rid of "download" prefix - no prerequisites
+	mkdir -p download
+	# fetch correct url by maching the filename
+	echo "download" $* "->" $(filter %$*, $(bssrcs)) "->" $@
+	wget $(filter %$*, $(bssrcs)) -O $@
+
+.PHONY: bootstrap_clean
+bootstrap_clean: 
+	$(RM) ../public/css/bootstrap*
+	$(RM) ../public/css/icons*
+	$(RM) ../public/js/jquery.min.js 
+	$(RM) ../public/js/bootstrap* 
+
+.PHONY: bootstrap_reset
+bootstrap_reset: 
+	$(RM) -r download/bootstrap*
+	$(RM) -r bootstrap*
+	$(RM) download/jquery.min.js 
+	$(MAKE) bootstrap_clean
+
+.PHONY: bootstrap_build
+bootstrap_build: 
+	cp -v download/*.css* ../public/css/
+	cp -v download/*.js* ../public/js/
+	cp -vr download/bootstrap-icons-${iconversion} ../public/css/icons

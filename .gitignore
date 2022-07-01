@@ -1,0 +1,13 @@
+node_modules
+package-lock.json
+package.json
+3rdparty/download
+3rdparty/lighttpd
+3rdparty/r_packages
+3rdparty/jq*
+public/css/
+public/js/bootstrap*
+public/js/jquery*
+.DS_Store
+.Rhistory
+public/data

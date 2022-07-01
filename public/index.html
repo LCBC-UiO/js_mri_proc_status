@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset='utf-8'>
+    <title>MRI processing status</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/bootstrap.min.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/icons/bootstrap-icons.css'>
+    <script src='js/bootstrap.bundle.min.js'></script>
+    <script src='js/jquery.min.js'></script>
+    <style>
+      .ok { color: #63e1dc;}
+      .fail { color: #ff8080;}
+      .running { color: #ffbb32;}
+      .unknown { color: #474f53;}
+      i{ font-size: 1.5rem; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="navbar navbar-light bg-light shadow-sm">
+          <div id="navbar" class="container d-flex justify-content-between">
+            <h4 class="navbar-text">MRI processing status</h4>
+
+            <a class="navbar-brand" href="#">
+              <img src="icon.png" alt="MRI processing status" class="img-responsive" height="100">
+            </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="container-lg my-3">
+      <div class="row">
+        <div id="lastmod" class="text text-muted"></div>
+        <div class="table-responsive">
+          <table id="tsv" class="table table-striped table-hover table-bordered table-sm table-dark"></table>
+      </div>
+      </div>
+    </div>
+  </body>
+  <script src="js/application.js"></script>
+</html>
