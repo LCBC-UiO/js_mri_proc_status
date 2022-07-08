@@ -10,10 +10,11 @@ include config_default.txt
 
 PHONY: prepare_offline
 prepare_offline:
-	make reset
-	make download
-	make clean
-	cd ../ && zip -FSr $(basename $(notdir $(BASEDIR))).zip $(basename $(notdir $(BASEDIR))) -x js_quickdata/public/data/*
+	$(MAKE) distclean
+	$(MAKE) download
+	$(MAKE) clean
+	$(MAKE) dlclean
+	cd ../ && zip -FSr $(basename $(notdir $(BASEDIR))).zip $(basename $(notdir $(BASEDIR)))
 
 
 # ------------------------------------------------------------------------------
@@ -33,13 +34,22 @@ run_webui:
 
 # clean
 
-.PHONY: reset
-reset: 
-	$(MAKE) -C 3rdparty reset
+.PHONY: distclean
+distclean: 
+	$(MAKE) -C 3rdparty clean
 
 .PHONY: clean
 clean: 
 	$(MAKE) -C 3rdparty clean
+
+.PHONY: dlclean
+dlclean: 
+	$(MAKE) -C 3rdparty dlclean
+
+
+.PHONY: distclean
+distclean: 
+	$(MAKE) -C 3rdparty distclean
 
 # ------------------------------------------------------------------------------
 
@@ -47,7 +57,7 @@ clean:
 
 .PHONY: build
 build: 
-	mkdir -p public/css
+	mkdir -p public/css/icons
 	mkdir -p public/js
 	$(MAKE) -C 3rdparty build
 	

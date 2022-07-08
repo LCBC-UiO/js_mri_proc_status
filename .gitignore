@@ -5,9 +5,10 @@ package.json
 3rdparty/lighttpd
 3rdparty/r_packages
 3rdparty/jq*
-public/css/
-public/js/bootstrap*
-public/js/jquery*
+public/css
+public/js
 .DS_Store
 .Rhistory
 public/data
+public/r.out
+public/entry.txt

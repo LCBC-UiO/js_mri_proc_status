@@ -1,58 +1,65 @@
 {
-    "sub-1700022": {
-        "ses-01Avanto": {
-             "raw_to_sorted ": "yes",
-             "sorted_to_bids" : "yes",
-             "freesurfer_run" : "no",
-             "mriqc_run ": "no",
-             "fmriprep_run" : "yes",
-             "tedana_run" : "no",
-             "fmriprep_ok" : "yes",
-             "tedana_ok" : "no"
-         },
-         "ses-02Avanto": {
-             "raw_to_sorted ": "no",
-             "sorted_to_bids" : "running"
-         },
-         "ses-02Skyra": {
-             "raw_to_sorted ": "yes",
-             "sorted_to_bids" : "running",
-             "freesurfer_run" : "yes",
-             "mriqc_run ": "no",
-             "fmriprep_run" : "yes",
-             "fmriprep_ok" : "yes",
-             "tedana_ok" : "no"
-         }
-     },
-     "sub-1700156": {
-        "ses-01Avanto": {
-             "raw_to_sorted ": "yes",
-             "sorted_to_bids" : "yes",
-             "freesurfer_run" : "yes",
-             "mriqc_run ": "no",
-             "fmriprep_run" : "yes",
-             "tedana_run" : "yes",
-             "fmriprep_ok" : "yes"
-         },
-         "ses-02Avanto": {
-             "raw_to_sorted ": "yes",
-             "sorted_to_bids" : "yes",
-             "freesurfer_run" : "yes",
-             "mriqc_run ": "no",
-             "fmriprep_run" : "yes",
-             "tedana_run" : "yes",
-             "fmriprep_ok" : "yes",
-             "tedana_ok" : "no"
-         },
-         "ses-02Skyra": {
-             "raw_to_sorted ": "yes",
-             "sorted_to_bids" : "yes",
-             "freesurfer_run" : "yes",
-             "mriqc_run ": "no",
-             "fmriprep_run" : "yes",
-             "tedana_run" : "yes",
-             "fmriprep_ok" : "yes",
-             "tedana_ok" : "no"
-         }
-     }
-} 
+  "sub-0022": {
+    "ses-01Avanto": {
+      "raw_to_sorted": "yes",
+      "sorted_to_bids": "yes",
+      "t1_rating": "5",
+      "freesurfer_run": "yes",
+      "mriqc_run": "yes",
+      "fmriprep_run": "yes",
+      "tedana_run": "running",
+      "fmriprep_ok": "yes",
+      "tedana_ok": "yes"
+    },
+    "ses-02Avanto": {
+      "raw_to_sorted": "yes",
+      "sorted_to_bids": "running",
+      "t1_rating": "1",
+      "freesurfer_run": "yes",
+      "mriqc_run": "yes",
+      "fmriprep_run": "yes",
+      "tedana_run": "yes",
+      "fmriprep_ok": "yes"
+    },
+    "ses-02Skyra": {
+      "raw_to_sorted": "yes",
+      "sorted_to_bids": "running",
+      "t1_rating": "NA",
+      "freesurfer_run": "yes",
+      "mriqc_run": "yes",
+      "fmriprep_run": "yes",
+      "tedana_ok": "yes"
+    }
+  },
+  "sub-0156": {
+    "ses-01Avanto": {
+      "raw_to_sorted": "running",
+      "sorted_to_bids": "yes",
+      "freesurfer_run": "yes",
+      "mriqc_run": "no",
+      "fmriprep_run": "yes",
+      "tedana_run": "yes",
+      "fmriprep_ok": "yes"
+    },
+    "ses-02Avanto": {
+      "raw_to_sorted": "yes",
+      "sorted_to_bids": "yes",
+      "freesurfer_run": "yes",
+      "mriqc_run": "no",
+      "fmriprep_run": "yes",
+      "tedana_run": "yes",
+      "fmriprep_ok": "yes",
+      "tedana_ok": "no"
+    },
+    "ses-02Skyra": {
+      "raw_to_sorted": "yes",
+      "sorted_to_bids": "yes",
+      "freesurfer_run": "yes",
+      "mriqc_run": "no",
+      "fmriprep_run": "yes",
+      "tedana_run": "yes",
+      "fmriprep_ok": "yes",
+      "tedana_ok": "no"
+    }
+  }
+}

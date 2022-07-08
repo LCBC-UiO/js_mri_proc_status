@@ -3,17 +3,55 @@
   <head>
     <meta charset='utf-8'>
     <title>MRI processing status</title>
+    <link rel="icon" type="image/x-icon" href="icon.png">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" media='screen' href="css/datatables.min.css">
     <link rel='stylesheet' type='text/css' media='screen' href='css/bootstrap.min.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='css/icons/bootstrap-icons.css'>
-    <script src='js/bootstrap.bundle.min.js'></script>
-    <script src='js/jquery.min.js'></script>
+    <script type="text/javascript" language="javascript" src='js/jquery.min.js'></script>
+    <script type="text/javascript" language="javascript" src="js/datatables.min.js"></script>
+    <script type="text/javascript" language="javascript" src='js/bootstrap.bundle.min.js'></script>
     <style>
+      .pagination .page-item.active .page-link{ 
+        background-color: #222; 
+      }
+      .pagination .page-item.active .page-link:hover { 
+        background-color: #474f53; 
+      }
+      div.dataTables_wrapper div.dataTables_paginate ul.pagination .page-item.active .page-link:focus {
+        background-color: #474f53;
+      }
       .ok { color: #63e1dc;}
       .fail { color: #ff8080;}
       .running { color: #ffbb32;}
-      .unknown { color: #474f53;}
+      .unknown { color: #666666;}
+      .hide-text { font-size: "1px";}
       i{ font-size: 1.5rem; }
+      .custom-select{border: 1px solid #aaa !important}
+      .table thead tr th {
+        border-bottom: 1px solid #ffbb32;
+      }
+      .table tbody tr:hover td, 
+      .table tbody tr:hover th {
+        background-color: #000000 !important;
+        color: #63e1dc !important;
+        border-top: 1px solid #63e1dc !important;
+        border-bottom: 1px solid #63e1dc !important;
+      }
+      .sticky-left-col1 {position: sticky; left: 0; }
+      .sticky-left-col2 {position: sticky; left: 81px;}
+      .dtfc-fixed-left {
+        background-color: #212529 !important;
+      }
+      .nav-pills .nav-item .nav-link {
+        color: #212529;
+      }
+
+      .nav-pills .nav-item .nav-link.active {
+        background-color: #212529;
+        color: #FFF;
+      }
+
     </style>
   </head>
   <body>
@@ -21,7 +59,6 @@
       <div class="navbar navbar-light bg-light shadow-sm">
           <div id="navbar" class="container d-flex justify-content-between">
             <h4 class="navbar-text">MRI processing status</h4>
-
             <a class="navbar-brand" href="#">
               <img src="icon.png" alt="MRI processing status" class="img-responsive" height="100">
             </a>
@@ -29,14 +66,40 @@
       </div>
     </header>
 
+
+
+
+
     <div class="container-lg my-3">
-      <div class="row">
-        <div id="lastmod" class="text text-muted"></div>
-        <div class="table-responsive">
-          <table id="tsv" class="table table-striped table-hover table-bordered table-sm table-dark"></table>
-      </div>
+      <!-- Nav tabs -->
+      <ul class="nav nav-pills pb-4 mytabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="table-tab" data-bs-toggle="tab" data-bs-target="#table-view" type="button" role="tab" aria-controls="table-view" aria-selected="true">Table view</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="api-tab" data-bs-toggle="tab" data-bs-target="#api-use" type="button" role="tab" aria-controls="api-use" aria-selected="false">API use</button>
+        </li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div id="table-view" class="table-responsive tab-pane active" role="tabpanel" aria-labelledby="table-tab">
+          <table id="tsv" class="table table-striped table-sm table-dark table-hover  w-100">
+            <caption id="lastmod"></caption>
+          </table>
+        </div>
+        <div id="api-use" class="tab-pane" role="tabpanel" aria-labelledby="api-tab">
+          some content
+        </div>
       </div>
     </div>
+
+    <div id="modal" class="modal" tabindex="-1" role="dialog"></div>
+    <footer class="text-center text-lg-start bg-light text-muted m-6">
+      <div class="text-center pt-4 pb-2 bg-dark text-secondary">
+        <p>© 2022 Copyright: Center for Lifespan Changes in Brain and Cogntion, University of Oslo</p>
+        <p>Created by: Athanasia Monika Mowinckel</p>
+      </div>
+    </footer>
   </body>
-  <script src="js/application.js"></script>
+   <script src="application.js"></script>
 </html>

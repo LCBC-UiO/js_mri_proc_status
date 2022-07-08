@@ -1,12 +1,11 @@
 {
-    "columns": [
-        "raw_to_sorted ",
-        "sorted_to_bids",
-        "freesurfer_run",
-        "mriqc_run ",
-        "fmriprep_run",
-        "tedana_run",
-        "fmriprep_ok",
-        "tedana_ok"
-    ]
+    "raw_to_sorted": "options",
+    "sorted_to_bids": "options",
+    "t1_rating": "numeric",
+    "freesurfer_run": "options",
+    "mriqc_run": "options",
+    "fmriprep_run": "options",
+    "tedana_run": "options",
+    "fmriprep_ok": "options",
+    "tedana_ok": "options"
 }

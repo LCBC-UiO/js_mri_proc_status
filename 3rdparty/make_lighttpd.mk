@@ -14,10 +14,15 @@ lighttpd_clean:
 	$(RM) -r lighttpd
 	$(RM) -r lighttpd_build
 
-.PHONY: lighttpd_reset
-lighttpd_reset:
+.PHONY: lighttpd_dlclean
+lighttpd_dlclean:
+	echo 'nothing'
+
+
+.PHONY: lighttpd_distclean
+lighttpd_distclean:
 	$(RM) download/lighttpd-${LIBVER_lighttpd}.tar.gz
-	make lighttpd_clean
+	$(MAKE) lighttpd_clean
 
 download/lighttpd-${LIBVER_lighttpd}.tar.gz:
 	mkdir -p download/

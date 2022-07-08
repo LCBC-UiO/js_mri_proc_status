@@ -18,12 +18,6 @@ r_pkg_urls := \
 
 rpkgs := $(patsubst %.tar.gz,%, $(notdir $(r_pkg_urls)))
 
-test_me:
-	@echo "1" $(rpkgs)
-	@echo "2" $(r_pkg_urls)
-	@echo "3" $(filter %DBI_1.1.0.tar.gz, $(r_pkg_urls))
-
-
 # package dependencies
 ./r_packages/RPostgreSQL_0.6-2_deps: ./r_packages/DBI_1.1.0
 ./r_packages/RPostgreSQL_0.6-2: \
@@ -46,9 +40,9 @@ $(rpkgs_dl): ./download/r_packages/%.tar.gz:
 	wget $(filter %$*.tar.gz, $(r_pkg_urls)) -O $@  # the filter func returns one url
 
 # install
-rpkgs_isnt := $(patsubst %, ./r_packages/%, $(rpkgs))
-.PHONY: $(rpkgs_isnt)
-$(rpkgs_isnt): ./r_packages/%: ./download/r_packages/%.tar.gz ./r_packages/%_deps
+rpkgs_inst := $(patsubst %, ./r_packages/%, $(rpkgs))
+.PHONY: $(rpkgs_inst)
+$(rpkgs_inst): ./r_packages/%: ./download/r_packages/%.tar.gz ./r_packages/%_deps
 	mkdir -p ./r_packages/
 	# get package name (without version string) and test if folder exists
 	test -d $(addprefix ./r_packages/, $(firstword $(subst _, , $*))) \
@@ -63,15 +57,20 @@ all: $(rpkgs)
 .PHONY: rpkgs_download
 rpkgs_download: $(rpkgs_dl)
 
+.PHONY: rpkgs_dlclean
+rpkgs_dlclean: 
+	echo 'nothing'
+
+
 .PHONY: rpkgs_clean
 rpkgs_clean:
 	$(RM) -r ./r_packages/
 
-.PHONY: rpkgs_reset
-rpkgs_reset: 
+.PHONY: rpkgs_distclean
+rpkgs_distclean: 
+	$(MAKE) rpkgs_clean
 	$(RM) -r ./download/r_packages
-	make rpkgs_clean
 
 .PHONY: rpkgs_build
 rpkgs_build:
-	make $(rpkgs_isnt)
+	$(MAKE) $(rpkgs_inst)

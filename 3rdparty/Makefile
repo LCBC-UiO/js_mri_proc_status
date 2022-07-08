@@ -17,8 +17,11 @@ download: $(addsuffix _download, $(modules))
 .PHONY: clean
 clean: $(addsuffix _clean, $(modules))
 
-.PHONY: reset
-reset: $(addsuffix _reset, $(modules))
+.PHONY: dlclean
+dlclean: $(addsuffix _dlclean, $(modules))
+
+.PHONY: distclean
+distclean: $(addsuffix _distclean, $(modules))
 
 .PHONY: build
 build: $(addsuffix _build, $(modules))
