@@ -267,15 +267,17 @@ save_changes = function(){
         if(x.value == "unknown"){
             return null
         }
-        return(`${x.id}-${x.value}`)
+        return(`${x.id}=${x.value}`)
     }).filter(el => {
         return el !== null;
     })
     idses = document.getElementById("edit-selection");
-    idses = idses.innerHTML;
-    let getstr = `./cgi/update_data.cgi?=${idses.split(" ").join("?")}?${sel_vals.join('?')}`;
+    idses = idses.innerHTML.split(" ");
+    id=`id=${idses[0]}`;
+    ses=`ses=${idses[1]}`;
+    let getstr = `./cgi/update_data.cgi?=${id}&${ses}&${sel_vals.join('&')}`;
+    console.log(getstr)
     fetch(getstr).then(r =>{
-       console.log(r.status)
        switch(r.status){
         case 201:
                 r.json().then(data => {

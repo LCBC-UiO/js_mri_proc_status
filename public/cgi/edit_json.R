@@ -1,26 +1,24 @@
 #!/usr/bin/env Rscript
 
 args <- commandArgs(trailingOnly=TRUE)
-args <- unlist(strsplit(args, "\\?"))
-
-id <- args[1]
-ses <- args[2]
-args <- args[-1:-2]
+args <- unlist(strsplit(args, "\\&"))
 args <- setNames(
-        sapply(args, function(x) strsplit(x, "-")[[1]][2]),
-        sapply(args, function(x) strsplit(x, "-")[[1]][1])
+        sapply(args, function(x) strsplit(x, "=")[[1]][2]),
+        sapply(args, function(x) strsplit(x, "=")[[1]][1])
 )
+id   <- args[1]
+ses  <- args[2]
+args <- args[-1:-2]
 
 sort_data <- function(x){
     .name_order <- function(x) x[order(names(x))]
     x <- .name_order(x)
     x <- lapply(x, .name_order)
-    x <- lapply(x, function(y){
+    lapply(x, function(y){
         lapply(y, function(p){
             p[na.omit(match(proc, names(p)))]
         })
     })
-    return(x)
 }
 
 proc <- jsonlite::read_json("../json/process.json", simplifyVector = TRUE)
