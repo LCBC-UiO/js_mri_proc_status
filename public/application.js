@@ -12,10 +12,10 @@ async function get_moddate(){
 }
 
 async function get_data() {
-    const r_data = await fetch("./json/data.json");
+    const r_data = await fetch(`./cgi/get_data.cgi`);
     r_data_j = await r_data.json();
-
-    const r_process = await fetch("./json/process.json");
+    
+    const r_process = await fetch(`./cgi/get_process.cgi`);
     r_process_j = await r_process.json();
     e_cols = Object.keys(r_process_j).concat("n_ok");
     let e_table = document.getElementById("tsv");
@@ -122,7 +122,7 @@ async function get_data() {
 };
 
 async function get_process() {
-    const r_process = await fetch("./json/process.json");
+    const r_process = await fetch(`./cgi/get_process.cgi`);
     r_process_j = await r_process.json();
     let e_table = document.getElementById("tsv");
     var e_head = document.createElement("thead");
@@ -211,7 +211,7 @@ async function select_row(text) {
     n = '';
     mod_body = document.createElement("div");
     mod_body.classList = `modal-body alert`;
-    const r_process = await fetch("./json/process.json");
+    const r_process = await fetch(`./cgi/get_process.cgi`);
     r_process_j = await r_process.json();
     e_row = document.getElementsByClassName(text);
     var arr = [].slice.call(e_row);

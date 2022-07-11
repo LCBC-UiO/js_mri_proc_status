@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+datadir <- Sys.getenv("DATADIR")
 
 args <- commandArgs(trailingOnly=TRUE)
 args <- unlist(strsplit(args, "\\&"))
@@ -21,9 +22,10 @@ sort_data <- function(x){
     })
 }
 
-proc <- jsonlite::read_json("../json/process.json", simplifyVector = TRUE)
+proc <- jsonlite::read_json(file.path(datadir, "process.json"), 
+    simplifyVector = TRUE)
 proc <- names(proc)
-data <- jsonlite::read_json("../json/data.json")
+data <- jsonlite::read_json(file.path(datadir, "data.json"))
 
 # Return error code if any column requested does not match process
 error_col <- names(args)[which(!names(args) %in% proc)]
@@ -58,7 +60,7 @@ if(length(error_col) != 0){
     }
     data <- sort_data(data)
     jsonlite::write_json(
-        data, "../json/data.json",
+        data, file.path(datadir, "data.json"),
         pretty = TRUE, auto_unbox = TRUE
     )
     entry <- list(data[[id]][ses])

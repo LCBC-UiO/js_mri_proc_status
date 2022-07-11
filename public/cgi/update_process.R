@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+datadir <- Sys.getenv("DATADIR")
 
 args <- commandArgs(trailingOnly=TRUE)
 args <- unlist(strsplit(args, "\\&"))
@@ -7,7 +8,7 @@ args <- setNames(
         sapply(args, function(x) strsplit(x, "=")[[1]][1])
 )
 
-proc <- jsonlite::read_json("../json/process.json", simplifyVector = TRUE)
+proc <- jsonlite::read_json(file.path(datadir, "process.json"), simplifyVector = TRUE)
 idx <- unique(na.omit(match(names(proc), names(args))))
 if(length(idx) > 0){
     status <- 203
@@ -24,7 +25,7 @@ if(length(idx) > 0){
     msg <- "Process updated"
     out <- jsonlite::toJSON(proc, pretty = TRUE, auto_unbox = TRUE)
     jsonlite::write_json(proc, 
-        "../json/process.json", 
+        file.path(datadir, "process.json"), 
         pretty = TRUE, 
         auto_unbox = TRUE)
 }

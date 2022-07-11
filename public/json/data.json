@@ -23,12 +23,15 @@
     },
     "ses-02Skyra": {
       "raw_to_sorted": "running",
-      "sorted_to_bids": "no",
-      "t1_rating": "NA",
+      "sorted_to_bids": "yes",
+      "t1_rating": "6",
       "freesurfer_run": "yes",
       "mriqc_run": "yes",
       "fmriprep_run": "yes",
-      "tedana_ok": "yes"
+      "tedana_run": "yes",
+      "fmriprep_ok": "running",
+      "tedana_ok": "yes",
+      "new_col": "NA"
     }
   },
   "sub-0156": {

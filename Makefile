@@ -26,7 +26,7 @@ run_webui:
 	PORT=${WEBSERVERPORT} \
 	DOCROOT=${DOCROOT} \
 	BASEDIR=$(BASEDIR) \
-	DATADIR=$(DOCROOT)/data/ \
+	DATADIR=$(BASEDIR)/$(DATAFOLDER) \
 	R_LIBS_USER=$(BASEDIR)/3rdparty/r_packages \
 	3rdparty/lighttpd/sbin/lighttpd -D -f lighttpd.conf
 
