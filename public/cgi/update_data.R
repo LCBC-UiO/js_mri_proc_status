@@ -70,7 +70,7 @@ if(length(error_col) != 0){
 }
 
 cat(
-    sprintf("Content-Type: application/json; charset=UTF-8\r"),
+    "Content-Type: application/json; charset=UTF-8\r",
     sprintf("Status: %s\r", status),
     sprintf("Message : %s\r", msg),
     "\r",

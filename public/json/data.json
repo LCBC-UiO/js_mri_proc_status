@@ -22,8 +22,8 @@
       "fmriprep_ok": "yes"
     },
     "ses-02Skyra": {
-      "raw_to_sorted": "yes",
-      "sorted_to_bids": "running",
+      "raw_to_sorted": "running",
+      "sorted_to_bids": "no",
       "t1_rating": "NA",
       "freesurfer_run": "yes",
       "mriqc_run": "yes",

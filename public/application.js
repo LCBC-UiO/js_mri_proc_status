@@ -147,7 +147,63 @@ async function get_process() {
     }
     e_head.appendChild(e_thead_tr);
     e_table.appendChild(e_head);
+    e_proc = document.getElementById("process-preview");
+    e_proc.innerHTML = JSON.stringify(r_process_j, null, 2);
 };
+
+update_process = function(){
+    key = document.getElementById("process-key-input").value;
+    value = document.getElementById("process-value-input").value;
+    let getstr = `./cgi/update_process.cgi?=${key.replaceAll(" ", "_")}=${value}`;
+    fetch(getstr).then(r =>{
+        switch(r.status){
+            case 201:
+                alert("Process updated.");
+                break
+            case 204:
+                alert(`Some requested process value are neither 'numeric' nor 'options'. Not updating process.`);
+                break
+            case 203:
+                alert(`Some requested process keys already exist. Not updating process.`);
+                break
+        }
+        location.reload();
+     })
+     return false;
+}
+
+save_changes = function(){
+    e_selects = document.getElementsByClassName("proc-select");
+    var arr = [].slice.call(e_selects);
+    sel_vals = arr.map((x, i) => {
+        if(x.value == "unknown"){
+            return null
+        }
+        return(`${x.id}=${x.value}`)
+    }).filter(el => {
+        return el !== null;
+    })
+    idses = document.getElementById("edit-selection");
+    idses = idses.innerHTML.split(" ");
+    id=`id=${idses[0]}`;
+    ses=`ses=${idses[1]}`;
+    let getstr = `./cgi/update_data.cgi?=${id}&${ses}&${sel_vals.join('&')}`;
+    console.log(getstr)
+    fetch(getstr).then(r =>{
+       switch(r.status){
+        case 201:
+                r.json().then(data => {
+                    mod_body = document.createElement("div");
+                    mod_body.classList = `modal-body alert`;
+                    mod_body.innerHTML = "Successfully updated"
+                    display_modal( `${idses}`,
+                        mod_body, "success", 
+                        create_modal_json(data))
+                })
+                break;
+        }
+    })
+}
 
 // select row action //
 async function select_row(text) {
@@ -212,8 +268,9 @@ async function select_row(text) {
     display_modal(`${tsplit.join(' ')}`, mod_body, null, mod_foot)
 }
 
+
 // modals //
-function display_modal(title, body, type, footer=null){
+function display_modal(title, body=null, type=null, footer=null){
     mod = document.getElementById("modal");
     mod.innerHTML = "";
     mod_diag = document.createElement("div");
@@ -240,10 +297,12 @@ function display_modal(title, body, type, footer=null){
     mod_dismiss_span.setAttribute("aria-hidden", "true");
     mod_dismiss.appendChild(mod_dismiss_span);
     mod_head.appendChild(mod_dismiss);
-    mod_body = document.createElement("div");
-    mod_body.classList = `modal-body alert alert-${type}`;
-    mod_body.appendChild(body);
-    mod_cont.appendChild(mod_body);
+    if(body != null ){
+        mod_body = document.createElement("div");
+        mod_body.classList = `modal-body alert alert-${type}`;
+        mod_body.appendChild(body);
+        mod_cont.appendChild(mod_body);
+    }
     if(footer != null){
         if(typeof footer == "string"){
             mod_foot = document.createElement("div");
@@ -260,41 +319,64 @@ function display_modal(title, body, type, footer=null){
     $('#modal').modal('show');
 }
 
-save_changes = function(){
-    e_selects = document.getElementsByClassName("proc-select");
-    var arr = [].slice.call(e_selects);
-    sel_vals = arr.map((x, i) => {
-        if(x.value == "unknown"){
-            return null
-        }
-        return(`${x.id}=${x.value}`)
-    }).filter(el => {
-        return el !== null;
+function display_modal_process(){
+    body = document.createElement("form");
+    body.setAttribute("onsubmit", "return update_process()");
+    body.classList = "w100"
+    // key
+    body_key_group = document.createElement("div");
+    body_key_group.classList = "input-group mb-3";
+    body_key = document.createElement("div");
+    body_key.classList = "input-group-prepend";
+    body_key_span = document.createElement("span");
+    body_key_span.classList = "input-group-text";
+    body_key_span.id = `process-key`;
+    body_key_span.innerHTML = "Key";
+    body_key.appendChild(body_key_span);
+    body_key_group.appendChild(body_key)
+    body_input = document.createElement("input");
+    body_input.classList = "form-control  w-50";
+    body_input.type = "text";
+    body_input.setAttribute("aria-describedby", `process-key`);
+    body_input.setAttribute("required", true);
+    body_input.id = "process-key-input"
+    body_key_group.appendChild(body_input);
+    body.appendChild(body_key_group);
+    //value
+    body_val_group = document.createElement("div");
+    body_val_group.classList = "input-group mb-3";
+    body_val = document.createElement("div");
+    body_val.classList = "input-group-prepend";
+    body_val_group.appendChild(body_val)
+    body_val_label = document.createElement("label");
+    body_val_label.classList = "input-group-text";
+    body_val_label.innerHTML = "Value";
+    body_val.appendChild(body_val_label);
+    body_select = document.createElement("select");
+    body_select.setAttribute("for", "process-value-input");
+    body_select.classList = "custom-select";
+    body_select.id = "process-value-input";
+    body_val_group.appendChild(body_select);
+    body.appendChild(body_val_group);
+    ["options", "numeric"].forEach(x => {
+        opt = document.createElement("option");
+        opt.innerHTML = x;
+        opt.value = x;
+        body_select.appendChild(opt);
     })
-    idses = document.getElementById("edit-selection");
-    idses = idses.innerHTML.split(" ");
-    id=`id=${idses[0]}`;
-    ses=`ses=${idses[1]}`;
-    let getstr = `./cgi/update_data.cgi?=${id}&${ses}&${sel_vals.join('&')}`;
-    console.log(getstr)
-    fetch(getstr).then(r =>{
-       switch(r.status){
-        case 201:
-                r.json().then(data => {
-                    mod_body = document.createElement("div");
-                    mod_body.classList = `modal-body alert`;
-                    mod_body.innerHTML = "Successfully updated"
-                    display_modal( `${idses}`,
-                        mod_body, "success", 
-                        create_modal_footer(data))
-                })
-                break;
-        }
-    })
+
+    foot = document.createElement("div");
+    foot_btn = document.createElement("button");
+    foot_btn.classList = "btn btn-secondary";
+    foot_btn.innerHTML = "Add step";
+    foot_btn.type = "submit";
+    foot.appendChild(foot_btn);
+    body.appendChild(foot);
+    display_modal("Adding process", body)
 }
 
 
-function create_modal_footer(data=null){
+function create_modal_json(data=null){
     var ed_div = document.createElement("div");
     ed_div.classList = "alert alert-secondary";
     if(data != null){
@@ -322,4 +404,5 @@ $('#modal').on('hidden.bs.modal', function () {
 get_process();
 get_data();
 get_moddate();
+
 
