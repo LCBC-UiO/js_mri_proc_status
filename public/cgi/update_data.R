@@ -22,7 +22,7 @@ sort_data <- function(x){
     })
 }
 
-proc <- jsonlite::read_json(file.path(datadir, "process.json"), 
+proc <- jsonlite::read_json(file.path(datadir, "process.json"),
     simplifyVector = TRUE)
 types <- sapply(proc, function(x){
    if(length(x) > 1)
