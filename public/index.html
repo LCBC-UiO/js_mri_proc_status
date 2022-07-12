@@ -221,8 +221,10 @@ curl -G \
             <div class="col-lg">
               <h5>Value</h5>
               <p>
-                The value of a new process may be either <code>numeric</code> or <code>options</code>.
-                All process options have the same three valid entries: <code>["yes", "no", "running"]</code>, any other value is displayed in the UI as <i class="bi bi-question-circle-fill unknown" font-size="2em"></i> i.e. (<code>unknown</code>).
+                The value of a new process may be either <code>numeric</code>, <code>icons</code>, <code>asis</code> 
+                (string variables, like comments), or a custom array of options (ex. <code>["regular", "iregular"]</code>).
+                All icon options have the same three valid entries: <code>["yes", "no", "running"]</code>, any other value 
+                is displayed in the UI as <i class="bi bi-question-circle-fill unknown" font-size="2em"></i> i.e. (<code>unknown</code>).
               </p>
             </div>
           </div>
@@ -271,7 +273,9 @@ curl -G \
           </div>
           <div class="col-sm">
             <code><pre>
-["option", "numri"]
+{
+  "icon_key": "string comment"
+}
             </pre></code>
           </div>
         </div>

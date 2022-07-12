@@ -49,7 +49,6 @@ if(length(error_col) != 0){
         if(ctype == "icons"){
             val_ok <- value %in% c("no", "yes", "running")
         }else if(ctype == "custom array"){
-            print(proc[[key]])
             val_ok <- value %in% proc[[key]]
         }else if(ctype == "numeric"){
             val_ok <- !is.na(as.numeric(value))
@@ -77,7 +76,6 @@ if(length(error_col) != 0){
             err_vals <- c(err_vals, args[i])
         }
     }
-    print(err_vals)
     if(length(err_vals) == 0){
         data <- sort_data(data)
         jsonlite::write_json(
