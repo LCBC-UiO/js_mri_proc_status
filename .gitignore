@@ -9,6 +9,6 @@ public/css
 public/js
 .DS_Store
 .Rhistory
-public/data
+public/data/
 public/r.out
 public/entry.txt

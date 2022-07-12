@@ -9,6 +9,5 @@
   "fmriprep_ok": "icons",
   "tedana_ok": "icons",
   "comments": "asis",
-  "custom_options": ["irregular", "regular"],
-  "new_test2": ["reg", "ireg"]
+  "custom_options": ["irregular", "regular"]
 }

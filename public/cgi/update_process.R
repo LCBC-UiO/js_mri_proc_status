@@ -5,15 +5,15 @@ args <- commandArgs(trailingOnly=TRUE)
 args <- unlist(strsplit(args, "\\&"))
 args <- setNames(
         sapply(args, function(x) 
-                sapply(strsplit(x, "=")[[1]][2], strsplit, split=",")),
+                sapply(strsplit(x, "=")[[1]][2], strsplit, split = ",")),
         sapply(args, function(x) strsplit(x, "=")[[1]][1])
         )
 types <- sapply(args, function(x){
    if(length(x) > 1)
-    return("custom array")
+    return("array")
    unname(x)
 })
-valid_types <- c("icons", "numeric", "custom array", "asis")
+valid_types <- c("icons", "numeric", "array", "asis")
 proc <- jsonlite::read_json(file.path(datadir, "process.json"), simplifyVector = TRUE)
 idx <- unique(na.omit(match(names(proc), names(args))))
 if(length(idx) > 0){
@@ -30,9 +30,9 @@ if(length(idx) > 0){
     status <- 201
     msg <- "Process updated"
     out <- jsonlite::toJSON(proc, pretty = TRUE, auto_unbox = TRUE)
-    jsonlite::write_json(proc, 
-        file.path(datadir, "process.json"), 
-        pretty = TRUE, 
+    jsonlite::write_json(proc,
+        file.path(datadir, "process.json"),
+        pretty = TRUE,
         auto_unbox = TRUE)
 }
 cat(

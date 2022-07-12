@@ -106,6 +106,7 @@ async function get_data() {
                         break;
                     case "custom":
                     case "asis":
+                        e_td.classList.add(encodeURI(val));
                         if(typeof val == "undefined"){
                             val = ""
                         }
@@ -166,17 +167,21 @@ async function get_process() {
     e_proc.innerHTML = JSON.stringify(r_process_j, null, 2);
 };
 
-update_process = function(){
+function update_process(){
     key = document.getElementById("process-key-input").value;
     value = document.getElementById("process-value-input").value;
+    if(value == "array"){
+        value = document.getElementById("process-custom-input").value.replaceAll(" ", "");
+    }
     let getstr = `./cgi/update_process.cgi?=${key.replaceAll(" ", "_")}=${value}`;
+    console.log(getstr)
     fetch(getstr).then(r =>{
         switch(r.status){
             case 201:
                 alert("Process updated.");
                 break
             case 204:
-                alert(`Some requested process value are neither 'numeric' nor 'options'. Not updating process.`);
+                alert(`Some requested process value is not valid. Not updating process.`);
                 break
             case 203:
                 alert(`Some requested process keys already exist. Not updating process.`);
@@ -187,14 +192,14 @@ update_process = function(){
      return false;
 }
 
-save_changes = function(){
+function save_changes(){
     e_selects = document.getElementsByClassName("proc-select");
     var arr = [].slice.call(e_selects);
     sel_vals = arr.map((x, i) => {
-        if(x.value == "unknown"){
+        if(x.value == "unknown" || x.value == "undefined"){
             return null
         }
-        return(`${x.id}=${x.value}`)
+        return(`${x.id}=${encodeURI(x.value)}`)
     }).filter(el => {
         return el !== null;
     })
@@ -203,20 +208,26 @@ save_changes = function(){
     id=`id=${idses[0]}`;
     ses=`ses=${idses[1]}`;
     let getstr = `./cgi/update_data.cgi?=${id}&${ses}&${sel_vals.join('&')}`;
-    console.log(getstr)
     fetch(getstr).then(r =>{
+        mod_body = document.createElement("div");
+        mod_body.classList = `modal-body alert`;
+        let type = "";
+        let json = "";
+        r.json().then(data => {
+            json = create_modal_json(data)
+        })
        switch(r.status){
         case 201:
-                r.json().then(data => {
-                    mod_body = document.createElement("div");
-                    mod_body.classList = `modal-body alert`;
-                    mod_body.innerHTML = "Successfully updated"
-                    display_modal( `${idses}`,
-                        mod_body, "success", 
-                        create_modal_json(data))
-                })
-                break;
+            mod_body.innerHTML = "Successfully updated"
+            type = "success"
+            break;
+        default:
+            mod_body.innerHTML = "Error occured"
+            type = "danger"
+            break;
         }
+
+        display_modal( `${idses}`, mod_body, type, json)
     })
 }
 
@@ -267,15 +278,15 @@ async function select_row(text) {
                 break;
             case "numeric":
             case "asis":
-                if(typeof val == "undefined"){
+                if(typeof val == "undefined" || val == "undefined" || val == "NA"){
                     val = ""
                 }
                 e_input_input = document.createElement("input");
                 e_input_input.setAttribute("type", "text");
                 e_input_input.classList = "form-control proc-select";
                 e_input_input.id = col;
-                e_input_input.innerHTML = val;
-                e_input_input.value = val;
+                e_input_input.innerHTML = decodeURI(val);
+                e_input_input.value = decodeURI(val);
                 e_input.appendChild(e_input_input);
                 break;
             default:
@@ -397,15 +408,18 @@ function display_modal_process(){
     body_select.setAttribute("for", "process-value-input");
     body_select.classList = "custom-select";
     body_select.id = "process-value-input";
+    body_select.setAttribute("onchange", "init_custom_input()")
     body_val_group.appendChild(body_select);
     body.appendChild(body_val_group);
-    ["options", "numeric"].forEach(x => {
+    ["icons", "numeric", "asis", "array"].forEach(x => {
         opt = document.createElement("option");
         opt.innerHTML = x;
         opt.value = x;
         body_select.appendChild(opt);
     })
-
+    body_custom = document.createElement("div");
+    body_custom.id = "custom-array";
+    body.appendChild(body_custom);
     foot = document.createElement("div");
     foot_btn = document.createElement("button");
     foot_btn.classList = "btn btn-secondary";
@@ -416,6 +430,30 @@ function display_modal_process(){
     display_modal("Adding process", body)
 }
 
+function init_custom_input(){
+    choice = document.getElementById("process-value-input").value;
+    body_custom = document.getElementById("custom-array");
+    body_custom.innerHTML = "";
+    console.log(choice);
+    if(choice == "array"){
+        body_custom.classList = "input-group mb-3";
+        body_custom_pre = document.createElement("div");
+        body_custom_pre.classList = "input-group-prepend";
+        body_custom_in = document.createElement("span");
+        body_custom_in.classList = "input-group-text";
+        body_custom_in.id = `process-custom`;
+        body_custom_in.innerHTML = "Custom array (comma sep)";
+        body_custom_pre.appendChild(body_custom_in);
+        body_custom.appendChild(body_custom_pre)
+        body_custom_input = document.createElement("input");
+        body_custom_input.classList = "form-control  w-50";
+        body_custom_input.type = "text";
+        body_custom_input.setAttribute("aria-describedby", `process-custom`);
+        body_custom_input.setAttribute("required", true);
+        body_custom_input.id = "process-custom-input"
+        body_custom.appendChild(body_custom_input);
+    }
+}
 
 function create_modal_json(data=null){
     var ed_div = document.createElement("div");

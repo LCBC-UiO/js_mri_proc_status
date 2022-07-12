@@ -21,7 +21,10 @@
       "mriqc_run": "yes",
       "fmriprep_run": "yes",
       "tedana_run": "yes",
-      "fmriprep_ok": "yes"
+      "fmriprep_ok": "yes",
+      "comments": "wertq rqwre",
+      "custom_options": "irregular",
+      "new_test2": "reg"
     },
     "ses-02Skyra": {
       "raw_to_sorted": "running",
@@ -33,7 +36,7 @@
       "tedana_run": "yes",
       "fmriprep_ok": "running",
       "tedana_ok": "yes",
-      "comments": "dg%20w",
+      "comments": "dwtwe",
       "custom_options": "irregular",
       "new_test2": "reg"
     }

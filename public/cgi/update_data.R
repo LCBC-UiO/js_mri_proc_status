@@ -42,7 +42,7 @@ if(length(error_col) != 0){
 }else{
     err_vals <- list()
     for(i in 1:length(args)){
-        value <- unname(args[i])
+        value <- utils::URLdecode(unname(args[i]))
         key <- names(args)[i]
         ctype <- types[names(types) == key]
         val_ok <- FALSE
@@ -76,7 +76,13 @@ if(length(error_col) != 0){
             err_vals <- c(err_vals, args[i])
         }
     }
-    if(length(err_vals) == 0){
+    if(length(err_vals) > 0){
+        out <- jsonlite::toJSON(err_vals,
+            pretty = TRUE, auto_unbox = TRUE)
+        status <- 204
+        msg <- "Some values do not correspond to correct values for the given process."
+
+    }else{
         data <- sort_data(data)
         jsonlite::write_json(
             data, file.path(datadir, "data.json"),
@@ -88,11 +94,6 @@ if(length(error_col) != 0){
                 pretty = TRUE, auto_unbox = TRUE)
         status <- 201
         msg <- sprintf("Progress updated for %s %s", id, ses)
-    }else{
-        out <- jsonlite::toJSON(err_vals,
-            pretty = TRUE, auto_unbox = TRUE)
-        status <- 204
-        msg <- "Some values do not correspond to correct values for the given process."
     }
 }
 
