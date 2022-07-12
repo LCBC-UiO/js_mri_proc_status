@@ -93,16 +93,39 @@
           </table>
         </div>
         <div id="api-use" class="tab-pane " role="tabpanel" aria-labelledby="api-tab">
-          <h1>Updating data</h1>
-          <div id="api-request" class="row mt-4 mb-2"><h3>Send request</h3></div>
+          <h1>Getting the data and process information</h1>
           <div class="row">
             <div class="col">
               <p>
                 To use the API from command line, you will need to use <code>curl</code>.
                 You need to replace the url-part containing <code>http://localhost:6565</code>
-                to the url where the webui is running. 
+                to the url where the webui is running.  These two first commands will return
+                the json content for the data and the processing steps.
               </p>
             </div>
+            <div class="col">
+              <pre><code>
+curl http://localhost:6565/cgi/get_data.cgi
+curl http://localhost:6565/cgi/get_process.cgi
+              </code></pre>
+            </div>
+          </div>
+          <h1>Updating data</h1>
+          <div id="api-request" class="row mt-4 mb-2"><h3>Send request</h3></div>
+          <div class="row">
+            <div class="col">
+            <p>
+              The <code>curl</code> command flag <code>-G</code> indicates that you
+              want to sent key-value pairs to the url as a query string. 
+              Every key-valye pair is initiated with a <code>-d</code> flag,
+              and is followed by <code>'key=value'</code>.
+              The two first key-value pairs in the example are necessary to connect the data to the 
+              correct id and session. 
+              After these two, you can add as many key-value pairs as you want to 
+              update the entry.
+              The data will always be sorted accoring to subject id and session alphabetically.
+            </p>
+          </div>
             <div class="col">
               <pre><code>
 curl -G \
@@ -113,18 +136,7 @@ curl -G \
               </code></pre>
             </div>
           </div>
-          <div class="row">
-            <p>
-              The <code>curl</code> command flag <code>-G</code> indicates that you
-              want to sent key-value pairs to the url as a query string. 
-              Every key-valye pair is initiated with a <code>-d</code> flag,
-              and is followed by <code>'key=value'</code>.
-              The two first key-value pairs in the example are necessary to connect the data to the 
-              correct id and session. 
-              After these two, you can add as many key-value pairs as you want to 
-              update the entry.
-            </p>
-          </div>
+
           <div id="api-response" class="row mt-4 mb-2"><h3>Request response</h3></div>
           <hr class="mt-2 mb-4">
           <div class="row">
@@ -185,6 +197,8 @@ curl -G \
             <div class="col">
               <p>
                 To update the process is more or less the same type of command, just to another end-point.
+                There is currently no way to re-over the processing steps other than manual intervetion on 
+                the file directly. 
               </p>
             </div>
             <div class="col">
