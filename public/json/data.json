@@ -9,7 +9,9 @@
       "fmriprep_run": "yes",
       "tedana_run": "running",
       "fmriprep_ok": "yes",
-      "tedana_ok": "yes"
+      "tedana_ok": "yes",
+      "comments": "issues with t2* acquisition.",
+      "custom_options": "irregular"
     },
     "ses-02Avanto": {
       "raw_to_sorted": "yes",
@@ -31,7 +33,9 @@
       "tedana_run": "yes",
       "fmriprep_ok": "running",
       "tedana_ok": "yes",
-      "new_col": "NA"
+      "comments": "dg%20w",
+      "custom_options": "irregular",
+      "new_test2": "reg"
     }
   },
   "sub-0156": {
@@ -52,7 +56,8 @@
       "fmriprep_run": "yes",
       "tedana_run": "yes",
       "fmriprep_ok": "yes",
-      "tedana_ok": "no"
+      "tedana_ok": "no",
+      "custom_options": "irregular"
     },
     "ses-02Skyra": {
       "raw_to_sorted": "yes",
@@ -63,6 +68,12 @@
       "tedana_run": "yes",
       "fmriprep_ok": "yes",
       "tedana_ok": "no"
+    }
+  },
+  "sub-1700158": {
+    "ses-01Avanto": {
+      "raw_to_sorted": "no",
+      "sorted_to_bids": "no"
     }
   }
 }

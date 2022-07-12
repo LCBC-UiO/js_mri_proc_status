@@ -41,7 +41,7 @@ async function get_data() {
             n_ok = 1;
             for(var proc in e_cols){
                 e_td = document.createElement("td");
-                e_td.classList = ` ${id}_${ses} ${e_cols[proc]} text-center m-0`;
+                e_td.classList = `${id}_${ses} ${e_cols[proc]} text-center m-0`;
                 e_p = document.createElement("p");               
                 e_p.style.visibility = "hidden";
                 e_p.innerHTML = 0; 
@@ -55,50 +55,65 @@ async function get_data() {
                     val = n_ok
                     opts = "numeric"
                 }
-                if(opts == 'numeric'){
-                    if(typeof val == "undefined"){ n="NA" }else{ n=val};
-                    val = "numeric"
-                }else{
-                    e_td.appendChild(e_i);
+                if(typeof opts !== "string" ){
+                    vars = opts;
+                    opts = "custom"
                 }
-                switch(val) {
-                    case "yes":
-                        e_i.classList.add("bi-check-circle-fill");
-                        e_i.classList.add("ok");
-                        e_td.classList.add("ok");
-                        e_p.innerHTML = 1;
-                        n_ok = n_ok + 1;
-                        break;
-                    case "no":
-                        e_i.classList.add("bi-x-circle-fill");
-                        e_i.classList.add("fail");
-                        e_td.classList.add("fail");
-                        e_p.innerHTML = 3;
-                        break;
-                    case "running":
-                        e_i.classList.add("bi-arrow-repeat");
-                        e_i.classList.add("running");
-                        e_td.classList.add("running"); 
-                        e_p.innerHTML = 2;
+                switch(opts){
+                    case "icons": 
+                        switch(val) {
+                            case "yes":
+                                e_i.classList.add("bi-check-circle-fill");
+                                e_i.classList.add("ok");
+                                e_td.classList.add("ok");
+                                e_p.innerHTML = 1;
+                                n_ok = n_ok + 1;
+                                break;
+                            case "no":
+                                e_i.classList.add("bi-x-circle-fill");
+                                e_i.classList.add("fail");
+                                e_td.classList.add("fail");
+                                e_p.innerHTML = 3;
+                                break;
+                            case "running":
+                                e_i.classList.add("bi-arrow-repeat");
+                                e_i.classList.add("running");
+                                e_td.classList.add("running"); 
+                                e_p.innerHTML = 2;
+                                break;
+                            default:
+                                e_i.classList.add("bi-question-circle-fill");
+                                e_i.classList.add("unknown");
+                                e_td.appendChild(e_i);
+                                e_td.classList.add("unknown");     
+                        }
+                        e_td.appendChild(e_i);
                         break;
                     case "numeric":
                         e_num = document.createElement("p");
                         e_num.classList = "rounded-circle text-black w-75 m-2";
-                        if(n == "NA"){
+                        if(typeof val == "undefined" || val == "NA"){
                             e_num.classList.add("bg-secondary");
+                            val = "NA"
                         }else{
                             e_num.classList.add("bg-light");
                         }
-                        e_td.classList.add(n); 
-                        e_num.innerHTML = n;
-                        e_p.innerHTML = n;
+                        e_td.classList.add(val); 
+                        e_num.innerHTML = val;
+                        e_p.innerHTML = val;
                         n_ok = n_ok + 1;
                         e_td.appendChild(e_num);
                         break;
-                    default:
-                        e_i.classList.add("bi-question-circle-fill");
-                        e_i.classList.add("unknown");
-                        e_td.classList.add("unknown");                    
+                    case "custom":
+                    case "asis":
+                        if(typeof val == "undefined"){
+                            val = ""
+                        }
+                        e_a = document.createElement("p");
+                        e_a.innerHTML = val;
+                        n_ok = n_ok + 1;
+                        e_td.appendChild(e_a);
+                        break;
                     }
                 e_td.appendChild(e_p);     
                 e_tr.appendChild(e_td);
@@ -216,46 +231,72 @@ async function select_row(text) {
     e_row = document.getElementsByClassName(text);
     var arr = [].slice.call(e_row);
     arr = arr.slice(0, arr.findIndex(j => j.classList.value.split(' ')[1] == "n_ok"));
-    arr.forEach((x, i) => {
+    arr.forEach(x => {
+        console.log(x.classList.value.split(' '));
+
         col = x.classList.value.split(' ')[1];
         val = x.classList.value.split(' ')[4];
         e_input = document.createElement("div");
         e_input.classList = "input-group mb-3 w-100";
-        e_input.setAttribute("data-width", "100%")
+        e_input.setAttribute("data-width", "100%");
         e_input_p = document.createElement("div");
         e_input_p.classList = "input-group-prepend w-50";
         e_input.appendChild(e_input_p);
         e_input_pl = document.createElement("label");
         e_input_pl.classList = "input-group-text v-5rem";
-        e_input_pl.setAttribute("for", col)
+        e_input_pl.setAttribute("for", col);
         e_input_pl.innerHTML = col.replaceAll("_", " ");
-        e_input_p.appendChild(e_input_pl)
-        if(r_process_j[col] == "options"){
-            e_input_sel = document.createElement("select");
-            e_input_sel.classList = "custom-select border-secondary w-50 proc-select";
-            e_input_sel.id = col;
-            e_input.appendChild(e_input_sel);
-            opts = ["yes", "no", "running", "unknown"];
-            for(opt in opts){
-                e_input_op = document.createElement("option");
-                e_input_op.value = opts[opt];
-                e_input_op.innerHTML = opts[opt];
-                if(opts[opt] == val){
-                    e_input_op.setAttribute("selected", true)
+        e_input_p.appendChild(e_input_pl);
+
+        switch(r_process_j[col]){
+            case "icons":
+                e_input_sel = document.createElement("select");
+                e_input_sel.classList = "custom-select border-secondary w-50 proc-select";
+                e_input_sel.id = col;
+                e_input.appendChild(e_input_sel);
+                opts = ["yes", "no", "running", "unknown"];
+                for(opt in opts){
+                    e_input_op = document.createElement("option");
+                    e_input_op.value = opts[opt];
+                    e_input_op.innerHTML = opts[opt];
+                    if(opts[opt] == val){
+                        e_input_op.setAttribute("selected", true)
+                    }
+                    e_input_sel.appendChild(e_input_op);
                 }
-                e_input_sel.appendChild(e_input_op);
-            }
-        }else{
-            e_input_input = document.createElement("input");
-            e_input_input.setAttribute("type", "text");
-            e_input_input.classList = "form-control proc-select";
-            e_input_input.id = col;
-            e_input_input.innerHTML = val;
-            e_input_input.value = val;
-            e_input.appendChild(e_input_input);
+                break;
+            case "numeric":
+            case "asis":
+                if(typeof val == "undefined"){
+                    val = ""
+                }
+                e_input_input = document.createElement("input");
+                e_input_input.setAttribute("type", "text");
+                e_input_input.classList = "form-control proc-select";
+                e_input_input.id = col;
+                e_input_input.innerHTML = val;
+                e_input_input.value = val;
+                e_input.appendChild(e_input_input);
+                break;
+            default:
+                e_input_sel = document.createElement("select");
+                e_input_sel.classList = "custom-select border-secondary w-50 proc-select";
+                e_input_sel.id = col;
+                e_input.appendChild(e_input_sel);
+                opts = r_process_j[col];
+                for(opt in opts){
+                    e_input_op = document.createElement("option");
+                    e_input_op.value = opts[opt];
+                    e_input_op.innerHTML = opts[opt];
+                    if(opts[opt] == val){
+                        e_input_op.setAttribute("selected", true)
+                    }
+                    e_input_sel.appendChild(e_input_op);
+                }
+                break;
         }
         mod_body.appendChild(e_input);
-    })
+    });
     mod_foot = document.createElement("div");
     mod_foot.classList.add("modal-footer");
     mod_foot_btn = document.createElement("button");

@@ -1,11 +1,14 @@
 {
-  "raw_to_sorted": "options",
-  "sorted_to_bids": "options",
+  "raw_to_sorted": "icons",
+  "sorted_to_bids": "icons",
   "t1_rating": "numeric",
-  "freesurfer_run": "options",
-  "mriqc_run": "options",
-  "fmriprep_run": "options",
-  "tedana_run": "options",
-  "fmriprep_ok": "options",
-  "tedana_ok": "options"
+  "freesurfer_run": "icons",
+  "mriqc_run": "icons",
+  "fmriprep_run": "icons",
+  "tedana_run": "icons",
+  "fmriprep_ok": "icons",
+  "tedana_ok": "icons",
+  "comments": "asis",
+  "custom_options": ["irregular", "regular"],
+  "new_test2": ["reg", "ireg"]
 }
