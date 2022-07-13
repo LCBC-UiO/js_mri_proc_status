@@ -1,5 +1,7 @@
 BASEDIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 DOCROOT:=$(BASEDIR)/public
+TMPDIR := $(shell mktemp -d)
+ZIPFILE := $(strip $(subst tmp, $(notdir $(BASEDIR)), $(notdir $(TMPDIR))).zip)
 
 include config_default.txt
 -include config.txt
@@ -10,12 +12,12 @@ include config_default.txt
 
 PHONY: prepare_offline
 prepare_offline:
-	$(MAKE) distclean
-	$(MAKE) download
-	$(MAKE) clean
-	$(MAKE) dlclean
-	cd ../ && zip -FSr $(basename $(notdir $(BASEDIR))).zip $(basename $(notdir $(BASEDIR)))
-
+	git clone $(shell git config --get remote.origin.url) $(TMPDIR)
+	cd $(TMPDIR) && \
+		make download && \
+		cd .. && \
+		zip $(ZIPFILE)  $(notdir $(TMPDIR))
+	@echo zip folder made: $(dir $(TMPDIR))$(ZIPFILE)
 
 # ------------------------------------------------------------------------------
 
@@ -33,11 +35,6 @@ run_webui:
 # ------------------------------------------------------------------------------
 
 # clean
-
-.PHONY: distclean
-distclean: 
-	$(MAKE) -C 3rdparty clean
-
 .PHONY: clean
 clean: 
 	$(MAKE) -C 3rdparty clean
