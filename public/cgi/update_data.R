@@ -33,7 +33,12 @@ types <- sapply(proc, function(x){
 data <- jsonlite::read_json(file.path(datadir, "data.json"))
 # Return error code if any column requested does not match process
 error_col <- names(args)[which(!names(args) %in% names(proc))]
-if(length(error_col) != 0){
+if(length(args) == 0){
+    out <- ""
+    msg <- "No key-value pair was provided for updating the data."
+    status <- 205
+    type <- "text/plain"
+}else if(length(error_col) != 0){
     out <- jsonlite::toJSON(error_col, pretty = TRUE)
     msg <- sprintf("'Process tags dont exist. Check spelling in: %s'",
         paste0(error_col, collapse = ",")
@@ -82,7 +87,6 @@ if(length(error_col) != 0){
             pretty = TRUE)
         status <- 204
         msg <- "Some values do not correspond to correct values for the given process."
-
     }else{
         data <- sort_data(data)
         jsonlite::write_json(
