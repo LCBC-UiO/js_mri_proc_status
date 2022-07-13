@@ -21,8 +21,8 @@
       div.dataTables_wrapper div.dataTables_paginate ul.pagination .page-item.active .page-link:focus {
         background-color: #474f53;
       }
-      .ok { color: #63e1dc;}
-      .fail { color: #ff8080;}
+      .yes { color: #63e1dc;}
+      .no { color: #ff8080;}
       .running { color: #ffbb32;}
       .unknown { color: #666666;}
       .hide-text { font-size: "1px";}
@@ -86,11 +86,12 @@
     </header>
 
     <div class="container-lg my-3">
-      <div class="tab-content">
+      <div class="tab-content container-fluid">
         <div id="table-view" class="table-responsive tab-pane active" role="tabpanel" aria-labelledby="table-tab">
           <table id="tsv" class="table table-striped table-sm table-dark table-hover  w-100">
             <caption id="lastmod"></caption>
           </table>
+          <button class="btn btn-secondary" onclick="display_modal_new()">Add new entry</button>
         </div>
         <div id="api-use" class="tab-pane " role="tabpanel" aria-labelledby="api-tab">
           <h1>Getting the data and process information</h1>

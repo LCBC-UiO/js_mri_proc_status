@@ -14,7 +14,6 @@ async function get_moddate(){
 async function get_data() {
     const r_data = await fetch(`./cgi/get_data.cgi`);
     r_data_j = await r_data.json();
-    
     const r_process = await fetch(`./cgi/get_process.cgi`);
     r_process_j = await r_process.json();
     e_cols = Object.keys(r_process_j).concat("n_ok");
@@ -64,21 +63,21 @@ async function get_data() {
                         switch(val) {
                             case "yes":
                                 e_i.classList.add("bi-check-circle-fill");
-                                e_i.classList.add("ok");
-                                e_td.classList.add("ok");
+                                e_i.classList.add(val);
+                                e_td.classList.add(val);
                                 e_p.innerHTML = 1;
                                 n_ok = n_ok + 1;
                                 break;
                             case "no":
                                 e_i.classList.add("bi-x-circle-fill");
-                                e_i.classList.add("fail");
-                                e_td.classList.add("fail");
+                                e_i.classList.add(val);
+                                e_td.classList.add(val);
                                 e_p.innerHTML = 3;
                                 break;
                             case "running":
                                 e_i.classList.add("bi-arrow-repeat");
-                                e_i.classList.add("running");
-                                e_td.classList.add("running"); 
+                                e_i.classList.add(val);
+                                e_td.classList.add(val); 
                                 e_p.innerHTML = 2;
                                 break;
                             default:
@@ -123,7 +122,7 @@ async function get_data() {
     }
 
     $(document).ready(function () {
-        var table = $('#tsv').DataTable({
+        $('#tsv').DataTable({
             order:[[e_cols.length+1,'asc']],
             lengthMenu: [
                 [50, 100, 500, 1000, -1], // values
@@ -208,6 +207,7 @@ function save_changes(){
     id=`id=${idses[0]}`;
     ses=`ses=${idses[1]}`;
     let getstr = `./cgi/update_data.cgi?=${id}&${ses}&${sel_vals.join('&')}`;
+    console.log(getstr)
     fetch(getstr).then(r =>{
         mod_body = document.createElement("div");
         mod_body.classList = `modal-body alert`;
@@ -231,6 +231,58 @@ function save_changes(){
     })
 }
 
+async function display_modal_new(){
+    body = document.createElement("form");
+    body.setAttribute("onsubmit", "return add_new()");
+    body.classList = "w100";
+    ["sub", "ses"].forEach(x => {
+        body_id = document.createElement("div");
+        body_id.classList = "input-group mb-3";
+        body_id_lab = document.createElement("div");
+        body_id_lab.classList = "input-group-prepend";
+        body_id_lab_span = document.createElement("span");
+        body_id_lab_span.classList = "input-group-text";
+        body_id_lab_span.id = `new-${x}`;
+        body_id_lab_span.innerHTML = `${x}-`;
+        body_id_lab.appendChild(body_id_lab_span);
+        body_id.appendChild(body_id_lab)
+        body_id_input = document.createElement("input");
+        body_id_input.classList = "form-control  w-50";
+        body_id_input.type = "text";
+        body_id_input.setAttribute("aria-describedby", `new-${x}`);
+        body_id_input.setAttribute("required", true);
+        body_id_input.id = `new-${x}-input`;
+        body_id.appendChild(body_id_input);
+        body.appendChild(body_id);
+    })
+    foot = document.createElement("div");
+    foot_btn = document.createElement("button");
+    foot_btn.classList = "btn btn-secondary";
+    foot_btn.innerHTML = "Initiate entry";
+    foot_btn.type = "submit";
+    foot.appendChild(foot_btn);
+    body.appendChild(foot);
+    display_modal("Add new entry", body)
+}
+
+function mod_foot_btn(title, onclick, type="secondary"){
+    mod_foot = document.createElement("div");
+    mod_foot.classList.add("modal-footer");
+    mod_foot_btn = document.createElement("button");
+    mod_foot_btn.setAttribute("type", "button");
+    mod_foot_btn.classList = `btn btn-${type}`;
+    mod_foot_btn.innerHTML = title;
+    mod_foot_btn.setAttribute("onclick", onclick);
+    mod_foot.appendChild(mod_foot_btn);
+    return mod_foot;
+}
+function add_new(){
+    sub = document.getElementById("new-sub-input").value;
+    ses = document.getElementById("new-ses-input").value;
+    select_row(`sub-${sub}_ses-${ses}`);
+    return false;
+}
+
 // select row action //
 async function select_row(text) {
     tsplit = text.split("_");
@@ -241,12 +293,12 @@ async function select_row(text) {
     r_process_j = await r_process.json();
     e_row = document.getElementsByClassName(text);
     var arr = [].slice.call(e_row);
-    arr = arr.slice(0, arr.findIndex(j => j.classList.value.split(' ')[1] == "n_ok"));
-    arr.forEach(x => {
-        console.log(x.classList.value.split(' '));
-
-        col = x.classList.value.split(' ')[1];
-        val = x.classList.value.split(' ')[4];
+    for(col in r_process_j){
+        if(arr.length !== 0){
+            val = arr.slice(arr.findIndex(j => j.classList.value.split(' ')[1] == col), 
+                            arr.findIndex(j => j.classList.value.split(' ')[1] == col)+1)[0]
+                            .classList.value.split(' ')[4];
+        }
         e_input = document.createElement("div");
         e_input.classList = "input-group mb-3 w-100";
         e_input.setAttribute("data-width", "100%");
@@ -258,19 +310,18 @@ async function select_row(text) {
         e_input_pl.setAttribute("for", col);
         e_input_pl.innerHTML = col.replaceAll("_", " ");
         e_input_p.appendChild(e_input_pl);
-
         switch(r_process_j[col]){
             case "icons":
                 e_input_sel = document.createElement("select");
                 e_input_sel.classList = "custom-select border-secondary w-50 proc-select";
                 e_input_sel.id = col;
                 e_input.appendChild(e_input_sel);
-                opts = ["yes", "no", "running", "unknown"];
+                opts = ["unknown", "yes", "no", "running"];
                 for(opt in opts){
                     e_input_op = document.createElement("option");
                     e_input_op.value = opts[opt];
                     e_input_op.innerHTML = opts[opt];
-                    if(opts[opt] == val){
+                    if(arr.length !== 0 & opts[opt] == val){
                         e_input_op.setAttribute("selected", true)
                     }
                     e_input_sel.appendChild(e_input_op);
@@ -278,7 +329,7 @@ async function select_row(text) {
                 break;
             case "numeric":
             case "asis":
-                if(typeof val == "undefined" || val == "undefined" || val == "NA"){
+                if(arr.length === 0 || typeof val == "undefined" || val == "undefined" || val == "NA"){
                     val = ""
                 }
                 e_input_input = document.createElement("input");
@@ -294,12 +345,12 @@ async function select_row(text) {
                 e_input_sel.classList = "custom-select border-secondary w-50 proc-select";
                 e_input_sel.id = col;
                 e_input.appendChild(e_input_sel);
-                opts = r_process_j[col];
+                opts = ["unknown"].concat(r_process_j[col]);
                 for(opt in opts){
                     e_input_op = document.createElement("option");
                     e_input_op.value = opts[opt];
                     e_input_op.innerHTML = opts[opt];
-                    if(opts[opt] == val){
+                    if(arr.length !== 0 & opts[opt] == val){
                         e_input_op.setAttribute("selected", true)
                     }
                     e_input_sel.appendChild(e_input_op);
@@ -307,7 +358,7 @@ async function select_row(text) {
                 break;
         }
         mod_body.appendChild(e_input);
-    });
+    };
     mod_foot = document.createElement("div");
     mod_foot.classList.add("modal-footer");
     mod_foot_btn = document.createElement("button");
@@ -316,7 +367,6 @@ async function select_row(text) {
     mod_foot_btn.innerHTML = "Save changes";
     mod_foot_btn.setAttribute("onclick", 'save_changes()');
     mod_foot.appendChild(mod_foot_btn);
-
     display_modal(`${tsplit.join(' ')}`, mod_body, null, mod_foot)
 }
 
@@ -434,7 +484,6 @@ function init_custom_input(){
     choice = document.getElementById("process-value-input").value;
     body_custom = document.getElementById("custom-array");
     body_custom.innerHTML = "";
-    console.log(choice);
     if(choice == "array"){
         body_custom.classList = "input-group mb-3";
         body_custom_pre = document.createElement("div");

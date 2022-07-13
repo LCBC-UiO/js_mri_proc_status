@@ -10,6 +10,7 @@ args <- setNames(
 id   <- args[1]
 ses  <- args[2]
 args <- args[-1:-2]
+args <- na.omit(args)
 
 sort_data <- function(x){
     .name_order <- function(x) x[order(names(x))]
@@ -78,7 +79,7 @@ if(length(error_col) != 0){
     }
     if(length(err_vals) > 0){
         out <- jsonlite::toJSON(err_vals,
-            pretty = TRUE, auto_unbox = TRUE)
+            pretty = TRUE)
         status <- 204
         msg <- "Some values do not correspond to correct values for the given process."
 

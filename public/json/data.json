@@ -23,8 +23,7 @@
       "tedana_run": "yes",
       "fmriprep_ok": "yes",
       "comments": "wertq rqwre",
-      "custom_options": "irregular",
-      "new_test2": "reg"
+      "custom_options": "irregular"
     },
     "ses-02Skyra": {
       "raw_to_sorted": "running",
@@ -37,8 +36,7 @@
       "fmriprep_ok": "running",
       "tedana_ok": "yes",
       "comments": "dwtwe",
-      "custom_options": "irregular",
-      "new_test2": "reg"
+      "custom_options": "irregular"
     }
   },
   "sub-0156": {
@@ -75,8 +73,14 @@
   },
   "sub-1700158": {
     "ses-01Avanto": {
-      "raw_to_sorted": "no",
-      "sorted_to_bids": "no"
+      "raw_to_sorted": "yes",
+      "sorted_to_bids": "no",
+      "custom_options": "irregular"
+    }
+  },
+  "sub-22": {
+    "ses-26": {
+      "raw_to_sorted": "yes"
     }
   }
 }
