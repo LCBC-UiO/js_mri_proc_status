@@ -12,7 +12,7 @@ include config_default.txt
 
 PHONY: prepare_offline
 prepare_offline:
-	git clone $(shell git config --get remote.origin.url) $(TMPDIR)
+	git clone $(BASEDIR) $(TMPDIR)
 	cd $(TMPDIR) && \
 		make download && \
 		cd .. && \

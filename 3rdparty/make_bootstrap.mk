@@ -46,7 +46,7 @@ bootstrap_download: $(bsdsts) $(bsicons_path)
 	cp -rv download/bootstrap-icons-${iconversion}/* download/icons
 
 
-.PHONY: bootstrap_clean
+.PHONY: bootstrap_distclean
 bootstrap_distclean: 
 	$(MAKE) bootstrap_clean
 	$(MAKE) bootstrap_dlclean
