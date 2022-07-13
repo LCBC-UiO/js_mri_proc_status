@@ -99,15 +99,15 @@
             <div class="col">
               <p>
                 To use the API from command line, you will need to use <code>curl</code>.
-                You need to replace the url-part containing <code>http://localhost:6565</code>
+                You need to replace the url-part containing <code>WEBSITEURL</code>
                 to the url where the webui is running.  These two first commands will return
                 the json content for the data and the processing steps.
               </p>
             </div>
             <div class="col">
               <pre><code>
-curl http://localhost:6565/cgi/get_data.cgi
-curl http://localhost:6565/cgi/get_process.cgi
+curl WEBSITEURLcgi/get_data.cgi
+curl WEBSITEURLcgi/get_process.cgi
               </code></pre>
             </div>
           </div>
@@ -125,6 +125,8 @@ curl http://localhost:6565/cgi/get_process.cgi
               After these two, you can add as many key-value pairs as you want to 
               update the entry.
               The data will always be sorted accoring to subject id and session alphabetically.
+              The API will check if an entry for this id and session already exists, and either add
+              the key-value pair to the entry, or overwrite the existing value if the key already exists.
             </p>
           </div>
             <div class="col">
@@ -133,7 +135,7 @@ curl -G \
     -d 'id=sub-0022' \
     -d 'ses=ses-02Skyra' \
     -d 'raw_to_sorted=running'  \
-    http://localhost:6565/cgi/update_data.cgi
+    WEBSITEURLcgi/update_data.cgi
               </code></pre>
             </div>
           </div>
@@ -207,7 +209,7 @@ curl -G \
 curl -G \
   -d 'process_1=options'  \
   -d 'process_2=numeric'  \
-  http://localhost:6565/cgi/update_process.cgi
+  WEBSITEURLcgi/update_process.cgi
               </code></pre>
             </div>
           </div>

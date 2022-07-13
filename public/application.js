@@ -528,6 +528,14 @@ $('#modal').on('hidden.bs.modal', function () {
     location.reload();
 })
 
+$('body :not(script)').contents().filter(function() {
+    return this.nodeType === 3;
+  }).replaceWith(function() {
+      return this.nodeValue.replace(/WEBSITEURL/g, window.location.href);
+  });
+
+//$("body").html($("body").html().replace(/WEBSITEURL/g, window.location.href));
+
 // Start the whole thing, grab data list!
 get_process();
 get_data();
