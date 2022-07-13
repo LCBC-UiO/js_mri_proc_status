@@ -102,12 +102,13 @@
                 You need to replace the url-part containing <code>WEBSITEURL</code>
                 to the url where the webui is running.  These two first commands will return
                 the json content for the data and the processing steps.
+                The <code>-I</code> flag indicates you want to see the response outputed to the terminal.
               </p>
             </div>
             <div class="col">
               <pre><code>
-curl WEBSITEURLcgi/get_data.cgi
-curl WEBSITEURLcgi/get_process.cgi
+curl -i WEBSITEURL/cgi/get_data.cgi
+curl -i WEBSITEURL/cgi/get_process.cgi
               </code></pre>
             </div>
           </div>
@@ -131,11 +132,11 @@ curl WEBSITEURLcgi/get_process.cgi
           </div>
             <div class="col">
               <pre><code>
-curl -G \
+curl -i -G \
     -d 'id=sub-0022' \
     -d 'ses=ses-02Skyra' \
     -d 'raw_to_sorted=running'  \
-    WEBSITEURLcgi/update_data.cgi
+    WEBSITEURL/cgi/update_data.cgi
               </code></pre>
             </div>
           </div>
@@ -206,10 +207,10 @@ curl -G \
             </div>
             <div class="col">
               <pre><code>
-curl -G \
+curl -i -G \
   -d 'process_1=options'  \
   -d 'process_2=numeric'  \
-  WEBSITEURLcgi/update_process.cgi
+  WEBSITEURL/cgi/update_process.cgi
               </code></pre>
             </div>
           </div>

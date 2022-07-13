@@ -531,10 +531,9 @@ $('#modal').on('hidden.bs.modal', function () {
 $('body :not(script)').contents().filter(function() {
     return this.nodeType === 3;
   }).replaceWith(function() {
-      return this.nodeValue.replace(/WEBSITEURL/g, window.location.href);
+      return this.nodeValue.replace(/WEBSITEURL/g, window.location.origin);
   });
 
-//$("body").html($("body").html().replace(/WEBSITEURL/g, window.location.href));
 
 // Start the whole thing, grab data list!
 get_process();
