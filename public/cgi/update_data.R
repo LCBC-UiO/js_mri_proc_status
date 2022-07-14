@@ -7,8 +7,9 @@ args <- setNames(
         sapply(args, function(x) strsplit(x, "=")[[1]][2]),
         sapply(args, function(x) strsplit(x, "=")[[1]][1])
 )
-id   <- args[1]
-ses  <- args[2]
+
+sub  <- sprintf("sub-%s", gsub("sub-", "", args["sub"]))
+ses  <- sprintf("ses-%s", gsub("ses-", "", args["ses"]))
 args <- args[-1:-2]
 args <- na.omit(args)
 
@@ -31,20 +32,21 @@ types <- sapply(proc, function(x){
    unname(x)
 })
 data <- jsonlite::read_json(file.path(datadir, "data.json"))
-# Return error code if any column requested does not match process
 error_col <- names(args)[which(!names(args) %in% names(proc))]
-if(length(args) == 0){
+if(sub == "sub-" || ses == "ses-"){
+    out <- ""
+    msg <- "No sub or ses pair was provided for updating the data."
+    status <- 206
+}else if(length(args) == 0){
     out <- ""
     msg <- "No key-value pair was provided for updating the data."
-    status <- 205
-    type <- "text/plain"
+    status <- 202
 }else if(length(error_col) != 0){
     out <- jsonlite::toJSON(error_col, pretty = TRUE)
     msg <- sprintf("'Process tags dont exist. Check spelling in: %s'",
         paste0(error_col, collapse = ",")
     )
     status <- 203
-    type <- "text/plain"
 }else{
     err_vals <- list()
     for(i in 1:length(args)){
@@ -66,17 +68,17 @@ if(length(args) == 0){
             names(keypair) <- key
             session <- list(keypair)
             names(session) <- ses
-            # if id & ses already exists in json
-            if(!is.null(data[[id]]) && !is.null(data[[id]][[ses]])){
-                data[[id]][[ses]][[key]] <- value
-            # if id only exists and not session
-            }else if(!is.null(data[[id]])){
-                data[[id]] <- c(data[[id]], session)
-            #if id does not exist
+            # if sub & ses already exists in json
+            if(!is.null(data[[sub]]) && !is.null(data[[sub]][[ses]])){
+                data[[sub]][[ses]][[key]] <- value
+            # if sub only exists and not session
+            }else if(!is.null(data[[sub]])){
+                data[[sub]] <- c(data[[sub]], session)
+            #if sub does not exist
             }else{
                 j <- length(data) + 1
                 data[[j]] <- session
-                names(data)[j] <- id
+                names(data)[j] <- sub
             }
         }else{
             err_vals <- c(err_vals, args[i])
@@ -86,24 +88,24 @@ if(length(args) == 0){
         out <- jsonlite::toJSON(err_vals,
             pretty = TRUE)
         status <- 204
-        msg <- "Some values do not correspond to correct values for the given process."
+        msg <- "Some values do not correspond to values for the given process."
     }else{
         data <- sort_data(data)
         jsonlite::write_json(
             data, file.path(datadir, "data.json"),
             pretty = TRUE, auto_unbox = TRUE
         )
-        entry <- list(data[[id]][ses])
-        names(entry) <- id
+        entry <- list(data[[sub]][ses])
+        names(entry) <- sub
         out <- jsonlite::toJSON(entry,
                 pretty = TRUE, auto_unbox = TRUE)
         status <- 201
-        msg <- sprintf("Progress updated for %s %s", id, ses)
+        msg <- sprintf("Progress updated for %s %s", sub, ses)
     }
 }
 
 cat(
-    "Content-Type: application/json; charset=UTF-8\r",
+    sprintf("Content-Type: application/json; charset=UTF-8\r"),
     sprintf("Status: %s\r", status),
     sprintf("Message : %s\r", msg),
     "\r",

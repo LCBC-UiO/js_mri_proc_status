@@ -20,15 +20,15 @@ async function get_data() {
     let e_table = document.getElementById("tsv");
     var e_body = document.createElement("tbody");
     e_table.appendChild(e_body);
-    for(var id in r_data_j){
-        for( var ses in r_data_j[id]){
+    for(var sub in r_data_j){
+        for( var ses in r_data_j[sub]){
             e_tr = document.createElement("tr");
             e_tr.setAttribute("onclick", 'select_row()');
-            e_tr.id = `${id}_${ses}`;
-            e_tr.setAttribute("onclick", `select_row('${id}_${ses}')`);
+            e_tr.sub = `${sub}_${ses}`;
+            e_tr.setAttribute("onclick", `select_row('${sub}_${ses}')`);
             e_body.appendChild(e_tr);
             e_sub = document.createElement("td");
-            e_sub.innerHTML = id;
+            e_sub.innerHTML = sub;
             e_sub.setAttribute("width", "100px");
             e_sub.classList = "sticky-left-col1";
             e_tr.appendChild(e_sub);
@@ -40,7 +40,7 @@ async function get_data() {
             n_ok = 1;
             for(var proc in e_cols){
                 e_td = document.createElement("td");
-                e_td.classList = `${id}_${ses} ${e_cols[proc]} text-center m-0`;
+                e_td.classList = `${sub}_${ses} ${e_cols[proc]} text-center m-0`;
                 e_p = document.createElement("p");               
                 e_p.style.visibility = "hidden";
                 e_p.innerHTML = 0; 
@@ -48,7 +48,7 @@ async function get_data() {
                 e_i = document.createElement("i");
                 e_i.classList = "bi";
                 e_i.setAttribute("font-size", "2em");
-                val = r_data_j[id][ses][e_cols[proc]];
+                val = r_data_j[sub][ses][e_cols[proc]];
                 opts = Object.values(r_process_j)[proc];
                 if(e_cols[proc] == "n_ok"){
                     val = n_ok
@@ -202,32 +202,45 @@ function save_changes(){
     }).filter(el => {
         return el !== null;
     })
-    idses = document.getElementById("edit-selection");
-    idses = idses.innerHTML.split(" ");
-    id=`id=${idses[0]}`;
-    ses=`ses=${idses[1]}`;
-    let getstr = `./cgi/update_data.cgi?=${id}&${ses}&${sel_vals.join('&')}`;
+    subses = document.getElementById("edit-selection");
+    subses = subses.innerHTML.split(" ");
+    sub=`sub=${subses[0]}`;
+    ses=`ses=${subses[1]}`;
+    let getstr = `./cgi/update_data.cgi?=${sub}&${ses}&${sel_vals.join('&')}`;
     console.log(getstr)
     fetch(getstr).then(r =>{
         mod_body = document.createElement("div");
         mod_body.classList = `modal-body alert`;
-        let type = "";
-        let json = "";
-        r.json().then(data => {
-            json = create_modal_json(data)
-        })
        switch(r.status){
         case 201:
             mod_body.innerHTML = "Successfully updated"
             type = "success"
             break;
+        case 202:
+            mod_body.innerHTML = "No key-value pair was provided for updating the data."
+            type = "danger"
+            break;
+        case 203:
+            mod_body.innerHTML = "Process does not exist"
+            type = "danger"
+            break;
+        case 204:
+            mod_body.innerHTML = "Some values do not correspond to values for the given process."
+            type = "danger"
+            break;
+        case 205:
+            mod_body.innerHTML = "No sub or ses pair was provided for updating the data."
+            type = "danger"
+            break;
         default:
-            mod_body.innerHTML = "Error occured"
+            mod_body.innerHTML = "Unknown error occured"
             type = "danger"
             break;
         }
-
-        display_modal( `${idses}`, mod_body, type, json)
+        r.json().then(data => {
+            json = create_modal_json(data);
+            display_modal( `${subses.join(" ")}`, mod_body, type, json);
+        })
     })
 }
 
