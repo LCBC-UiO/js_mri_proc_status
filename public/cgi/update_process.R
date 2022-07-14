@@ -1,7 +1,8 @@
 #!/usr/bin/env Rscript
 datadir <- Sys.getenv("DATADIR")
 
-args <- commandArgs(trailingOnly=TRUE)
+args <- commandArgs(trailingOnly = TRUE)
+args <- gsub("^=", "", args)
 args <- unlist(strsplit(args, "\\&"))
 args <- setNames(
         sapply(args, function(x) 
@@ -23,7 +24,8 @@ if(length(idx) > 0){
 }else if(any(! types %in% valid_types)){
     idx <- which(any(! types %in% valid_types))
     status <- 204
-    msg <- sprintf("Some requested process value are none of %s. Not updating process.", paste(valid_types, collapse=", "))
+    msg <- sprintf("Some requested process value are none of %s. Not updating process.",
+                paste(valid_types, collapse = ", "))
     out <- jsonlite::toJSON(args[idx], pretty = TRUE)
 }else{
     proc <- c(proc, as.list(args))

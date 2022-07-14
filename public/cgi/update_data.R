@@ -2,12 +2,12 @@
 datadir <- Sys.getenv("DATADIR")
 
 args <- commandArgs(trailingOnly = TRUE)
+args <- gsub("^=", "", args)
 args <- unlist(strsplit(args, "\\&"))
 args <- setNames(
         sapply(args, function(x) strsplit(x, "=")[[1]][2]),
         sapply(args, function(x) strsplit(x, "=")[[1]][1])
 )
-
 sub  <- sprintf("sub-%s", gsub("sub-", "", args["sub"]))
 ses  <- sprintf("ses-%s", gsub("ses-", "", args["ses"]))
 args <- args[-1:-2]
@@ -36,7 +36,7 @@ error_col <- names(args)[which(!names(args) %in% names(proc))]
 if(sub == "sub-" || ses == "ses-"){
     out <- ""
     msg <- "No sub or ses pair was provided for updating the data."
-    status <- 206
+    status <- 205
 }else if(length(args) == 0){
     out <- ""
     msg <- "No key-value pair was provided for updating the data."
