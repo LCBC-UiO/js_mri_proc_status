@@ -1,6 +1,6 @@
 BASEDIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 DOCROOT:=$(BASEDIR)/public
-TMPDIR := $(shell mktemp -d)
+TMPDIR := $(shell mktemp -d)/$(notdir $(BASEDIR))
 ZIPFILE := $(strip $(subst tmp, $(notdir $(BASEDIR)), $(notdir $(TMPDIR))).zip)
 
 include config_default.txt
