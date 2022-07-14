@@ -8,9 +8,14 @@ args <- setNames(
         sapply(args, function(x) strsplit(x, "=")[[1]][2]),
         sapply(args, function(x) strsplit(x, "=")[[1]][1])
 )
-sub  <- sprintf("sub-%s", gsub("sub-", "", args["sub"]))
-ses  <- sprintf("ses-%s", gsub("ses-", "", args["ses"]))
-args <- args[-1:-2]
+
+for(key in c("sub", "ses")){
+    idx <- which(names(args) %in% key)
+    if(length(idx) != 0){
+        assign(key, paste0(key, "-", gsub(paste0(key, "-"), "", args[idx])))
+        args <- args[idx*-1]
+    }
+}
 args <- na.omit(args)
 
 sort_data <- function(x){
@@ -33,7 +38,7 @@ types <- sapply(proc, function(x){
 })
 data <- jsonlite::read_json(file.path(datadir, "data.json"))
 error_col <- names(args)[which(!names(args) %in% names(proc))]
-if(sub == "sub-" || ses == "ses-"){
+if(any(!c(exists("sub"), exists("ses")))){
     out <- ""
     msg <- "No sub or ses pair was provided for updating the data."
     status <- 205
