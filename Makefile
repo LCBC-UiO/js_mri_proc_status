@@ -1,7 +1,7 @@
 BASEDIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 DOCROOT:=$(BASEDIR)/public
-TMPDIR := $(shell mktemp -d)/$(notdir $(BASEDIR))
-ZIPFILE := $(strip $(subst tmp, $(notdir $(BASEDIR)), $(notdir $(TMPDIR))).zip)
+TMPDIR := $(shell mktemp -d)
+ZIPFILE := $(notdir $(BASEDIR)).zip
 
 include config_default.txt
 -include config.txt
@@ -10,15 +10,15 @@ include config_default.txt
 
 # prepare for TSD
 
-PHONY: prepare_offline
+PPHONY: prepare_offline
 prepare_offline:
-	git clone $(BASEDIR) $(TMPDIR)
-	cd $(TMPDIR) && \
+	git clone $(BASEDIR) $(TMPDIR)/$(notdir $(BASEDIR))
+	cd $(TMPDIR)/$(notdir $(BASEDIR)) && \
 		make download && \
 		cd .. && \
-		zip -r $(ZIPFILE) $(notdir $(TMPDIR))
+		zip -rm $(ZIPFILE) $(TMPDIR)
 	@echo zip folder made: $(dir $(TMPDIR))$(ZIPFILE)
-
+	
 # ------------------------------------------------------------------------------
 
 # run
