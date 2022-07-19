@@ -159,6 +159,24 @@ curl -i -G \
               </code></pre>
             </div>
           </div>
+          <div class="row">
+            <div class="col">
+            <p>
+              If you need to add comments, these will certainly contain characters that will make the update fail.
+              <code>cURL</code> commands are sent as URL's and as such, cannot contain certain characters (like white space).
+              To add such information, you will need to use a special encoding flag to curl
+            </p>
+          </div>
+            <div class="col">
+              <pre><code>
+curl -i -G \
+    -d 'id=sub-0022' \
+    -d 'ses=ses-02Skyra' \
+    --data-urlencode 'fmri_comment=this is a longer comment; that will be fixed on send.'  \
+    WEBSITEURL/cgi/update_data.cgi
+              </code></pre>
+            </div>
+          </div>
 
           <div id="api-response" class="row mt-4 mb-2"><h3>Request response</h3></div>
           <hr class="mt-2 mb-4">
