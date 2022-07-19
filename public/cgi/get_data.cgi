@@ -1,7 +1,3 @@
 #!/usr/bin/env bash
 
-echo "Content-Type: application/json; charset=UTF-8"
-echo "Status: 200"
-echo ""
-
-cat ${DATADIR}/data.json
+Rscript get_data.R ${QUERY_STRING:0}

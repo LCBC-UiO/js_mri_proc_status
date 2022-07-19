@@ -111,6 +111,25 @@ curl -i WEBSITEURL/cgi/get_data.cgi
 curl -i WEBSITEURL/cgi/get_process.cgi
               </code></pre>
             </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  You can also retrieve the specific information for just a single subject, session and key.
+                  This can be achieved by adding key-value pairs to the query for the data.
+                  Only providing the subject, returns the entire subjects data.
+                  Providing subject and session, returns the data for the subject and session.
+                  Lastly, providing subject, session and key(s) returns data for those spesific key(s).
+                </p>
+              </div>
+              <div class="col">
+                <pre><code>
+curl -G \
+  -d "sub=022" \
+  -d "ses=02Avanto" \
+  -d "key=[raw_to_sorted, sorted_to_bids]" \
+  WEBSITEURL/cgi/get_data.cgi
+                </code></pre>
+              </div>
           </div>
           <h1>Updating data</h1>
           <div id="api-request" class="row mt-4 mb-2"><h3>Send request</h3></div>
