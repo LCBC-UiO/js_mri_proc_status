@@ -473,6 +473,8 @@ function display_modal_process(){
     body = document.createElement("form");
     body.setAttribute("onsubmit", "return update_process()");
     body.classList = "w100"
+    body_text = document.createElement("div");
+    body_text.innerHTML = "Here you can add more processing steps to the table. The keys should be in <code>snake_case</code>."
     // key
     body_key_group = document.createElement("div");
     body_key_group.classList = "input-group mb-3";
@@ -518,6 +520,10 @@ function display_modal_process(){
     body_custom = document.createElement("div");
     body_custom.id = "custom-array";
     body.appendChild(body_custom);
+    body_help = document.createElement("small");
+    body_help.classList = "text-muted mb-2";
+    body_help.id = "process-select-help";
+    body.appendChild(body_help);
     foot = document.createElement("div");
     foot_btn = document.createElement("button");
     foot_btn.classList = "btn btn-secondary";
@@ -525,7 +531,8 @@ function display_modal_process(){
     foot_btn.type = "submit";
     foot.appendChild(foot_btn);
     body.appendChild(foot);
-    display_modal("Adding process", body)
+    display_modal("Adding process", body);
+    init_custom_input();
 }
 
 function init_custom_input(){
@@ -549,6 +556,22 @@ function init_custom_input(){
         body_custom_input.setAttribute("required", true);
         body_custom_input.id = "process-custom-input"
         body_custom.appendChild(body_custom_input);
+    }
+    help = document.getElementById("process-select-help");
+    help.innerHTML = "";
+    switch(choice){
+        case "array":
+            help.innerHTML = "Create a custom array of values by entering a comma separated list."
+            break;
+        case "asis":
+            help.innerHTML = "Data in these keys will be displayed as is. Mostly used for freetext content."
+            break;
+        case "numeric":
+            help.innerHTML = "Data will be validated as a number."
+            break;
+        case "icons":
+            help.innerHTML = "The values 'yes', 'no', and 'running' will be displayed as icons in the table."
+            break;
     }
 }
 
