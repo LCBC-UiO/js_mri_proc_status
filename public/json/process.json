@@ -1,4 +1,6 @@
 {
+  "project_id": ["NDev", "MemP", "NCP", "MoBa", "Loci", "MemC", "ACon", "S2C"],
+  "wave_code": "numeric",
   "raw_to_sorted": "icons",
   "sorted_to_bids": "icons",
   "t1_rating": "numeric",

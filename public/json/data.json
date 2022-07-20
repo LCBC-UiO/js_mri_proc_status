@@ -1,6 +1,8 @@
 {
   "sub-0022": {
     "ses-01Avanto": {
+      "project_id": "MemP",
+      "wave_code": 1,
       "raw_to_sorted": "yes",
       "sorted_to_bids": "yes",
       "t1_rating": "5",
@@ -14,6 +16,8 @@
       "custom_options": "irregular"
     },
     "ses-02Avanto": {
+      "project_id": "MemP",
+      "wave_code": 2,
       "raw_to_sorted": "yes",
       "sorted_to_bids": "running",
       "t1_rating": "1",
@@ -26,6 +30,8 @@
       "custom_options": "irregular"
     },
     "ses-02Skyra": {
+      "project_id": "MemP",
+      "wave_code": 2,
       "raw_to_sorted": "running",
       "sorted_to_bids": "yes",
       "t1_rating": "6",
@@ -41,6 +47,8 @@
   },
   "sub-0156": {
     "ses-01Avanto": {
+      "project_id": "MemC",
+      "wave_code": 1,
       "raw_to_sorted": "running",
       "sorted_to_bids": "yes",
       "freesurfer_run": "yes",
@@ -50,6 +58,8 @@
       "fmriprep_ok": "yes"
     },
     "ses-02Avanto": {
+      "project_id": "MemC",
+      "wave_code": 2,
       "raw_to_sorted": "yes",
       "sorted_to_bids": "yes",
       "freesurfer_run": "yes",
@@ -59,16 +69,6 @@
       "fmriprep_ok": "yes",
       "tedana_ok": "no",
       "custom_options": "irregular"
-    },
-    "ses-02Skyra": {
-      "raw_to_sorted": "yes",
-      "sorted_to_bids": "yes",
-      "freesurfer_run": "yes",
-      "mriqc_run": "no",
-      "fmriprep_run": "yes",
-      "tedana_run": "yes",
-      "fmriprep_ok": "yes",
-      "tedana_ok": "no"
     }
   },
   "sub-1700158": {
@@ -80,6 +80,8 @@
   },
   "sub-22": {
     "ses-26": {
+      "project_id": "S2C",
+      "wave_code": 1,
       "raw_to_sorted": "yes"
     }
   }
