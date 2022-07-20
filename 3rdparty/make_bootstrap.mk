@@ -14,8 +14,8 @@ bsicons := \
 bssrcs := \
 	https://github.com/twbs/bootstrap/releases/download/v${bsversion}/bootstrap-${bsversion}-dist.zip \
 	https://github.com/twbs/icons/releases/download/v${iconversion}/bootstrap-icons-${iconversion}.zip \
-	https://cdn.datatables.net/v/bs5/dt-1.12.1/b-2.2.3/b-colvis-2.2.3/b-html5-2.2.3/b-print-2.2.3/fc-4.1.0/fh-3.2.4/datatables.min.css \
-	https://cdn.datatables.net/v/bs5/dt-1.12.1/b-2.2.3/b-colvis-2.2.3/b-html5-2.2.3/b-print-2.2.3/fc-4.1.0/fh-3.2.4/datatables.min.js \
+	https://cdn.datatables.net/v/bs5/dt-1.12.1/b-2.2.3/b-colvis-2.2.3/cr-1.5.6/fc-4.1.0/r-2.3.0/sc-2.0.7/sp-2.0.2/datatables.min.css \
+	https://cdn.datatables.net/v/bs5/dt-1.12.1/b-2.2.3/b-colvis-2.2.3/cr-1.5.6/fc-4.1.0/r-2.3.0/sc-2.0.7/sp-2.0.2/datatables.min.js \
 	https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js
 
 bsdsts := $(patsubst %, ./download/%, $(notdir $(bssrcs))) # get only the filename of the URLs

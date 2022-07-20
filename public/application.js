@@ -131,7 +131,8 @@ async function get_data() {
             buttons: [ 'copy', 'print', 'colvis' ],
             scrollY:        "65vh",
             scrollX:        true,
-            fixedColumns:   {left: 2}
+            fixedColumns:   {left: 2},
+            responsive: true
         });
     })
 };

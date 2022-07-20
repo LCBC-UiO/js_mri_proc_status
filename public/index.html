@@ -85,15 +85,14 @@
       </div>
     </header>
 
-    <div class="container-lg my-3">
-      <div class="tab-content container-fluid">
-        <div id="table-view" class="table-responsive tab-pane active" role="tabpanel" aria-labelledby="table-tab">
+      <div class="tab-content container-fluid my-3">
+        <div id="table-view" class="table-responsive tab-pane active text-center" role="tabpanel" aria-labelledby="table-tab">
+          <button class="btn btn-secondary" onclick="display_modal_new()">Add new entry</button>
           <table id="tsv" class="table table-striped table-sm table-dark table-hover  w-100">
             <caption id="lastmod"></caption>
           </table>
-          <button class="btn btn-secondary" onclick="display_modal_new()">Add new entry</button>
         </div>
-        <div id="api-use" class="tab-pane " role="tabpanel" aria-labelledby="api-tab">
+        <div id="api-use" class="tab-pane container-lg" role="tabpanel" aria-labelledby="api-tab">
           <h1>Getting the data and process information</h1>
           <div class="row">
             <div class="col">
@@ -110,6 +109,7 @@
 curl -i WEBSITEURL/cgi/get_data.cgi
 curl -i WEBSITEURL/cgi/get_process.cgi
               </code></pre>
+            </div>
             </div>
             <div class="row">
               <div class="col">
@@ -331,11 +331,28 @@ curl -i -G \
               This can be done here in the webui, or from the command line with <code>curl</code>.
             </p>
           </div>
-          <div><pre><code id="process-preview"></code></pre></div>
+          <div class="row"><pre><code id="process-preview"></code></pre></div>
+          <div class="row">
+            <div class="col-lg">
+              <h5>Key</h5>
+              <p>
+                In the case of adding new processing steps, the <code>key</code> should be in <code>snake_case</code> (spaces substituted by underscores).
+                Make sure you are dilligent about the spelling, it will be added 'as is'.
+              </p>
+            </div>
+            <div class="col-lg">
+              <h5>Value</h5>
+              <p>
+                The value of a new process may be either <code>numeric</code>, <code>icons</code>, <code>asis</code> 
+                (string variables, like comments), or a custom array of options (ex. <code>["regular", "iregular"]</code>).
+                All icon options have the same three valid entries: <code>["yes", "no", "running"]</code>, any other value 
+                is displayed in the UI as <i class="bi bi-question-circle-fill unknown" font-size="2em"></i> i.e. (<code>unknown</code>).
+              </p>
+            </div>
+          </div>
           <button class="btn btn-secondary mb-4 w-100" onClick="display_modal_process()">Add processing step</button>
         </div>
       </div>
-    </div>
     <div id="modal" class="modal" tabindex="-1" role="dialog"></div>
     <footer class="text-center text-lg-start bg-light text-muted m-6">
       <div class="text-center pt-4 pb-2 bg-dark text-secondary">
