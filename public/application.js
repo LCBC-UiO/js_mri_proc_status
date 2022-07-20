@@ -23,9 +23,10 @@ async function get_data() {
     for(var sub in r_data_j){
         for( var ses in r_data_j[sub]){
             e_tr = document.createElement("tr");
-            e_tr.setAttribute("onclick", 'select_row()');
+            e_tr.classList = "clickable-row";
+            e_tr.id = `${sub}_${ses}`;
             e_tr.sub = `${sub}_${ses}`;
-            e_tr.setAttribute("onclick", `select_row('${sub}_${ses}')`);
+            //e_tr.setAttribute("onclick", `select_row('${sub}_${ses}')`);
             e_body.appendChild(e_tr);
             e_sub = document.createElement("td");
             e_sub.innerHTML = sub;
@@ -109,10 +110,37 @@ async function get_data() {
                         if(typeof val == "undefined"){
                             val = ""
                         }
-                        e_a = document.createElement("p");
-                        e_a.innerHTML = val;
-                        n_ok = n_ok + 1;
+                        if(val.length >= 20){
+                            e_a = document.createElement("div");
+                            e_a.id = `card-asis-${sub}-${ses}-${e_cols[proc]}`;
+                            e_asis_card = document.createElement("div");
+                            e_asis_card.classList = "card bg-dark";
+                            e_asis_card_head = document.createElement("a");
+                            e_asis_card_head.classList = "card-header collapse-indicator-chevron text-white show-hide";
+                            e_asis_card_head.id = `card-head-asis-${sub}-${ses}-${e_cols[proc]}`;
+                            e_asis_card_head.setAttribute("data-bs-toggle", "collapse");
+                            e_asis_card_head.setAttribute("aria-expanded", "false");
+                            e_asis_card_head.setAttribute("aria-controls", `card-content-asis-${sub}-${ses}-${e_cols[proc]}` );
+                            e_asis_card_head.href = `#card-content-asis-${sub}-${ses}-${e_cols[proc]}`;
+                            e_asis_card_head.innerHTML = val.substring(0, 19);
+                            e_asis_card.appendChild(e_asis_card_head);
+                            e_asis_card_collapse = document.createElement("div");
+                            e_asis_card_collapse.classList = "collapse text-white";
+                            e_asis_card_collapse.id = `card-content-asis-${sub}-${ses}-${e_cols[proc]}`;
+                            e_asis_card_collapse.setAttribute("aria-labelledby", `card-head-asis-${sub}-${ses}-${e_cols[proc]}`);
+                            e_asis_card_collapse.setAttribute("data-bs-parent", `card-asis-${sub}-${ses}-${e_cols[proc]}`);
+                            e_asis_card.appendChild(e_asis_card_collapse);
+                            e_asis_card_body = document.createElement("div");
+                            e_asis_card_body.classList = "card-body";
+                            e_asis_card_body.innerHTML = val.substring(20);
+                            e_asis_card_collapse.appendChild(e_asis_card_body);
+                            e_a.appendChild(e_asis_card);
+                        }else{
+                            e_a = document.createElement("p");
+                            e_a.innerHTML = val;
+                        }
                         e_td.appendChild(e_a);
+                        n_ok = n_ok + 1;
                         break;
                     }
                 e_td.appendChild(e_p);     
@@ -134,7 +162,13 @@ async function get_data() {
             fixedColumns:   {left: 2},
             responsive: true
         });
+        $("td").click(function(event){
+            if(!$(event.target).hasClass('show-hide')) {
+                select_row(event.target.parentElement.id);
+            }
+        });
     })
+
 };
 
 async function get_process() {
@@ -547,7 +581,6 @@ $('body :not(script)').contents().filter(function() {
   }).replaceWith(function() {
       return this.nodeValue.replace(/WEBSITEURL/g, window.location.origin);
   });
-
 
 // Start the whole thing, grab data list!
 get_process();
