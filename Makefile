@@ -10,13 +10,13 @@ include config_default.txt
 
 # prepare for TSD
 
-PPHONY: prepare_offline
+PHONY: prepare_offline
 prepare_offline:
 	git clone $(BASEDIR) $(TMPDIR)/$(notdir $(BASEDIR))
 	cd $(TMPDIR)/$(notdir $(BASEDIR)) && \
 		make download && \
 		cd .. && \
-		zip -rm $(ZIPFILE) $(TMPDIR)
+		zip -rm $(ZIPFILE) $(notdir $(BASEDIR)) 
 	@echo zip folder made: $(TMPDIR)/$(ZIPFILE)
 	
 # ------------------------------------------------------------------------------
