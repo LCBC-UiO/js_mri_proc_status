@@ -208,7 +208,6 @@ function update_process(){
         value = document.getElementById("process-custom-input").value.replaceAll(" ", "");
     }
     let getstr = `./cgi/update_process.cgi?=${key.replaceAll(" ", "_")}=${value}`;
-    console.log(getstr)
     fetch(getstr).then(r =>{
         switch(r.status){
             case 201:
@@ -279,51 +278,23 @@ function save_changes(){
     })
 }
 
-async function display_modal_new(){
-    body = document.createElement("form");
-    body.setAttribute("onsubmit", "return add_new()");
-    body.classList = "w100";
-    ["sub", "ses"].forEach(x => {
-        body_id = document.createElement("div");
-        body_id.classList = "input-group mb-3";
-        body_id_lab = document.createElement("div");
-        body_id_lab.classList = "input-group-prepend";
-        body_id_lab_span = document.createElement("span");
-        body_id_lab_span.classList = "input-group-text";
-        body_id_lab_span.id = `new-${x}`;
-        body_id_lab_span.innerHTML = `${x}-`;
-        body_id_lab.appendChild(body_id_lab_span);
-        body_id.appendChild(body_id_lab)
-        body_id_input = document.createElement("input");
-        body_id_input.classList = "form-control  w-50";
-        body_id_input.type = "text";
-        body_id_input.setAttribute("aria-describedby", `new-${x}`);
-        body_id_input.setAttribute("required", true);
-        body_id_input.id = `new-${x}-input`;
-        body_id.appendChild(body_id_input);
-        body.appendChild(body_id);
-    })
-    foot = document.createElement("div");
-    foot_btn = document.createElement("button");
-    foot_btn.classList = "btn btn-secondary";
-    foot_btn.innerHTML = "Initiate entry";
-    foot_btn.type = "submit";
-    foot.appendChild(foot_btn);
-    body.appendChild(foot);
-    display_modal("Add new entry", body)
+async function delete_entry(idses){
+    fetch(`./cgi/delete_entry.cgi?=${idses}`).then(r =>{
+        switch(r.status){
+            case 200:
+                alert("Entry deleted.");
+                break;
+            case 201:
+                alert(`Unknown error occured.`);
+                break;
+            case 203:
+                alert(`Deletion needs arguments for id, session (optional) and key (optional).`);
+                break;
+        }
+        location.reload();
+     })
 }
 
-function mod_foot_btn(title, onclick, type="secondary"){
-    mod_foot = document.createElement("div");
-    mod_foot.classList.add("modal-footer");
-    mod_foot_btn = document.createElement("button");
-    mod_foot_btn.setAttribute("type", "button");
-    mod_foot_btn.classList = `btn btn-${type}`;
-    mod_foot_btn.innerHTML = title;
-    mod_foot_btn.setAttribute("onclick", onclick);
-    mod_foot.appendChild(mod_foot_btn);
-    return mod_foot;
-}
 function add_new(){
     sub = document.getElementById("new-sub-input").value;
     ses = document.getElementById("new-ses-input").value;
@@ -408,13 +379,12 @@ async function select_row(text) {
         mod_body.appendChild(e_input);
     };
     mod_foot = document.createElement("div");
-    mod_foot.classList.add("modal-footer");
-    mod_foot_btn = document.createElement("button");
-    mod_foot_btn.setAttribute("type", "button");
-    mod_foot_btn.classList = "btn btn-secondary";
-    mod_foot_btn.innerHTML = "Save changes";
-    mod_foot_btn.setAttribute("onclick", 'save_changes()');
+    mod_foot.classList = "d-flex justify-content-between modal-footer";
+    mod_foot_btn_del =  create_mod_btn("Delete entry", `display_modal_delete("${text}")`, "danger"); 
+    mod_foot.appendChild(mod_foot_btn_del);
+    mod_foot_btn     = create_mod_btn("Save changes", 'save_changes()', "secondary"); 
     mod_foot.appendChild(mod_foot_btn);
+
     display_modal(`${tsplit.join(' ')}`, mod_body, null, mod_foot)
 }
 
@@ -467,6 +437,59 @@ function display_modal(title, body=null, type=null, footer=null){
         mod_cont.appendChild(mod_foot);
     }
     $('#modal').modal('show');
+}
+
+async function display_modal_new(){
+    body = document.createElement("form");
+    body.setAttribute("onsubmit", "return add_new()");
+    body.classList = "w100";
+    ["sub", "ses"].forEach(x => {
+        body_id = document.createElement("div");
+        body_id.classList = "input-group mb-3";
+        body_id_lab = document.createElement("div");
+        body_id_lab.classList = "input-group-prepend";
+        body_id_lab_span = document.createElement("span");
+        body_id_lab_span.classList = "input-group-text";
+        body_id_lab_span.id = `new-${x}`;
+        body_id_lab_span.innerHTML = `${x}-`;
+        body_id_lab.appendChild(body_id_lab_span);
+        body_id.appendChild(body_id_lab)
+        body_id_input = document.createElement("input");
+        body_id_input.classList = "form-control  w-50";
+        body_id_input.type = "text";
+        body_id_input.setAttribute("aria-describedby", `new-${x}`);
+        body_id_input.setAttribute("required", true);
+        body_id_input.id = `new-${x}-input`;
+        body_id.appendChild(body_id_input);
+        body.appendChild(body_id);
+    })
+    foot = document.createElement("div");
+    foot_btn = document.createElement("button");
+    foot_btn.classList = "btn btn-secondary";
+    foot_btn.innerHTML = "Initiate entry";
+    foot_btn.type = "submit";
+    foot.appendChild(foot_btn);
+    body.appendChild(foot);
+    display_modal("Add new entry", body)
+}
+function create_mod_btn(title, onclick, type="secondary"){
+    mod_foot_btn = document.createElement("button");
+    mod_foot_btn.setAttribute("type", "button");
+    mod_foot_btn.classList = `btn btn-${type}`;
+    mod_foot_btn.innerHTML = title;
+    mod_foot_btn.setAttribute("onclick", onclick);
+    return mod_foot_btn;
+}
+async function display_modal_delete(idses){
+    delentry = idses.split("_").join("&").split("-").join("=");
+    const r_data = await fetch(`./cgi/get_data.cgi?=${delentry}`);
+    r_data_j = await r_data.json();
+    body = create_modal_json(r_data_j, "danger")
+    mod_foot = document.createElement("div");
+    mod_foot.classList = "d-flex justify-content-between modal-footer";
+    mod_foot_btn_del =  create_mod_btn("Confirm delete", `delete_entry("${delentry}")`, "danger"); 
+    mod_foot.appendChild(mod_foot_btn_del);
+    display_modal(idses.split("_").join(" "), body=body, type="danger", footer=mod_foot)
 }
 
 function display_modal_process(){
@@ -575,9 +598,9 @@ function init_custom_input(){
     }
 }
 
-function create_modal_json(data=null){
+function create_modal_json(data=null, alert="secondary"){
     var ed_div = document.createElement("div");
-    ed_div.classList = "alert alert-secondary";
+    ed_div.classList = `alert alert-${alert}`;
     if(data != null){
         e_pre = document.createElement("pre");
         e_pre.classList = "w-100 border border-white border-2";
@@ -605,7 +628,9 @@ $('body :not(script)').contents().filter(function() {
       return this.nodeValue.replace(/WEBSITEURL/g, window.location.origin);
   });
 
-// Start the whole thing, grab data list!
+
+
+// Start the whole thing!
 get_process();
 get_data();
 get_moddate();

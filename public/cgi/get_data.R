@@ -21,7 +21,7 @@ status <- 200
 out <- ''
 if(length(args) == 0){
     out <- data
-}else if(all(names(args) %in% c("sub", "ses", "key"))){
+}else if(all(c("sub", "ses", "key") %in% names(args))){
     sub <- data[[sprintf("sub-%s", args["sub"])]]
     ses <- sub[[sprintf("ses-%s", args["ses"])]]
     keys <- lapply(match(args[["key"]], names(ses)), function(x) ses[[x]])
@@ -29,11 +29,11 @@ if(length(args) == 0){
     out <- list(list(keys))
     names(out[[1]]) <- sprintf("ses-%s", args["ses"])
     names(out) <- sprintf("sub-%s", args["sub"])
-}else if(all(names(args) %in% c("sub", "ses"))){
+}else if(all(c("sub", "ses") %in% names(args))){
     sub <- data[[sprintf("sub-%s", args["sub"])]]
     out <- list(sub[sprintf("ses-%s", args["ses"])])
     names(out) <- sprintf("sub-%s", args["sub"])
-}else if(all(names(args) %in% "sub")){
+}else if("sub" %in% names(args)){
     out <- data[sprintf("sub-%s", args["sub"])]
 }else{
     status <- 201
