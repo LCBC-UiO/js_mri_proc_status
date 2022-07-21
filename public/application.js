@@ -110,34 +110,13 @@ async function get_data() {
                         if(typeof val == "undefined"){
                             val = ""
                         }
-                        if(val.length >= 20){
-                            e_a = document.createElement("div");
-                            e_a.id = `card-asis-${sub}-${ses}-${e_cols[proc]}`;
-                            e_asis_card = document.createElement("div");
-                            e_asis_card.classList = "card bg-dark";
-                            e_asis_card_head = document.createElement("a");
-                            e_asis_card_head.classList = "card-header collapse-indicator-chevron text-white show-hide";
-                            e_asis_card_head.id = `card-head-asis-${sub}-${ses}-${e_cols[proc]}`;
-                            e_asis_card_head.setAttribute("data-bs-toggle", "collapse");
-                            e_asis_card_head.setAttribute("aria-expanded", "false");
-                            e_asis_card_head.setAttribute("aria-controls", `card-content-asis-${sub}-${ses}-${e_cols[proc]}` );
-                            e_asis_card_head.href = `#card-content-asis-${sub}-${ses}-${e_cols[proc]}`;
-                            e_asis_card_head.innerHTML = val.substring(0, 19);
-                            e_asis_card.appendChild(e_asis_card_head);
-                            e_asis_card_collapse = document.createElement("div");
-                            e_asis_card_collapse.classList = "collapse text-white";
-                            e_asis_card_collapse.id = `card-content-asis-${sub}-${ses}-${e_cols[proc]}`;
-                            e_asis_card_collapse.setAttribute("aria-labelledby", `card-head-asis-${sub}-${ses}-${e_cols[proc]}`);
-                            e_asis_card_collapse.setAttribute("data-bs-parent", `card-asis-${sub}-${ses}-${e_cols[proc]}`);
-                            e_asis_card.appendChild(e_asis_card_collapse);
-                            e_asis_card_body = document.createElement("div");
-                            e_asis_card_body.classList = "card-body";
-                            e_asis_card_body.innerHTML = val.substring(20);
-                            e_asis_card_collapse.appendChild(e_asis_card_body);
-                            e_a.appendChild(e_asis_card);
-                        }else{
-                            e_a = document.createElement("p");
-                            e_a.innerHTML = val;
+                        e_a = document.createElement("p");
+                        e_a.classList = "text-asis";
+                        e_a.width = "150px";
+                        e_a.innerHTML = val;
+                        if(val.length > 20 ){
+                            e_a.classList.add("text-truncate");
+                            e_a.classList.add("truncate");
                         }
                         e_td.appendChild(e_a);
                         n_ok = n_ok + 1;
@@ -159,12 +138,16 @@ async function get_data() {
             buttons: [ 'copy', 'print', 'colvis' ],
             scrollY:        "65vh",
             scrollX:        true,
-            fixedColumns:   {left: 2},
-            responsive: true
+            fixedColumns:   {left: 2}
         });
         $("td").click(function(event){
-            if(!$(event.target).hasClass('show-hide')) {
+            console.log($(event.target))
+            if(!$(event.target).hasClass('truncate')) {
                 select_row(event.target.parentElement.id);
+            }else if($(event.target).hasClass('text-truncate')){
+                $(event.target).removeClass('text-truncate')
+            }else if(!$(event.target).hasClass('text-truncate')){
+                $(event.target).addClass('text-truncate')
             }
         });
     })
