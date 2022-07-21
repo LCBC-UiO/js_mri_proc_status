@@ -17,7 +17,7 @@ prepare_offline:
 		make download && \
 		cd .. && \
 		zip -rm $(ZIPFILE) $(TMPDIR)
-	@echo zip folder made: $(dir $(TMPDIR))$(ZIPFILE)
+	@echo zip folder made: $(TMPDIR)/$(ZIPFILE)
 	
 # ------------------------------------------------------------------------------
 
