@@ -140,16 +140,6 @@ async function get_data() {
             scrollX:        true,
             fixedColumns:   {left: 2}
         });
-        $("td").click(function(event){
-            console.log($(event.target))
-            if(!$(event.target).hasClass('truncate')) {
-                select_row(event.target.parentElement.id);
-            }else if($(event.target).hasClass('text-truncate')){
-                $(event.target).removeClass('text-truncate')
-            }else if(!$(event.target).hasClass('text-truncate')){
-                $(event.target).addClass('text-truncate')
-            }
-        });
     })
 
 };
@@ -612,6 +602,16 @@ $('body :not(script)').contents().filter(function() {
   });
 
 
+$("#tsv").on("click", "td", function(event){
+    console.log($(event.target))
+    if(!$(event.target).hasClass('truncate')) {
+        select_row(event.target.parentElement.id);
+    }else if($(event.target).hasClass('text-truncate')){
+        $(event.target).removeClass('text-truncate')
+    }else if(!$(event.target).hasClass('text-truncate')){
+        $(event.target).addClass('text-truncate')
+    }
+});
 
 // Start the whole thing!
 get_process();
