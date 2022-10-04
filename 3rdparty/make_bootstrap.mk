@@ -9,7 +9,12 @@ bsicons := \
 	question-circle-fill \
 	arrow-repeat \
 	x-circle-fill \
-	check-circle-fill
+	check-circle-fill \
+	dash-circle-fill \
+	bi-1-circle-fill \
+	bi-2-circle-fill \
+	bi-3-circle-fill \
+	bi-4-circle-fill 
 
 bssrcs := \
 	https://github.com/twbs/bootstrap/releases/download/v${bsversion}/bootstrap-${bsversion}-dist.zip \
