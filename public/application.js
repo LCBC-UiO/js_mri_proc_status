@@ -12,11 +12,11 @@ async function get_moddate(){
 }
 
 async function get_data() {
-    const r_data = await fetch(`./cgi/get_data.cgi`);
+    const r_data = await fetch(`./cgi/get_status.cgi`);
     r_data_j = await r_data.json();
     const r_process = await fetch(`./cgi/get_process.cgi`);
     r_process_j = await r_process.json();
-    e_cols = Object.keys(r_process_j).concat("n_ok");
+    e_cols = Object.keys(r_process_j);
     let e_table = document.getElementById("tsv");
     var e_body = document.createElement("tbody");
     e_table.appendChild(e_body);
@@ -38,7 +38,9 @@ async function get_data() {
             e_ses.classList = "sticky-left-col2";
             e_ses.setAttribute("width", "100px");
             e_tr.appendChild(e_ses);
-            n_ok = 1;
+            getstr = `proj=${r_data_j[sub][ses]["project_id"]}&wave=${r_data_j[sub][ses]["wave_code"]}`;
+            const r_proto= await fetch(`./cgi/get_protocol.cgi?out=single&${getstr}`);
+            r_proto_j = await r_proto.json();
             for(var proc in e_cols){
                 e_td = document.createElement("td");
                 e_td.classList = `${sub}_${ses} ${e_cols[proc]} text-center m-0`;
@@ -51,31 +53,22 @@ async function get_data() {
                 e_i.setAttribute("font-size", "2em");
                 val = r_data_j[sub][ses][e_cols[proc]];
                 opts = Object.values(r_process_j)[proc];
-                if(e_cols[proc] == "n_ok"){
-                    val = n_ok
-                    opts = "numeric"
-                }
-                if(typeof opts !== "string" ){
-                    vars = opts;
-                    opts = "custom"
-                }
                 switch(opts){
                     case "icons": 
                         switch(val) {
-                            case "yes":
+                            case "ok":
                                 e_i.classList.add("bi-check-circle-fill");
                                 e_i.classList.add(val);
                                 e_td.classList.add(val);
                                 e_p.innerHTML = 1;
-                                n_ok = n_ok + 1;
                                 break;
-                            case "no":
+                            case "fail":
                                 e_i.classList.add("bi-x-circle-fill");
                                 e_i.classList.add(val);
                                 e_td.classList.add(val);
                                 e_p.innerHTML = 3;
                                 break;
-                            case "running":
+                            case "rerun":
                                 e_i.classList.add("bi-arrow-repeat");
                                 e_i.classList.add(val);
                                 e_td.classList.add(val); 
@@ -92,23 +85,56 @@ async function get_data() {
                     case "numeric":
                         e_num = document.createElement("p");
                         e_num.classList = "rounded-circle text-black w-75 m-2";
-                        if(typeof val == "undefined" || val == "NA"){
+                        if(typeof val == "undefined" || val == "NA" || val == "unknown"){
                             e_num.classList.add("bg-secondary");
-                            val = "NA"
+                            e_i.classList.add("bi-question-circle-fill");
+                            e_i.classList.add("na");
+                            e_td.appendChild(e_i);
                         }else{
                             e_num.classList.add("bg-light");
+                            e_td.classList.add(val); 
+                            e_num.innerHTML = val;
+                        }
+                        e_p.innerHTML = val;
+                        e_td.appendChild(e_num);
+                        break;
+                    case "sum":
+                        console.log(e_cols[proc])
+                        var sum = [];
+                        Object.values(r_proto_j).forEach(function(key) {
+                            if (key.includes(e_cols[proc]) & !key.includes("comment")) {
+                                sum.push(1);
+                            }
+                        });
+                        max = sum.reduce((x, a) => x + a, 0);
+                        e_num = document.createElement("p");
+                        if(max == 0){
+                            console.log(max)
+                            e_num.classList.add("bg-secondary");
+                            e_i.classList.add("bi-dash-circle-fill");
+                            e_i.classList.add("na");
+                            e_td.appendChild(e_i);
+                        }else if(typeof val == "undefined" || val == "NA" || val == "unknown"){
+                            e_num.classList.add("bg-secondary");
+                            val = `?`
+                        }else{
+                            e_num.classList = "rounded-circle text-black w-75 m-2 ";
+                            e_num.innerHTML = `${val}/${max}`;
+                            if(val == max){
+                                e_num.classList.add("bg-ok")
+                            }else{
+                                e_num.classList.add("bg-light") 
+                            }
                         }
                         e_td.classList.add(val); 
-                        e_num.innerHTML = val;
-                        e_p.innerHTML = val;
-                        n_ok = n_ok + 1;
+                        e_p.innerHTML = Math.round((val / max) * 100);
                         e_td.appendChild(e_num);
                         break;
                     case "custom":
                     case "asis":
                         e_td.classList.add(encodeURI(val));
-                        if(typeof val == "undefined"){
-                            val = ""
+                        if(typeof val == "undefined" | val == "unknown"){
+                            val = "?"
                         }
                         e_a = document.createElement("p");
                         e_a.classList = "text-asis";
@@ -119,7 +145,6 @@ async function get_data() {
                             e_a.classList.add("truncate");
                         }
                         e_td.appendChild(e_a);
-                        n_ok = n_ok + 1;
                         break;
                     }
                 e_td.appendChild(e_p);     
@@ -144,16 +169,20 @@ async function get_data() {
 
 };
 
-async function get_process() {
+async function get_tasks(){
+    const r_tasks = await fetch(`./cgi/get_tasks.cgi`);
+    r_tasks_j = await r_tasks.json();
+}
+get_tasks();
+
+async function init_table() {
     const r_process = await fetch(`./cgi/get_process.cgi`);
     r_process_j = await r_process.json();
     let e_table = document.getElementById("tsv");
     var e_head = document.createElement("thead");
     e_head.classList = "thead-dark ";
     var e_thead_tr = document.createElement("tr");
-    let e_cols = ['subject_id', 'session'];
-    e_cols = e_cols.concat( Object.keys(r_process_j));
-    e_cols = e_cols.concat("n_ok");
+    let e_cols = ["subject_id", "session"].concat(Object.keys(r_process_j));
     for(var i in e_cols){
         var e_thead_tr_th = document.createElement("th");
         e_thead_tr_th.setAttribute("scope", "col");
@@ -214,7 +243,6 @@ function save_changes(){
     sub=`sub=${subses[0]}`;
     ses=`ses=${subses[1]}`;
     let getstr = `./cgi/update_data.cgi?=${sub}&${ses}&${sel_vals.join('&')}`;
-    console.log(getstr)
     fetch(getstr).then(r =>{
         mod_body = document.createElement("div");
         mod_body.classList = `modal-body alert`;
@@ -308,7 +336,7 @@ async function select_row(text) {
                 e_input_sel.classList = "custom-select border-secondary w-50 proc-select";
                 e_input_sel.id = col;
                 e_input.appendChild(e_input_sel);
-                opts = ["unknown", "yes", "no", "running"];
+                opts = ["unknown", "ok", "fail", "rerun"];
                 for(opt in opts){
                     e_input_op = document.createElement("option");
                     e_input_op.value = opts[opt];
@@ -614,7 +642,7 @@ $("#tsv").on("click", "td", function(event){
 });
 
 // Start the whole thing!
-get_process();
+init_table();
 get_data();
 get_moddate();
 
