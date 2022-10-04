@@ -3,78 +3,67 @@
     "ses-01Avanto": {
       "project_id": "MemP",
       "wave_code": 1,
-      "raw_to_sorted": "yes",
-      "sorted_to_bids": "yes",
-      "t1_rating": "5",
-      "freesurfer_run": "yes",
-      "mriqc_run": "yes",
-      "fmriprep_run": "yes",
-      "tedana_run": "running",
-      "fmriprep_ok": "yes",
-      "tedana_ok": "yes",
+      "sorted": "ok",
+      "bids": "ok",
+      "t1_rating": "4",
+      "anat_fs_recon": "ok",
+      "anat_mriqc": "ok",
+      "func_fmriprep": "ok",
+      "func_tedana": "ok",
       "comments": "issues with t2* acquisition.",
       "custom_options": "irregular"
     },
     "ses-02Avanto": {
       "project_id": "MemP",
       "wave_code": 2,
-      "raw_to_sorted": "yes",
-      "sorted_to_bids": "running",
+      "sorted": "ok",
+      "bids": "rerun",
       "t1_rating": "1",
-      "freesurfer_run": "yes",
-      "mriqc_run": "yes",
-      "fmriprep_run": "yes",
-      "tedana_run": "yes",
-      "fmriprep_ok": "yes",
+      "anat_fs_recon": "ok",
+      "anat_mriqc": "ok",
+      "func_fmriprep": "ok",
       "comments": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       "custom_options": "irregular"
     },
     "ses-02Skyra": {
       "project_id": "MemP",
       "wave_code": 2,
-      "raw_to_sorted": "running",
-      "sorted_to_bids": "yes",
-      "t1_rating": "6",
-      "freesurfer_run": "yes",
-      "mriqc_run": "yes",
-      "fmriprep_run": "yes",
-      "tedana_run": "yes",
-      "fmriprep_ok": "running",
-      "tedana_ok": "yes",
-      "comments": "dwtwe",
-      "custom_options": "irregular"
+      "sorted": "rerun",
+      "bids": "ok",
+      "t1_rating": "2",
+      "anat_fs_recon": "ok",
+      "anat_mriqc": "ok",
+      "func_fmriprep": "ok",
+      "func_tedana": "ok",
+      "comments": "dwtwe"
     }
   },
   "sub-0156": {
     "ses-01Avanto": {
       "project_id": "MemC",
       "wave_code": 1,
-      "raw_to_sorted": "running",
-      "sorted_to_bids": "yes",
-      "freesurfer_run": "yes",
-      "mriqc_run": "no",
-      "fmriprep_run": "yes",
-      "tedana_run": "yes",
-      "fmriprep_ok": "yes"
+      "sorted": "rerun",
+      "bids": "ok",
+      "anat_fs_recon": "ok",
+      "anat_mriqc": "fail",
+      "func_fmriprep": "ok"
     },
     "ses-02Avanto": {
       "project_id": "MemC",
       "wave_code": 2,
-      "raw_to_sorted": "yes",
-      "sorted_to_bids": "yes",
-      "freesurfer_run": "yes",
-      "mriqc_run": "no",
-      "fmriprep_run": "yes",
-      "tedana_run": "yes",
-      "fmriprep_ok": "yes",
-      "tedana_ok": "no",
-      "custom_options": "irregular"
+      "sorted": "ok",
+      "bids": "ok",
+      "anat_fs_recon": "ok",
+      "anat_mriqc": "fail",
+      "func_fmriprep": "ok",
+      "func_tedana": "fail"
     }
   },
   "sub-1700158": {
     "ses-01Avanto": {
-      "raw_to_sorted": "yes",
-      "sorted_to_bids": "no",
+      "sorted": "ok",
+      "bids": "fail",
+      "anat_fs_recon": "ok",
       "custom_options": "irregular"
     }
   },
@@ -82,7 +71,7 @@
     "ses-26": {
       "project_id": "S2C",
       "wave_code": 1,
-      "raw_to_sorted": "yes"
+      "sorted": "ok"
     }
   }
 }
