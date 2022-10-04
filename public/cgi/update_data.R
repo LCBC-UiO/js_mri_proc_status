@@ -60,7 +60,7 @@ if(any(!c(exists("sub"), exists("ses")))){
         ctype <- types[names(types) == key]
         val_ok <- FALSE
         if(ctype == "icons"){
-            val_ok <- value %in% c("no", "yes", "running")
+            val_ok <- value %in% c("fail", "ok", "rerun")
         }else if(ctype == "custom array"){
             val_ok <- value %in% proc[[key]]
         }else if(ctype == "numeric"){
