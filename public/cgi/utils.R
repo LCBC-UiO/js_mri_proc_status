@@ -2,14 +2,17 @@ tojson <- function(data){
     jsonlite::toJSON(data, pretty = TRUE, auto_unbox = TRUE)
 }
 
-calc_status <- function(data, sub, ses, type){
+calc_status <- function(data, sub, ses, type, status, sums){
     sub <- data[[sprintf("sub-%s", sub)]]
     ses <- sub[[sprintf("ses-%s", ses)]]
     tmp <- ses[grep(type, names(ses))]
     tmp <- tmp[grep("comment", names(tmp), invert = TRUE)]
     if(length(tmp) == 0) return("unknown")
     if(!type %in% sums) return(unlist(tmp))
-    sum(grepl("ok", unlist(tmp)))
+    names(status) <- status
+    k <- lapply(status, function(x){ sum(grepl(x, unlist(tmp)))})
+    names(k) <- status
+    k
 }
 
 get_args <- function(){

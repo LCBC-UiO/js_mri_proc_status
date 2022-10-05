@@ -6,12 +6,16 @@ data <- jsonlite::read_json(file.path(datadir, "data.json"))
 process <- jsonlite::read_json(file.path(datadir, "process.json"))
 types <- names(process)
 sums <- names(process[process == "sum"])
-
 args <- get_args()
-
 output <- "json"
-if("out" %in% names(args)){
-    output <- match.arg(args[["out"]], c("json", "table"))
+idx <- grepl("output", names(args))
+if(all(length(args) > 0, any(idx))){
+    output <- match.arg(args[[which(idx)]], c("json", "table"))
+}
+stat <- c("ok", "fail", "rerun")
+idx <- which(names(args) %in% "status")
+if(length(idx) > 0){
+    stat <- sapply(idx, function(x) match.arg(args[[x]], stat, several.ok = TRUE))
 }
 
 sub <- gsub("sub-", "", args["sub"]) #making sure prefix is not present
@@ -41,7 +45,9 @@ if(run_all){
                 calc_status(data = data,
                             sub = subject,
                             ses = session,
-                            type = x)
+                            type = x,
+                            status = stat,
+                            sums = sums)
             })
             names(checks) <- keys
             sub[[sprintf("ses-%s", session)]] <- checks
@@ -57,29 +63,37 @@ if(run_all){
             calc_status(data = data,
                         sub = sub,
                         ses = session,
-                        type = x)
+                        type = x,
+                        status = stat,
+                        sums = sums)
         })
         names(checks) <- keys
         tmp[[sprintf("ses-%s", session)]] <- checks
     }
     out <- list(tmp)
     names(out) <- sprintf("sub-%s", sub)
-}else{
-    status <- 201
+    status <- 200
 }
 
 if(output == "table"){
-    tout <- lapply(names(out), function(x){
-        m <- matrix(unlist(out[[x]]), ncol = length(keys), byrow = TRUE)
-        d <- as.data.frame(m)
-        names(d) <- keys
-        cbind(
-            sub = x,
-            ses = rownames(cbind(out[[x]])),
-            d
-        )
+    tout <- lapply(1:length(out), function(x){
+        tmp <- lapply(out[[x]], function(y) 
+                    lapply(y, function(j) 
+                        if(is.list(j)){ as.character(j) }else{ j }
+                    )
+                )
+        tmp <- lapply(1:length(tmp), function(y){
+            cbind(ses = names(tmp)[y],
+                  status = stat, 
+                  do.call(cbind, tmp[[y]]))
+        })
+        cbind(sub = names(out)[x],
+              do.call(rbind, tmp))
     })
     tout <- do.call("rbind", tout)
+    tout <- as.data.frame(tout, row.names = FALSE)
+    tout <- tout[order(tout$sub, tout$ses),]
+
     tout <- c(
         paste0(names(tout), collapse = "\t"),
         apply(tout, 1, function(x) paste0(x, collapse = "\t"))

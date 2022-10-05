@@ -16,6 +16,8 @@ async function get_data() {
     r_data_j = await r_data.json();
     const r_process = await fetch(`./cgi/get_process.cgi`);
     r_process_j = await r_process.json();
+    const r_proto= await fetch(`./cgi/get_protocol.cgi`);
+    r_proto_j = await r_proto.json();
     e_cols = Object.keys(r_process_j);
     let e_table = document.getElementById("tsv");
     var e_body = document.createElement("tbody");
@@ -38,9 +40,11 @@ async function get_data() {
             e_ses.classList = "sticky-left-col2";
             e_ses.setAttribute("width", "100px");
             e_tr.appendChild(e_ses);
-            getstr = `proj=${r_data_j[sub][ses]["project_id"]}&wave=${r_data_j[sub][ses]["wave_code"]}`;
-            const r_proto= await fetch(`./cgi/get_protocol.cgi?out=single&${getstr}`);
-            r_proto_j = await r_proto.json();
+            proj = r_data_j[sub][ses]["project_id"];
+            wave = r_data_j[sub][ses]["wave_code"];
+            if(proj !== "unknown" | wave !== "unknown"){
+                proto = r_proto_j[proj][wave];
+            }
             for(var proc in e_cols){
                 e_td = document.createElement("td");
                 e_td.classList = `${sub}_${ses} ${e_cols[proc]} text-center m-0`;
@@ -58,19 +62,19 @@ async function get_data() {
                         switch(val) {
                             case "ok":
                                 e_i.classList.add("bi-check-circle-fill");
-                                e_i.classList.add(val);
+                                e_i.classList.add("ok");
                                 e_td.classList.add(val);
                                 e_p.innerHTML = 1;
                                 break;
                             case "fail":
                                 e_i.classList.add("bi-x-circle-fill");
-                                e_i.classList.add(val);
+                                e_i.classList.add("fail");
                                 e_td.classList.add(val);
                                 e_p.innerHTML = 3;
                                 break;
                             case "rerun":
                                 e_i.classList.add("bi-arrow-repeat");
-                                e_i.classList.add(val);
+                                e_i.classList.add("rerun");
                                 e_td.classList.add(val); 
                                 e_p.innerHTML = 2;
                                 break;
