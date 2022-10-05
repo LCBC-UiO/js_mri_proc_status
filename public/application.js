@@ -24,11 +24,16 @@ async function get_data() {
     e_table.appendChild(e_body);
     for(var sub in r_data_j){
         for( var ses in r_data_j[sub]){
+            proj = r_data_j[sub][ses]["project_id"];
+            wave = r_data_j[sub][ses]["wave_code"];
+            if(proj !== "unknown" | wave !== "unknown"){
+                proto = r_proto_j[proj][wave];
+            }
             e_tr = document.createElement("tr");
             e_tr.classList = "clickable-row";
-            e_tr.id = `${sub}_${ses}`;
+            e_tr.id = `${sub}_${ses}_${proj}_${wave}`;
             e_tr.sub = `${sub}_${ses}`;
-            //e_tr.setAttribute("onclick", `select_row('${sub}_${ses}')`);
+            e_tr.setAttribute("onclick", `select_row('${sub}_${ses}_${proj}_${wave}')`);
             e_body.appendChild(e_tr);
             e_sub = document.createElement("td");
             e_sub.innerHTML = sub;
@@ -40,11 +45,7 @@ async function get_data() {
             e_ses.classList = "sticky-left-col2";
             e_ses.setAttribute("width", "100px");
             e_tr.appendChild(e_ses);
-            proj = r_data_j[sub][ses]["project_id"];
-            wave = r_data_j[sub][ses]["wave_code"];
-            if(proj !== "unknown" | wave !== "unknown"){
-                proto = r_proto_j[proj][wave];
-            }
+
             for(var proc in e_cols){
                 e_td = document.createElement("td");
                 e_td.classList = `${sub}_${ses} ${e_cols[proc]} text-center m-0`;
@@ -128,7 +129,6 @@ async function get_data() {
                         }else if(val_status["ok"] == max){ // all completed
                             disp_type = "ok";
                         }
-                        console.log(disp_type)
                         switch(disp_type){
                             case "na":
                                 e_num.classList.add("bg-secondary");
@@ -189,7 +189,6 @@ async function get_data() {
 
     $(document).ready(function () {
         $('#tsv').DataTable({
-            order:[[e_cols.length+1,'asc']],
             lengthMenu: [
                 [50, 100, 500, 1000, -1], // values
                 [50, 100, 500, '1k', 'All'] // labels
@@ -343,8 +342,10 @@ async function select_row(text) {
     n = '';
     mod_body = document.createElement("div");
     mod_body.classList = `modal-body alert`;
-    const r_process = await fetch(`./cgi/get_process.cgi`);
-    r_process_j = await r_process.json();
+    r_tasks = await(await fetch( `./cgi/get_tasks.cgi`)).json();
+    getstr = `./cgi/get_protocol.cgi?proj=${tsplit[2]}&wave=${tsplit[3]}&out=single`
+    const r_process_j = await( await fetch(getstr)).json();
+    r_data = await( await fetch(`./cgi/get_data.cgi?sub=${tsplit[0]}&ses=${tsplit[1]}&out=single`)).json();
     e_row = document.getElementsByClassName(text);
     var arr = [].slice.call(e_row);
     for(col in r_process_j){
@@ -362,34 +363,48 @@ async function select_row(text) {
         e_input_pl = document.createElement("label");
         e_input_pl.classList = "input-group-text v-5rem";
         e_input_pl.setAttribute("for", col);
-        e_input_pl.innerHTML = col.replaceAll("_", " ");
+        e_input_pl.innerHTML = r_process_j[col].replaceAll("_", " ");
         e_input_p.appendChild(e_input_pl);
-        switch(r_process_j[col]){
+        task = r_tasks[r_process_j[col]]
+        val = r_data[r_process_j[col]]
+        switch(task["value"]){
             case "icons":
                 e_input_sel = document.createElement("select");
                 e_input_sel.classList = "custom-select border-secondary w-50 proc-select";
-                e_input_sel.id = col;
+                e_input_sel.id = r_process_j[col];
                 e_input.appendChild(e_input_sel);
                 opts = ["unknown", "ok", "fail", "rerun"];
                 for(opt in opts){
                     e_input_op = document.createElement("option");
                     e_input_op.value = opts[opt];
                     e_input_op.innerHTML = opts[opt];
-                    if(arr.length !== 0 & opts[opt] == val){
+                    if( opts[opt] == val){
                         e_input_op.setAttribute("selected", true)
                     }
+                    e_input_pl.classList.add(`bg-${val}`)
                     e_input_sel.appendChild(e_input_op);
                 }
                 break;
             case "numeric":
-            case "asis":
-                if(arr.length === 0 || typeof val == "undefined" || val == "undefined" || val == "NA"){
+                if(typeof val == "undefined" || val == "undefined" || val == "NA"){
                     val = ""
                 }
+                console.log(val)
                 e_input_input = document.createElement("input");
-                e_input_input.setAttribute("type", "text");
                 e_input_input.classList = "form-control proc-select";
-                e_input_input.id = col;
+                e_input_input.id = r_process_j[col];
+                e_input_input.innerHTML = val;
+                e_input_input.value = val;
+                e_input.appendChild(e_input_input);
+                break;
+            case "asis":
+                if(typeof val == "undefined" || val == "undefined" || val == "NA"){
+                    val = ""
+                }
+                e_input_input = document.createElement("textarea");
+                e_input_input.classList = "form-control proc-select";
+                e_input_input.setAttribute("rows", 1);
+                e_input_input.id = r_process_j[col];
                 e_input_input.innerHTML = decodeURI(val);
                 e_input_input.value = decodeURI(val);
                 e_input.appendChild(e_input_input);
@@ -397,14 +412,14 @@ async function select_row(text) {
             default:
                 e_input_sel = document.createElement("select");
                 e_input_sel.classList = "custom-select border-secondary w-50 proc-select";
-                e_input_sel.id = col;
+                e_input_sel.id = r_process_j[col];
                 e_input.appendChild(e_input_sel);
                 opts = ["unknown"].concat(r_process_j[col]);
                 for(opt in opts){
                     e_input_op = document.createElement("option");
                     e_input_op.value = opts[opt];
                     e_input_op.innerHTML = opts[opt];
-                    if(arr.length !== 0 & opts[opt] == val){
+                    if(opts[opt] == val){
                         e_input_op.setAttribute("selected", true)
                     }
                     e_input_sel.appendChild(e_input_op);
@@ -412,6 +427,20 @@ async function select_row(text) {
                 break;
         }
         mod_body.appendChild(e_input);
+        if(task["comments"] == "yes"){
+            val = r_data[`${r_process_j[col]}_comments`]
+            if(arr.length === 0 || typeof val == "undefined" || val == "undefined" || val == "NA"){
+                val = ""
+            }
+            e_input_input = document.createElement("textarea");
+            e_input_input.setAttribute("placeholder", "Add comments here");
+            e_input_input.classList = "form-control proc-select";
+            e_input_input.id = `${r_process_j[col]}_comments`;
+            e_input_input.innerHTML = decodeURI(val);
+            e_input_input.value = decodeURI(val);
+            e_input.appendChild(e_input_input);
+            mod_body.appendChild(e_input);
+        }
     };
     mod_foot = document.createElement("div");
     mod_foot.classList = "d-flex justify-content-between modal-footer";
@@ -662,18 +691,6 @@ $('body :not(script)').contents().filter(function() {
   }).replaceWith(function() {
       return this.nodeValue.replace(/WEBSITEURL/g, window.location.origin);
   });
-
-
-$("#tsv").on("click", "td", function(event){
-    console.log($(event.target))
-    if(!$(event.target).hasClass('truncate')) {
-        select_row(event.target.parentElement.id);
-    }else if($(event.target).hasClass('text-truncate')){
-        $(event.target).removeClass('text-truncate')
-    }else if(!$(event.target).hasClass('text-truncate')){
-        $(event.target).addClass('text-truncate')
-    }
-});
 
 // Start the whole thing!
 init_table();

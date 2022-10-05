@@ -1,113 +1,237 @@
 {
     "NDev": {
         "1": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "2": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "3": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "3.5": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ]
     },
     "MemP": {
         "1": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
-            "anat_mriqc",
-            "anat_fs_recon_comment"
+            "anat_mriqc"
         ],
         "2": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "3": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "4": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "5": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ]
     },
     "NCP": {
         "1": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "2": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "3": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "4": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "5": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "6": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "6.5": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ]
     },
     "MoBa": {
         "1": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "2": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "3": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ]
     },
     "Loci": {
         "1": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "2": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "3": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ]
     },
     "MemC": {
         "1": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "2": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "3": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon",
             "anat_mriqc",
             "func_behav", 
@@ -119,10 +243,20 @@
     },
     "ACon": {
         "1": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
         "2": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc", 
             "func_behav", 
@@ -135,6 +269,11 @@
     },
     "S2C": {
         "1": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc", 
             "func_behav", 
@@ -144,6 +283,11 @@
             "func_hcsegmentation", 
             "func_comments"],
         "2": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon", 
             "anat_mriqc", 
             "func_behav",
@@ -154,6 +298,11 @@
             "func_comments"
         ],
         "3": [
+            "project_id",
+            "wave_code",
+            "sorted",
+            "bids",
+            "t1_rating",
             "anat_fs_recon",
             "anat_mriqc",
             "func_behav",

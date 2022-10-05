@@ -11,6 +11,13 @@ args <- setNames(
         sapply(args, function(x) strsplit(x, "=")[[1]][1])
         )
 args <- na.omit(args)
+subject <- gsub("sub-", "", args[["sub"]])
+sesssion <- gsub("ses-", "", args[["ses"]])
+
+output <- "json"
+if("out" %in% names(args)){
+    output <- match.arg(args[["out"]], c("json", "single"))
+}
 
 tojson <- function(data){
     jsonlite::toJSON(data, pretty = TRUE, auto_unbox = TRUE)
@@ -22,27 +29,37 @@ out <- ''
 if(length(args) == 0){
     out <- data
 }else if(all(c("sub", "ses", "key") %in% names(args))){
-    sub <- data[[sprintf("sub-%s", args["sub"])]]
-    ses <- sub[[sprintf("ses-%s", args["ses"])]]
+    sub <- data[[sprintf("sub-%s", subject)]]
+    ses <- sub[[sprintf("ses-%s", sesssion)]]
     keys <- lapply(match(args[["key"]], names(ses)), function(x) ses[[x]])
     names(keys) <- args[["key"]]
     out <- list(list(keys))
-    names(out[[1]]) <- sprintf("ses-%s", args["ses"])
-    names(out) <- sprintf("sub-%s", args["sub"])
+    names(out[[1]]) <- sprintf("ses-%s", sesssion)
+    names(out) <- sprintf("sub-%s", subject)
 }else if(all(c("sub", "ses") %in% names(args))){
-    sub <- data[[sprintf("sub-%s", args["sub"])]]
-    out <- list(sub[sprintf("ses-%s", args["ses"])])
-    names(out) <- sprintf("sub-%s", args["sub"])
+    sub <- data[[sprintf("sub-%s", subject)]]
+    out <- list(sub[sprintf("ses-%s", sesssion)])
+    names(out) <- sprintf("sub-%s", subject)
 }else if("sub" %in% names(args)){
-    out <- data[sprintf("sub-%s", args["sub"])]
+    out <- data[sprintf("sub-%s", subject)]
 }else{
     status <- 201
 }
 
-cat(
-    "Content-Type: application/json; charset=UTF-8\r",
-    sprintf("Status: %s\r", status),
-    sprintf("\r"),
-    tojson(out),
-    sep = "\n"
-)
+if(output == "single"){
+    cat(
+        "Content-Type: application/json; charset=UTF-8\r",
+        sprintf("Status: %s\r", status),
+        sprintf("\r"),
+        tojson(out[[1]][[1]]),
+        sep = "\n"
+    )
+}else{
+    cat(
+        "Content-Type: application/json; charset=UTF-8\r",
+        sprintf("Status: %s\r", status),
+        sprintf("\r"),
+        tojson(out),
+        sep = "\n"
+    )
+}
