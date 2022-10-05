@@ -21,10 +21,14 @@
       div.dataTables_wrapper div.dataTables_paginate ul.pagination .page-item.active .page-link:focus {
         background-color: #474f53;
       }
-      .yes { color: #63e1dc;}
-      .no { color: #ff8080;}
-      .running { color: #ffbb32;}
-      .unknown { color: #666666;}
+      .ok, .bi-3-circle-fill, .bi-4-circle-fill { color: #63e1dc; }
+      .bg-ok {background-color: #63e1dc;}
+      .fail, .bi-1-circle-fill, .bi-2-circle-fill{ color: #ff8080;}
+      .bg-fail {background-color: #ff8080;}
+      .rerun { color: #ffbb32;}
+      .bg-rerun {background-color: #ffbb32;}
+      .unknown, .na { color: #666666;}
+      .bg-unknown {background-color: #666666;}
       .hide-text { font-size: "1px";}
       .text-asis { width: 100px; }
       .truncate { cursor: pointer;}
@@ -87,9 +91,34 @@
       </div>
     </header>
 
-      <div class="tab-content container-fluid my-3">
+      <div class="tab-content">
         <div id="table-view" class="table-responsive tab-pane active text-center" role="tabpanel" aria-labelledby="table-tab">
-          <button class="btn btn-secondary" onclick="display_modal_new()">Add new entry</button>
+          <div class="container">
+            <div class="row m-3">
+            <!--   <div class="dropdown col-lg">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dd_proj" data-bs-toggle="dropdown" aria-expanded="false">
+                  Dropdown button
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dd_proj">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </div>
+              <div class="dropdown col-lg">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dd_wave" data-bs-toggle="dropdown" aria-expanded="false">
+                  Dropdown button
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dd_wave">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </div> -->
+              <div class="col-lg"><button class="btn btn-secondary" onclick="display_modal_new()">Add new entry</button></div>
+
+            </div>
+          </div>
           <table id="tsv" class="table table-striped table-sm table-dark table-hover  w-100">
             <caption id="lastmod"></caption>
           </table>
@@ -128,7 +157,7 @@ curl -i WEBSITEURL/cgi/get_process.cgi
 curl -G \
   -d "sub=022" \
   -d "ses=02Avanto" \
-  -d "key=[raw_to_sorted, sorted_to_bids]" \
+  -d "key=[sorted, bids]" \
   WEBSITEURL/cgi/get_data.cgi
                 </code></pre>
               </div>
@@ -156,7 +185,7 @@ curl -G \
 curl -i -G \
     -d 'id=sub-0022' \
     -d 'ses=ses-02Skyra' \
-    -d 'raw_to_sorted=running'  \
+    -d 'sorted=running'  \
     WEBSITEURL/cgi/update_data.cgi
               </code></pre>
             </div>
@@ -206,10 +235,10 @@ curl -i -G \
 {
   "sub-0022": {
     "ses-01Skyra": {
-      "raw_to_sorted": "yes",
-      "sorted_to_bids": "yes",
+      "sorted": "ok",
+      "bids": "ok",
       "t1_rating": 3,
-      "fs_recon_ok": "yes"
+      "fs_recon_ok": "ok"
     }
   }
 }
@@ -266,7 +295,7 @@ curl -i -G \
               <p>
                 The value of a new process may be either <code>numeric</code>, <code>icons</code>, <code>asis</code> 
                 (string variables, like comments), or a custom array of options (ex. <code>["regular", "iregular"]</code>).
-                All icon options have the same three valid entries: <code>["yes", "no", "running"]</code>, any other value 
+                All icon options have the same three valid entries: <code>["ok", "fail", "rerun"]</code>, any other value 
                 is displayed in the UI as <i class="bi bi-question-circle-fill unknown" font-size="2em"></i> i.e. (<code>unknown</code>).
               </p>
             </div>
@@ -299,7 +328,7 @@ curl -i -G \
             </div>
             <div class="col-sm">
               <code><pre>
-  ["raw_to_sorted", "t1_rating"]
+  ["sorted", "t1_rating"]
               </pre></code>
             </div>
         </div>
@@ -347,7 +376,7 @@ curl -i -G \
               <p>
                 The value of a new process may be either <code>numeric</code>, <code>icons</code>, <code>asis</code> 
                 (string variables, like comments), or a custom array of options (ex. <code>["regular", "iregular"]</code>).
-                All icon options have the same three valid entries: <code>["yes", "no", "running"]</code>, any other value 
+                All icon options have the same three valid entries: <code>["ok", "fail", "rerun"]</code>, any other value 
                 is displayed in the UI as <i class="bi bi-question-circle-fill unknown" font-size="2em"></i> i.e. (<code>unknown</code>).
               </p>
             </div>

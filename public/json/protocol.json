@@ -1,0 +1,167 @@
+{
+    "NDev": {
+        "1": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "2": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "3": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "3.5": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ]
+    },
+    "MemP": {
+        "1": [
+            "anat_fs_recon", 
+            "anat_mriqc",
+            "anat_fs_recon_comment"
+        ],
+        "2": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "3": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "4": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "5": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ]
+    },
+    "NCP": {
+        "1": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "2": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "3": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "4": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "5": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "6": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "6.5": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ]
+    },
+    "MoBa": {
+        "1": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "2": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "3": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ]
+    },
+    "Loci": {
+        "1": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "2": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "3": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ]
+    },
+    "MemC": {
+        "1": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "2": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "3": [
+            "anat_fs_recon",
+            "anat_mriqc",
+            "func_behav", 
+            "func_fmriprep",
+            "func_summary", 
+            "func_tedana", 
+            "func_comments"
+        ]
+    },
+    "ACon": {
+        "1": [
+            "anat_fs_recon", 
+            "anat_mriqc"
+        ],
+        "2": [
+            "anat_fs_recon", 
+            "anat_mriqc", 
+            "func_behav", 
+            "func_fmriprep",
+            "func_summary", 
+            "func_tedana", 
+            "func_comments",
+            "eeg_check"
+        ]
+    },
+    "S2C": {
+        "1": [
+            "anat_fs_recon", 
+            "anat_mriqc", 
+            "func_behav", 
+            "func_fmriprep",
+            "func_summary",
+            "func_tedana", 
+            "func_hcsegmentation", 
+            "func_comments"],
+        "2": [
+            "anat_fs_recon", 
+            "anat_mriqc", 
+            "func_behav",
+            "func_fmriprep",
+            "func_summary", 
+            "func_tedana", 
+            "func_hcsegmentation", 
+            "func_comments"
+        ],
+        "3": [
+            "anat_fs_recon",
+            "anat_mriqc",
+            "func_behav",
+            "func_fmriprep",
+            "func_summary",
+            "func_tedana",
+            "func_hcsegmentation",
+            "func_comments"
+        ]
+    }
+}

@@ -1,15 +1,12 @@
 {
-  "project_id": ["NDev", "MemP", "NCP", "MoBa", "Loci", "MemC", "ACon", "S2C"],
-  "wave_code": "numeric",
-  "raw_to_sorted": "icons",
-  "sorted_to_bids": "icons",
+  "project_id": "asis",
+  "wave_code": "asis",
+  "sorted": "icons",
+  "bids": "icons",
   "t1_rating": "numeric",
-  "freesurfer_run": "icons",
-  "mriqc_run": "icons",
-  "fmriprep_run": "icons",
-  "tedana_run": "icons",
-  "fmriprep_ok": "icons",
-  "tedana_ok": "icons",
-  "comments": "asis",
-  "custom_options": ["irregular", "regular"]
+  "anat": "sum",
+  "dwi": "sum",
+  "func": "sum",
+  "perf": "sum",
+  "eeg": "sum"
 }

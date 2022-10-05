@@ -1,0 +1,60 @@
+{
+    "sorted": {
+        "comments": "ok",
+        "value": "icons",
+        "url": null
+    },
+    "bids": {
+        "comments": "ok",
+        "value": "icons",
+        "url": null
+    },
+    "t1_rating": "numeric",
+    "anat_fs_recon": {
+        "comments": "ok",
+        "value": "icons",
+        "url": null
+    },
+    "anat_mriqc":  {
+        "comments": "ok",
+        "value": "icons",
+        "url": null
+    },
+    "func_fmriprep":  {
+        "comments": "ok",
+        "value": "icons",
+        "url": null
+    },
+    "func_tedana":  {
+        "comments": "ok",
+        "value": "icons",
+        "url": null
+    },
+    "func_comments": "asis",
+    "func_hcsegmentation": "icons", 
+    "func_summary":  {
+        "comments": "ok",
+        "value": "icons",
+        "url": null
+    },	
+    "func_behav":  {
+        "comments": "ok",
+        "value": "icons",
+        "url": null
+    },
+    "perf_check":  {
+        "comments": "ok",
+        "value": "icons",
+        "url": null
+    },
+    "dwi_check":  {
+        "comments": "ok",
+        "value": "icons",
+        "url": null
+    },
+    "eeg_check":  {
+        "comments": "ok",
+        "value": "icons",
+        "url": null
+    }
+}
