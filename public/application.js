@@ -103,35 +103,65 @@ async function get_data() {
                         e_td.appendChild(e_num);
                         break;
                     case "sum":
-                        console.log(e_cols[proc])
-                        var sum = [];
-                        Object.values(r_proto_j).forEach(function(key) {
-                            if (key.includes(e_cols[proc]) & !key.includes("comment")) {
-                                sum.push(1);
-                            }
-                        });
-                        max = sum.reduce((x, a) => x + a, 0);
-                        e_num = document.createElement("p");
-                        if(max == 0){
-                            console.log(max)
-                            e_num.classList.add("bg-secondary");
-                            e_i.classList.add("bi-dash-circle-fill");
-                            e_i.classList.add("na");
-                            e_td.appendChild(e_i);
-                        }else if(typeof val == "undefined" || val == "NA" || val == "unknown"){
-                            e_num.classList.add("bg-secondary");
-                            val = `?`
-                        }else{
-                            e_num.classList = "rounded-circle text-black w-75 m-2 ";
-                            e_num.innerHTML = `${val}/${max}`;
-                            if(val == max){
-                                e_num.classList.add("bg-ok")
-                            }else{
-                                e_num.classList.add("bg-light") 
-                            }
+                        var max = 0;
+                        if(proto != "unknown"){
+                            var sum = [];
+                            // find maximum steps for a category based on protocol
+                            Object.values(proto).forEach(function(key) {
+                                if (key.includes(e_cols[proc]) & !key.includes("comment")) {
+                                    sum.push(1);
+                                }
+                            });
+                            max = sum.reduce((x, a) => x + a, 0);
                         }
-                        e_td.classList.add(val); 
-                        e_p.innerHTML = Math.round((val / max) * 100);
+                        e_num = document.createElement("p");
+                        val_status = r_data_j[sub][ses][e_cols[proc]]
+                        var disp_type = "default";
+                        if(max == 0){ // not applicable for this protocol
+                            disp_type = "na";
+                        }else if(val_status["fail"] > 0){
+                            disp_type = "fail"
+                        }else if(val_status["rerun"] > 0){
+                            disp_type = "rerun"
+                        }else if(typeof val == "undefined" || val == "NA" || val == "unknown"){ //unknown value
+                            disp_type = "unknown";
+                        }else if(val_status["ok"] == max){ // all completed
+                            disp_type = "ok";
+                        }
+                        console.log(disp_type)
+                        switch(disp_type){
+                            case "na":
+                                e_num.classList.add("bg-secondary");
+                                e_i.classList.add("bi-dash-circle-fill");
+                                e_i.classList.add("na");
+                                e_td.appendChild(e_i);
+                                break;
+                            case "unknown":
+                                e_num.classList.add("bg-secondary");
+                                val = `?`;
+                                break;
+                            case "ok":
+                                e_i.classList.add("bi-check-circle-fill");
+                                e_i.classList.add("ok");
+                                e_td.appendChild(e_i);
+                                break;
+                            case "fail":
+                                e_i.classList.add("bi-x-circle-fill");
+                                e_i.classList.add("fail");
+                                e_td.appendChild(e_i);
+                                break;
+                            case "rerun":
+                                e_i.classList.add("bi-arrow-repeat");
+                                e_i.classList.add("rerun");
+                                e_td.appendChild(e_i);
+                                break;
+                            case "default":
+                                e_num.classList = "rounded-circle text-black w-75 m-2 bg-light";
+                                e_num.innerHTML = `${val_status["ok"]}/${max}`;
+                                break;
+                        }
+                        e_td.classList.add(val_status["ok"]); 
+                        e_p.innerHTML = Math.round((val_status["ok"] / max) * 100);
                         e_td.appendChild(e_num);
                         break;
                     case "custom":
