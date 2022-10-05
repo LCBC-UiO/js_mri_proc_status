@@ -276,6 +276,7 @@ function save_changes(){
     sub=`sub=${subses[0]}`;
     ses=`ses=${subses[1]}`;
     let getstr = `./cgi/update_data.cgi?=${sub}&${ses}&${sel_vals.join('&')}`;
+    console.log(getstr)
     fetch(getstr).then(r =>{
         mod_body = document.createElement("div");
         mod_body.classList = `modal-body alert`;
@@ -381,7 +382,7 @@ async function select_row(text) {
                     if( opts[opt] == val){
                         e_input_op.setAttribute("selected", true)
                     }
-                    e_input_pl.classList.add(`bg-${val}`)
+                    e_input_pl.classList.add(`bg-${val}`);
                     e_input_sel.appendChild(e_input_op);
                 }
                 break;
@@ -389,7 +390,6 @@ async function select_row(text) {
                 if(typeof val == "undefined" || val == "undefined" || val == "NA"){
                     val = ""
                 }
-                console.log(val)
                 e_input_input = document.createElement("input");
                 e_input_input.classList = "form-control proc-select";
                 e_input_input.id = r_process_j[col];
@@ -405,8 +405,7 @@ async function select_row(text) {
                 e_input_input.classList = "form-control proc-select";
                 e_input_input.setAttribute("rows", 1);
                 e_input_input.id = r_process_j[col];
-                e_input_input.innerHTML = decodeURI(val);
-                e_input_input.value = decodeURI(val);
+                e_input_input.value = val;
                 e_input.appendChild(e_input_input);
                 break;
             default:
@@ -429,15 +428,15 @@ async function select_row(text) {
         mod_body.appendChild(e_input);
         if(task["comments"] == "yes"){
             val = r_data[`${r_process_j[col]}_comments`]
-            if(arr.length === 0 || typeof val == "undefined" || val == "undefined" || val == "NA"){
+            console.log(val)
+            if(typeof val == "undefined" || val == "undefined" || val == "NA"){
                 val = ""
             }
             e_input_input = document.createElement("textarea");
             e_input_input.setAttribute("placeholder", "Add comments here");
             e_input_input.classList = "form-control proc-select";
             e_input_input.id = `${r_process_j[col]}_comments`;
-            e_input_input.innerHTML = decodeURI(val);
-            e_input_input.value = decodeURI(val);
+            e_input_input.value = val;
             e_input.appendChild(e_input_input);
             mod_body.appendChild(e_input);
         }

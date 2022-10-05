@@ -4,14 +4,12 @@
       "project_id": "MemP",
       "wave_code": 1,
       "sorted": "ok",
+      "sorted_comments": "changed incorrect id",
       "bids": "ok",
       "t1_rating": "4",
       "anat_fs_recon": "ok",
       "anat_mriqc": "ok",
-      "func_fmriprep": "ok",
-      "func_tedana": "ok",
-      "comments": "issues with t2* acquisition.",
-      "custom_options": "irregular"
+      "anat_mriqc_comments": "had to tweak xx parameter. Added more twaeks"
     },
     "ses-02Avanto": {
       "project_id": "MemP",
@@ -20,10 +18,7 @@
       "bids": "rerun",
       "t1_rating": "1",
       "anat_fs_recon": "ok",
-      "anat_mriqc": "ok",
-      "func_fmriprep": "ok",
-      "comments": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      "custom_options": "irregular"
+      "anat_mriqc": "ok"
     },
     "ses-02Skyra": {
       "project_id": "MemP",
@@ -32,10 +27,7 @@
       "bids": "ok",
       "t1_rating": "2",
       "anat_fs_recon": "ok",
-      "anat_mriqc": "ok",
-      "func_fmriprep": "ok",
-      "func_tedana": "ok",
-      "comments": "dwtwe"
+      "anat_mriqc": "ok"
     }
   },
   "sub-0156": {
@@ -45,8 +37,7 @@
       "sorted": "rerun",
       "bids": "ok",
       "anat_fs_recon": "ok",
-      "anat_mriqc": "fail",
-      "func_fmriprep": "ok"
+      "anat_mriqc": "fail"
     },
     "ses-02Avanto": {
       "project_id": "MemC",
@@ -54,17 +45,14 @@
       "sorted": "ok",
       "bids": "ok",
       "anat_fs_recon": "ok",
-      "anat_mriqc": "fail",
-      "func_fmriprep": "ok",
-      "func_tedana": "fail"
+      "anat_mriqc": "fail"
     }
   },
   "sub-1700158": {
     "ses-01Avanto": {
       "sorted": "ok",
       "bids": "fail",
-      "anat_fs_recon": "ok",
-      "custom_options": "irregular"
+      "anat_fs_recon": "ok"
     }
   },
   "sub-22": {
