@@ -12,12 +12,10 @@ async function get_moddate(){
 }
 
 async function get_data() {
-    const r_data = await fetch(`./cgi/get_status.cgi`);
-    r_data_j = await r_data.json();
-    const r_process = await fetch(`./cgi/get_process.cgi`);
-    r_process_j = await r_process.json();
-    const r_proto= await fetch(`./cgi/get_protocol.cgi`);
-    r_proto_j = await r_proto.json();
+    const r_data_j = await( await fetch(`./cgi/get_status.cgi`)).json();
+    const r_process_j = await( await fetch(`./cgi/get_process.cgi`)).json();
+    const r_proto_j = await( await fetch(`./cgi/get_protocol.cgi`)).json();
+    const r_tasks_j = await( await fetch(`./cgi/get_tasks.cgi`)).json();
     e_cols = Object.keys(r_process_j);
     let e_table = document.getElementById("tsv");
     var e_body = document.createElement("tbody");
@@ -164,7 +162,7 @@ async function get_data() {
                         e_p.innerHTML = Math.round((val_status["ok"] / max) * 100);
                         e_td.appendChild(e_num);
                         break;
-                    case "custom":
+                    case "array":
                     case "asis":
                         e_td.classList.add(encodeURI(val));
                         if(typeof val == "undefined" | val == "unknown"){
@@ -368,13 +366,19 @@ async function select_row(text) {
         e_input_p.appendChild(e_input_pl);
         task = r_tasks[r_process_j[col]]
         val = r_data[r_process_j[col]]
-        switch(task["value"]){
+        task_type = task["value"]
+        opts = ["unknown", "ok", "fail", "rerun"];
+        if(Array.isArray(task_type)){
+            task_type = "array"
+            opts = task["value"];
+        }
+        switch(task_type){
             case "icons":
+            case "array":
                 e_input_sel = document.createElement("select");
                 e_input_sel.classList = "custom-select border-secondary w-50 proc-select";
                 e_input_sel.id = r_process_j[col];
                 e_input.appendChild(e_input_sel);
-                opts = ["unknown", "ok", "fail", "rerun"];
                 for(opt in opts){
                     e_input_op = document.createElement("option");
                     e_input_op.value = opts[opt];
@@ -428,7 +432,6 @@ async function select_row(text) {
         mod_body.appendChild(e_input);
         if(task["comments"] == "yes"){
             val = r_data[`${r_process_j[col]}_comments`]
-            console.log(val)
             if(typeof val == "undefined" || val == "undefined" || val == "NA"){
                 val = ""
             }

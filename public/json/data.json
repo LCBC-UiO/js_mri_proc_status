@@ -45,7 +45,7 @@
       "sorted": "ok",
       "bids": "ok",
       "anat_fs_recon": "ok",
-      "anat_mriqc": "fail"
+      "anat_mriqc": "rerun"
     }
   },
   "sub-1700158": {
