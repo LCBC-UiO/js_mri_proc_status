@@ -1,59 +1,67 @@
 {
+    "project_id": {
+        "value": "asis"
+    },
+    "wave_code": {
+        "value": "numeric"
+    },
     "sorted": {
-        "comments": "ok",
+        "comments": "yes",
         "value": "icons",
         "url": null
     },
     "bids": {
-        "comments": "ok",
+        "comments": "yes",
         "value": "icons",
         "url": null
     },
-    "t1_rating": "numeric",
+    "t1_rating": {
+        "value": "numeric"
+    },
     "anat_fs_recon": {
-        "comments": "ok",
+        "comments": "yes",
         "value": "icons",
         "url": null
     },
     "anat_mriqc":  {
-        "comments": "ok",
+        "comments": "yes",
         "value": "icons",
         "url": null
     },
     "func_fmriprep":  {
-        "comments": "ok",
+        "comments": "yes",
         "value": "icons",
         "url": null
     },
     "func_tedana":  {
-        "comments": "ok",
+        "comments": "yes",
         "value": "icons",
         "url": null
     },
     "func_comments": "asis",
     "func_hcsegmentation": "icons", 
     "func_summary":  {
-        "comments": "ok",
+        "comments": "yes",
         "value": "icons",
         "url": null
     },	
     "func_behav":  {
-        "comments": "ok",
+        "comments": "yes",
         "value": "icons",
         "url": null
     },
     "perf_check":  {
-        "comments": "ok",
+        "comments": "yes",
         "value": "icons",
         "url": null
     },
     "dwi_check":  {
-        "comments": "ok",
+        "comments": "yes",
         "value": "icons",
         "url": null
     },
     "eeg_check":  {
-        "comments": "ok",
+        "comments": "yes",
         "value": "icons",
         "url": null
     }
