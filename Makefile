@@ -12,6 +12,8 @@ include config_default.txt
 
 PHONY: prepare_offline
 prepare_offline:
+	@echo working in: $(TMPDIR)/
+	rm -rf $(TMPDIR)
 	git clone $(BASEDIR) $(TMPDIR)/$(notdir $(BASEDIR))
 	cd $(TMPDIR)/$(notdir $(BASEDIR)) && \
 		make download && \

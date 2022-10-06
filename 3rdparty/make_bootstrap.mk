@@ -11,10 +11,7 @@ bsicons := \
 	x-circle-fill \
 	check-circle-fill \
 	dash-circle-fill \
-	bi-1-circle-fill \
-	bi-2-circle-fill \
-	bi-3-circle-fill \
-	bi-4-circle-fill 
+	123
 
 bssrcs := \
 	https://github.com/twbs/bootstrap/releases/download/v${bsversion}/bootstrap-${bsversion}-dist.zip \
@@ -37,7 +34,7 @@ $(bsdsts): download/%: #to get rid of "download" prefix - no prerequisites
 #	fetch correct url by maching the filename
 	@echo "download" $* "->" $(filter %$*, $(bssrcs)) "->" $@
 	wget $(filter %$*, $(bssrcs)) -O $@
-	if [[ $(suffix $*) == .zip ]]; then unzip -o download/$* -d download/; fi 
+	if [[ $(suffix $*) == .zip ]]; then unzip -q -o download/$* -d download/ ; fi 
 
 $(addsuffix dlclean, $(bsdsts)):
 	if [[ $(suffix $(subst dlclean, , $@)) == .zip ]]; then $(RM) -r $(subst .zip, , $(subst dlclean, , $@)) ; fi
