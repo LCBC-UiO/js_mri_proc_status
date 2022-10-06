@@ -1,26 +1,13 @@
 #!/usr/bin/env Rscript
+source("utils.R")
 
 datadir <- Sys.getenv("DATADIR")
+data <- jsonlite::read_json(file.path(datadir, "data.json"))
 
-args <- commandArgs(trailingOnly = TRUE)
-args <- gsub("^=", "", args)
-args <- unlist(strsplit(args, "\\&"))
-args <- setNames(
-        sapply(args, function(x) 
-                sapply(strsplit(x, "=")[[1]][2], strsplit, split = ",")),
-        gsub("^sub-|^ses-", "", 
-            sapply(args, function(x) strsplit(x, "=")[[1]][1]))
-        )
-args <- na.omit(args)
+args <- get_args()
 
-tojson <- function(data){
-    jsonlite::toJSON(data, pretty = TRUE, auto_unbox = TRUE)
-}
-
-data <- datao <- jsonlite::read_json(file.path(datadir, "data.json"))
 status <- 200
 msg <- "success"
-
 if(length(args) == 0){
     status <- 203
     msg <- "Deletion needs arguments for id, session (optional) and key (optional)."
@@ -44,7 +31,7 @@ if(length(args) == 0){
 }else if(all(c("sub", "ses") %in% names(args))){
     sub <- data[[sprintf("sub-%s", args["sub"])]]
     kidx <- !names(sub) %in% sprintf("ses-%s", args["ses"])
-    ses <- lapply(which(kidx), function(x) ses[[x]])
+    ses <- lapply(which(kidx), function(x) sub[[x]])
     names(ses) <- names(sub)[kidx]
     data[[sprintf("sub-%s", args["sub"])]] <- ses
     if(length(data[[sprintf("sub-%s", args["sub"])]]) == 0){

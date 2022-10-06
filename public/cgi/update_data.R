@@ -8,43 +8,56 @@ args <- setNames(
         sapply(args, function(x) strsplit(x, "=")[[1]][2]),
         sapply(args, function(x) strsplit(x, "=")[[1]][1])
 )
+args <- na.omit(args)
 
-for(key in c("sub", "ses")){
+for(key in c("sub", "ses", "project_id", "wave_code")){
     idx <- which(names(args) %in% key)
     if(length(idx) != 0){
-        assign(key, paste0(key, "-", gsub(paste0(key, "-"), "", args[idx])))
+        assign(key, gsub("sub-|ses-", "", args[idx]))
         args <- args[idx*-1]
     }
 }
-args <- na.omit(args)
 
-sort_data <- function(x){
+sort_data <- function(x, tasks){
     .name_order <- function(x) x[order(names(x))]
     x <- .name_order(x)
     x <- lapply(x, .name_order)
     lapply(x, function(y){
         lapply(y, function(p){
-            p[na.omit(match(names(proc), names(p)))]
+            p[na.omit(match(tasks, names(p)))]
         })
     })
 }
 
-proc <- jsonlite::read_json(file.path(datadir, "process.json"),
+proc <- jsonlite::read_json(file.path(datadir, "protocol.json"),
+    simplifyVector = TRUE)
+proc <- proc[[project_id]][[wave_code]]
+
+tasks <- jsonlite::read_json(file.path(datadir, "tasks.json"),
     simplifyVector = TRUE)
 types <- sapply(proc, function(x){
-   if(length(x) > 1)
-    return("custom array")
-   unname(x)
+   k <- tasks[[x]]$value
+    if(!is.null(tasks[[x]]$comments) && tasks[[x]]$comments == "yes"){
+        k <- c(k, setNames("asis", "comments"))
+    }
+   k
 })
+types <- unlist(types)
+names(types) <- gsub("\\.", "_", names(types))
+names(types) <- gsub("1$", "", names(types))
 data <- jsonlite::read_json(file.path(datadir, "data.json"))
-error_col <- names(args)[which(!names(args) %in% names(proc))]
+error_col <- names(args)[which(!names(args) %in% names(types))]
 if(any(!c(exists("sub"), exists("ses")))){
     out <- ""
-    msg <- "No sub or ses pair was provided for updating the data."
+    msg <- "No 'sub' or 'ses' pair was provided for updating the data."
+    status <- 205
+}else if(any(!c(exists("project_id"), exists("wave_code")))){
+    out <- ""
+    msg <- "No 'project_id' or 'wave_code' pair was provided for updating the data."
     status <- 205
 }else if(length(args) == 0){
     out <- ""
-    msg <- "No key-value pair was provided for updating the data."
+    msg <- "No key-value pairs were provided for updating the data."
     status <- 202
 }else if(length(error_col) != 0){
     out <- jsonlite::toJSON(error_col, pretty = TRUE)
@@ -53,20 +66,22 @@ if(any(!c(exists("sub"), exists("ses")))){
     )
     status <- 203
 }else{
+    sub = paste0("sub-", sub)
+    ses = paste0("ses-", ses)
     err_vals <- list()
     for(i in 1:length(args)){
         value <- utils::URLdecode(unname(args[i]))
         key <- names(args)[i]
-        ctype <- types[names(types) == key]
+        ctype <- unname(types[names(types) == key])
         val_ok <- FALSE
         if(ctype == "icons"){
             val_ok <- value %in% c("fail", "ok", "rerun")
-        }else if(ctype == "custom array"){
-            val_ok <- value %in% proc[[key]]
         }else if(ctype == "numeric"){
             val_ok <- !is.na(as.numeric(value))
         }else if(ctype == "asis"){
             val_ok <- TRUE
+        }else if(Array.isArray(ctype)){
+            val_ok <- value %in% ctype
         }
         if(val_ok){
             keypair <- list(value)
@@ -95,7 +110,7 @@ if(any(!c(exists("sub"), exists("ses")))){
         status <- 204
         msg <- "Some values do not correspond to values for the given process."
     }else{
-        data <- sort_data(data)
+        data <- sort_data(data, names(types))
         jsonlite::write_json(
             data, file.path(datadir, "data.json"),
             pretty = TRUE, auto_unbox = TRUE

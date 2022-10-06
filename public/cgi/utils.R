@@ -22,7 +22,8 @@ get_args <- function(){
     args <- setNames(
             sapply(args, function(x) 
                     sapply(strsplit(x, "=")[[1]][2], strsplit, split = ",")),
-            sapply(args, function(x) strsplit(x, "=")[[1]][1])
+            gsub("^sub-|^ses-", "", 
+                sapply(args, function(x) strsplit(x, "=")[[1]][1]))
             )
     na.omit(args)
 }
