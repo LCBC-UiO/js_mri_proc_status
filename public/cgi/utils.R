@@ -19,13 +19,12 @@ get_args <- function(){
     args <- commandArgs(trailingOnly = TRUE)
     args <- gsub("^=", "", args)
     args <- unlist(strsplit(args, "\\&"))
-    args <- setNames(
-            sapply(args, function(x) 
-                    sapply(strsplit(x, "=")[[1]][2], strsplit, split = ",")),
-            gsub("^sub-|^ses-", "", 
-                sapply(args, function(x) strsplit(x, "=")[[1]][1]))
-            )
-    na.omit(args)
+    tmp <- lapply(args, function(x) 
+                    gsub("sub-|ses-", "",
+                    strsplit(x, "=")[[1]][-1])
+                )
+    names(tmp) <- sapply(args, function(x) strsplit(x, "=")[[1]][1])
+    na.omit(tmp)
 }
 
 filter_data <- function(data, args, tasks){

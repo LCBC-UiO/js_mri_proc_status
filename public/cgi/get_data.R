@@ -9,19 +9,18 @@ output <- "json"
 if("out" %in% names(args)){
     output <- match.arg(args[["out"]], c("json", "single"))
 }
-
-
 data <- jsonlite::read_json(file.path(datadir, "data.json"))
 tasks <- names(jsonlite::read_json(file.path(datadir, "tasks.json")))
 tasks <- tasks[tasks %in% names(args)]
-data <- filter_data(data, args, tasks)
-
+if(length(tasks) > 0)
+    data <- filter_data(data, args, tasks)
 status <- 200
 out <- ''
 sub <- NULL
 if(length(subject) != 0){
     sub <- data[[subject]]
 }
+
 if(length(args) == 0){
     out <- data
 }else if(is.null(sub)){
@@ -42,8 +41,6 @@ if(length(args) == 0){
 }else{
     status <- 201
 }
-
-if(length(tasks))
 
 if(output == "single"){
     cat(
