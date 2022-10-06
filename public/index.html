@@ -80,9 +80,9 @@
               <li class="nav-item" role="presentation">
                 <button class="nav-link" id="api-tab" data-bs-toggle="tab" data-bs-target="#api-use" type="button" role="tab" aria-controls="api-use" aria-selected="false">API use</button>
               </li>
-              <li class="nav-item" role="presentation">
+              <!-- <li class="nav-item" role="presentation">
                 <button class="nav-link" id="process-tab" data-bs-toggle="tab" data-bs-target="#process" type="button" role="tab" aria-controls="process" aria-selected="false">Process</button>
-              </li>
+              </li> -->
             </ul>
             <a class="navbar-brand" href="#">
               <img src="icon.png" alt="MRI processing status" class="img-responsive" height="70">
@@ -115,7 +115,7 @@
                   <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
               </div> -->
-              <div class="col-lg"><button class="btn btn-secondary" onclick="populate_add_new()">Add new entry</button></div>
+              <div class="col-lg"><button class="btn btn-secondary" onclick="populate_new_entry()">Add new entry</button></div>
 
             </div>
           </div>
@@ -139,26 +139,52 @@
               <pre><code>
 curl -i WEBSITEURL/cgi/get_data.cgi
 curl -i WEBSITEURL/cgi/get_process.cgi
+curl -i WEBSITEURL/cgi/get_tasks.cgi
+curl -i WEBSITEURL/cgi/get_protocol.cgi
               </code></pre>
             </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <p>
+                You can also retrieve the specific information for just a single subject, session and key.
+                This can be achieved by adding key-value pairs to the query for the data.
+                Only providing the subject, returns the entire subjects data.
+                Providing subject and session, returns the data for the subject and session.
+                Lastly, providing subject, session and key(s) returns data for those spesific key(s).
+              </p>
             </div>
+            <div class="col">
+              <pre><code>
+curl -G \
+  -d "sub=0022" \
+  -d "ses=02Avanto" \
+  -d "key=sorted,bids" \
+  WEBSITEURL/cgi/get_data.cgi
+              </code></pre>
+            </div>
+          </div>
             <div class="row">
               <div class="col">
                 <p>
-                  You can also retrieve the specific information for just a single subject, session and key.
-                  This can be achieved by adding key-value pairs to the query for the data.
-                  Only providing the subject, returns the entire subjects data.
-                  Providing subject and session, returns the data for the subject and session.
-                  Lastly, providing subject, session and key(s) returns data for those spesific key(s).
+                  Another endpoint of interest is the "get_status" endpoint. This one will
+                  retrieve status information of the underlying data. It is this status
+                  that is displayed on the webpage.
                 </p>
               </div>
               <div class="col">
                 <pre><code>
 curl -G \
-  -d "sub=022" \
-  -d "ses=02Avanto" \
-  -d "key=[sorted, bids]" \
-  WEBSITEURL/cgi/get_data.cgi
+    -d "sub=0022" \
+    -d "ses=02Avanto" \
+    -d "key=[sorted,bids,func]" \
+    WEBSITEURL/cgi/get_status.cgi
+
+  curl -G \
+    -d "sub=0022" \
+    -d "ses=02Avanto" \
+    -d "output=table" \
+    WEBSITEURL/cgi/get_status.cgi
                 </code></pre>
               </div>
           </div>
@@ -185,7 +211,7 @@ curl -G \
 curl -i -G \
     -d 'id=sub-0022' \
     -d 'ses=ses-02Skyra' \
-    -d 'sorted=running'  \
+    -d 'sorted=rerun'  \
     WEBSITEURL/cgi/update_data.cgi
               </code></pre>
             </div>
@@ -203,7 +229,7 @@ curl -i -G \
 curl -i -G \
     -d 'id=sub-0022' \
     -d 'ses=ses-02Skyra' \
-    --data-urlencode 'fmri_comment=this is a longer comment; that will be fixed on send.'  \
+    --data-urlencode 'func_comment=this is a longer comment; that will be fixed on send.'  \
     WEBSITEURL/cgi/update_data.cgi
               </code></pre>
             </div>

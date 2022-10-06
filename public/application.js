@@ -64,7 +64,7 @@ async function populate_table() {
             e_tr.classList = "clickable-row";
             e_tr.id = `${sub}_${ses}_${proj}_${wave}`;
             e_tr.sub = `${sub}_${ses}`;
-            e_tr.setAttribute("onclick", `populate_edit('${sub}_${ses}_${proj}_${wave}')`);
+            e_tr.setAttribute("onclick", `populate_edit_entry('${sub}_${ses}_${proj}_${wave}')`);
             e_body.appendChild(e_tr);
             e_sub = document.createElement("td");
             e_sub.innerHTML = sub;
@@ -225,7 +225,7 @@ async function populate_table() {
 
 };
 
-async function populate_add_new(){
+async function populate_new_entry(){
     const r_tasks_g = await fetch_json("get_tasks.cgi");
     body = document.createElement("form");
     body.setAttribute("onsubmit", "return add_new()");
@@ -272,7 +272,7 @@ async function populate_add_new(){
     display_modal("Add new entry", body)
 }
 
-async function populate_edit(text) {
+async function populate_edit_entry(text) {
     tsplit = text.split("_");
     n = '';
     const r_tasks_g = await fetch_json("get_tasks.cgi");
@@ -282,6 +282,7 @@ async function populate_edit(text) {
     mod_body.classList = `modal-body alert`;
     e_row = document.getElementsByClassName(text);
     var arr = [].slice.call(e_row);
+    console.log(r_process_s)
     for(col in r_process_s){
         item = r_process_s[col];
         if(arr.length !== 0){
@@ -496,7 +497,7 @@ function add_new_entry(){
     ses = document.getElementById("new-ses-input").value;
     proj = document.getElementById("new-proj-input").value;
     wave = document.getElementById("new-wave-input").value;
-    populate_edit(`sub-${sub}_ses-${ses}_${proj}_${wave}`);
+    populate_edit_entry(`sub-${sub}_ses-${ses}_${proj}_${wave}`);
     return false;
 }
 

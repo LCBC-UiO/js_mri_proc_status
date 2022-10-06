@@ -1,12 +1,15 @@
 #!/usr/bin/env Rscript
 source("utils.R")
+args <- get_args()
 
 datadir <- Sys.getenv("DATADIR")
 data <- jsonlite::read_json(file.path(datadir, "data.json"))
+tasks <- names(jsonlite::read_json(file.path(datadir, "tasks.json")))
+tasks <- tasks[tasks %in% names(args)]
+data <- filter_data(data, args, tasks)
 process <- jsonlite::read_json(file.path(datadir, "process.json"))
 types <- names(process)
 sums <- names(process[process == "sum"])
-args <- get_args()
 output <- "json"
 idx <- grepl("output", names(args))
 if(all(length(args) > 0, any(idx))){

@@ -27,3 +27,22 @@ get_args <- function(){
             )
     na.omit(args)
 }
+
+filter_data <- function(data, args, tasks){
+    data <- lapply(data, function(sub) {
+        sub <- lapply(sub, function(ses){
+            idx <- which(tasks %in% names(ses))
+            k <- logical()
+            if(length(idx) == 0) k <- FALSE
+            k <- all(k, sapply(idx, function(i){
+                ses[tasks[i]] == args[[tasks[i]]]
+            }))
+            if(k) return(ses)
+            return(NULL)
+        })
+        lapply(which(!sapply(sub, is.null)),
+            function(ses) sub[[ses]])
+    }) 
+    idx <- sapply(data, function(x) length(x) > 0 ) 
+    lapply(which(idx), function(x) data[[x]])
+}

@@ -1,50 +1,49 @@
 #!/usr/bin/env Rscript
-
+source("utils.R")
 datadir <- Sys.getenv("DATADIR")
 
-args <- commandArgs(trailingOnly = TRUE)
-args <- gsub("^=", "", args)
-args <- unlist(strsplit(args, "\\&"))
-args <- setNames(
-        sapply(args, function(x) 
-                sapply(strsplit(x, "=")[[1]][2], strsplit, split = ",")),
-        sapply(args, function(x) strsplit(x, "=")[[1]][1])
-        )
-args <- na.omit(args)
-subject <- gsub("sub-", "", args[["sub"]])
-sesssion <- gsub("ses-", "", args[["ses"]])
-
+args <- get_args()
+subject <- sprintf("sub-%s", args[["sub"]])
+session <- sprintf("ses-%s", args[["ses"]])
 output <- "json"
 if("out" %in% names(args)){
     output <- match.arg(args[["out"]], c("json", "single"))
 }
 
-tojson <- function(data){
-    jsonlite::toJSON(data, pretty = TRUE, auto_unbox = TRUE)
-}
 
 data <- jsonlite::read_json(file.path(datadir, "data.json"))
+tasks <- names(jsonlite::read_json(file.path(datadir, "tasks.json")))
+tasks <- tasks[tasks %in% names(args)]
+data <- filter_data(data, args, tasks)
+
 status <- 200
 out <- ''
+sub <- NULL
+if(length(subject) != 0){
+    sub <- data[[subject]]
+}
 if(length(args) == 0){
     out <- data
+}else if(is.null(sub)){
+    status <- 202
+    out <- data
 }else if(all(c("sub", "ses", "key") %in% names(args))){
-    sub <- data[[sprintf("sub-%s", subject)]]
-    ses <- sub[[sprintf("ses-%s", sesssion)]]
+    ses <- sub[[session]]
     keys <- lapply(match(args[["key"]], names(ses)), function(x) ses[[x]])
     names(keys) <- args[["key"]]
     out <- list(list(keys))
-    names(out[[1]]) <- sprintf("ses-%s", sesssion)
-    names(out) <- sprintf("sub-%s", subject)
+    names(out[[1]]) <- session
+    names(out) <- subject
 }else if(all(c("sub", "ses") %in% names(args))){
-    sub <- data[[sprintf("sub-%s", subject)]]
-    out <- list(sub[sprintf("ses-%s", sesssion)])
-    names(out) <- sprintf("sub-%s", subject)
+    out <- list(sub[session])
+    names(out) <- subject
 }else if("sub" %in% names(args)){
-    out <- data[sprintf("sub-%s", subject)]
+    out <- sub
 }else{
     status <- 201
 }
+
+if(length(tasks))
 
 if(output == "single"){
     cat(
