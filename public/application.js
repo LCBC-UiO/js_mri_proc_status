@@ -255,6 +255,8 @@ async function populate_table() {
 };
 
 async function populate_new_entry(sub=null, ses=null, proj=null, wave=null){
+    sub = sub.replace("sub-", "");
+    ses = ses.replace("ses-", "");
     const r_tasks_g = await fetch_json("get_tasks.cgi");
     body = document.createElement("form");
     body.setAttribute("onsubmit", "return add_new_entry()");
@@ -308,7 +310,6 @@ async function populate_edit_entry(text) {
     tsplit = text.split("_");
     n = '';
     if(text.includes("unknown")){
-        console.log(tsplit)
         populate_new_entry(tsplit[0], tsplit[1], tsplit[2], tsplit[3])
         return
     }
