@@ -25,7 +25,6 @@ if(length(args) == 0){
     out <- data
 }else if(is.null(sub)){
     status <- 202
-    out <- data
 }else if(all(c("sub", "ses", "key") %in% names(args))){
     ses <- sub[[session]]
     keys <- lapply(match(args[["key"]], names(ses)), function(x) ses[[x]])
@@ -37,6 +36,7 @@ if(length(args) == 0){
     out <- list(sub[session])
     names(out) <- subject
 }else if("sub" %in% names(args)){
+    status <- 203
     out <- sub
 }else{
     status <- 201

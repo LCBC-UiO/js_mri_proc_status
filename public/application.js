@@ -228,7 +228,7 @@ async function populate_table() {
 async function populate_new_entry(){
     const r_tasks_g = await fetch_json("get_tasks.cgi");
     body = document.createElement("form");
-    body.setAttribute("onsubmit", "return add_new()");
+    body.setAttribute("onsubmit", "return add_new_entry()");
     body.classList = "w100";
     ["sub", "ses", "proj", "wave"].forEach(async x => {
         body_id = document.createElement("div");
@@ -275,6 +275,7 @@ async function populate_new_entry(){
 async function populate_edit_entry(text) {
     tsplit = text.split("_");
     n = '';
+
     const r_tasks_g = await fetch_json("get_tasks.cgi");
     const r_process_s = await fetch_json(`get_protocol.cgi?proj=${tsplit[2]}&wave=${tsplit[3]}&out=single`);
     const r_data_s = await fetch_json(`get_data.cgi?sub=${tsplit[0]}&ses=${tsplit[1]}&out=single`);
@@ -282,7 +283,6 @@ async function populate_edit_entry(text) {
     mod_body.classList = `modal-body alert`;
     e_row = document.getElementsByClassName(text);
     var arr = [].slice.call(e_row);
-    console.log(r_process_s)
     for(col in r_process_s){
         item = r_process_s[col];
         if(arr.length !== 0){
