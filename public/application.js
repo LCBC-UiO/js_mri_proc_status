@@ -217,16 +217,32 @@ async function populate_table() {
     }
 
     $(document).ready(function () {
-        $('#tsv').DataTable({
+        // Setup - add a text input to each footer cell
+        $('#tsv thead th').each(function () {
+            var title = $(this).text();
+            $(this).append('<input type="text" placeholder="search" />');
+        });
+        
+        table = $('#tsv').DataTable({
             lengthMenu: [
-                [50, 100, 500, 1000, -1], // values
-                [50, 100, 500, '1k', 'All'] // labels
+                [10, 50, 100, 500, 1000, -1], // values
+                [10, 50, 100, 500, '1k', 'All'] // labels
             ],
             buttons: [ 'copy', 'print', 'colvis' ],
             scrollY:        "65vh",
             scrollX:        true,
-            fixedColumns:   {left: 2}
+            fixedColumns:   {left: 2},
         });
+
+        // Apply the search
+        table.columns().eq( 0 ).each( function ( colIdx ) {
+            $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+                table
+                    .column( colIdx )
+                    .search( this.value )
+                    .draw();
+            } );
+        } );
     })
 
 };
