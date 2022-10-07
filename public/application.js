@@ -220,7 +220,7 @@ async function populate_table() {
         // Setup - add a text input to each footer cell
         $('#tsv thead th').each(function () {
             var title = $(this).text();
-            $(this).append('<input type="text" placeholder="search" />');
+            $(this).append('<input type="text" placeholder="search" size="5"/>');
         });
         
         table = $('#tsv').DataTable({
