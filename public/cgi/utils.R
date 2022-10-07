@@ -19,12 +19,14 @@ get_args <- function(){
     args <- commandArgs(trailingOnly = TRUE)
     args <- gsub("^=", "", args)
     args <- unlist(strsplit(args, "\\&"))
+    if(is.null(args)) return(c(n = ""))
     tmp <- lapply(args, function(x) 
                     gsub("sub-|ses-", "",
                     strsplit(x, "=")[[1]][-1])
                 )
     names(tmp) <- sapply(args, function(x) strsplit(x, "=")[[1]][1])
-    na.omit(tmp)
+    tmp <- na.omit(tmp)
+    tmp[which(sapply(tmp, function(x) length(x) > 0))]
 }
 
 filter_data <- function(data, args, tasks){
@@ -44,4 +46,15 @@ filter_data <- function(data, args, tasks){
     }) 
     idx <- sapply(data, function(x) length(x) > 0 ) 
     lapply(which(idx), function(x) data[[x]])
+}
+
+sort_data <- function(x, tasks){
+    .name_order <- function(x) x[order(names(x))]
+    x <- .name_order(x)
+    x <- lapply(x, .name_order)
+    lapply(x, function(y){
+        lapply(y, function(p){
+            p[na.omit(match(tasks, names(p)))]
+        })
+    })
 }

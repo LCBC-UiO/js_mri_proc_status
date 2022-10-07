@@ -1,14 +1,8 @@
 #!/usr/bin/env Rscript
+source("utils.R")
 datadir <- Sys.getenv("DATADIR")
 
-args <- commandArgs(trailingOnly = TRUE)
-args <- gsub("^=", "", args)
-args <- unlist(strsplit(args, "\\&"))
-args <- setNames(
-        sapply(args, function(x) strsplit(x, "=")[[1]][2]),
-        sapply(args, function(x) strsplit(x, "=")[[1]][1])
-)
-args <- na.omit(args)
+args <- get_args()
 
 for(key in c("sub", "ses", "project_id", "wave_code")){
     idx <- which(names(args) %in% key)
@@ -16,17 +10,6 @@ for(key in c("sub", "ses", "project_id", "wave_code")){
         assign(key, gsub("sub-|ses-", "", args[idx]))
         args <- args[idx*-1]
     }
-}
-
-sort_data <- function(x, tasks){
-    .name_order <- function(x) x[order(names(x))]
-    x <- .name_order(x)
-    x <- lapply(x, .name_order)
-    lapply(x, function(y){
-        lapply(y, function(p){
-            p[na.omit(match(tasks, names(p)))]
-        })
-    })
 }
 
 proc <- jsonlite::read_json(file.path(datadir, "protocol.json"),
@@ -66,8 +49,10 @@ if(any(!c(exists("sub"), exists("ses")))){
     )
     status <- 203
 }else{
-    sub = paste0("sub-", sub)
-    ses = paste0("ses-", ses)
+    sub <- paste0("sub-", sub)
+    ses <- paste0("ses-", ses)
+    data[[sub]][[ses]]["project_id"] <- project_id
+    data[[sub]][[ses]]["wave_code"] <- wave_code
     err_vals <- list()
     for(i in 1:length(args)){
         value <- utils::URLdecode(unname(args[i]))

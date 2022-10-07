@@ -314,14 +314,15 @@ async function populate_edit_entry(text) {
         return
     }
     const r_tasks_g = await fetch_json("get_tasks.cgi");
-    const r_process_s = await fetch_json(`get_protocol.cgi?proj=${tsplit[2]}&wave=${tsplit[3]}&out=single`);
+    const r_process_g = await fetch_json("get_process.cgi");
+    const r_proto_s = await fetch_json(`get_protocol.cgi?proj=${tsplit[2]}&wave=${tsplit[3]}&out=single`);
     const r_data_s = await fetch_json(`get_data.cgi?sub=${tsplit[0]}&ses=${tsplit[1]}&out=single`);
     mod_body = document.createElement("div");
     mod_body.classList = `modal-body alert`;
     e_row = document.getElementsByClassName(text);
     var arr = [].slice.call(e_row);
-    for(col in r_process_s){
-        item = r_process_s[col];
+    for(col in r_proto_s){
+        item = r_proto_s[col];
         if(arr.length !== 0){
             val = arr.slice(arr.findIndex(j => j.classList.value.split(' ')[1] == col), 
                             arr.findIndex(j => j.classList.value.split(' ')[1] == col)+1)[0]

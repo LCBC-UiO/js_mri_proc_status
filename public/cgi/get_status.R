@@ -17,20 +17,18 @@ idx <- which(names(args) %in% "status")
 if(length(idx) > 0){
     stat <- sapply(idx, function(x) match.arg(args[[x]], stat, several.ok = TRUE))
 }
-
-sub <- gsub("sub-", "", args["sub"]) #making sure prefix is not present
+sub <- unlist(args[grepl("sub", names(args))])
 ses <- unlist(args[grepl("ses", names(args))])
 keys <- unlist(args[grepl("key", names(args))])
+
 run_all <- TRUE
-if(length(ses) == 0 & sub != "NULL"){
-    ses <- names(data[[sprintf("sub-%s", sub)]])
+if(length(ses) == 0 & length(sub) == 1){
+    ses <- gsub("ses-", "", names(data[[sprintf("sub-%s", sub)]]))
     run_all <- FALSE
 }
 if(length(ses) != 0) run_all <- FALSE
-
 if(length(keys) == 0) keys <- types
 keys <- match.arg(keys, types, several.ok = TRUE)
-ses <- gsub("ses-", "", ses) #making sure prefix is not present
 
 status <- 201
 out <- list()
