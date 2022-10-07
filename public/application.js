@@ -57,6 +57,7 @@ async function populate_table() {
         for( var ses in r_status_g[sub]){
             proj = r_status_g[sub][ses]["project_id"];
             wave = r_status_g[sub][ses]["wave_code"];
+            proto = null;
             if(proj !== "unknown" | wave !== "unknown"){
                 proto = r_proto_g[proj][wave];
             }
@@ -76,7 +77,6 @@ async function populate_table() {
             e_ses.classList = "sticky-left-col2";
             e_ses.setAttribute("width", "100px");
             e_tr.appendChild(e_ses);
-
             for(var proc in e_cols){
                 e_td = document.createElement("td");
                 e_td.classList = `${sub}_${ses} ${e_cols[proc]} text-center m-0`;
@@ -135,7 +135,7 @@ async function populate_table() {
                         break;
                     case "sum":
                         var max = 0;
-                        if(proto != "unknown"){
+                        if(proto !== null && proto !== "unknown"){
                             var sum = [];
                             // find maximum steps for a category based on protocol
                             Object.values(proto).forEach(function(key) {
@@ -147,7 +147,9 @@ async function populate_table() {
                         }
                         e_num = document.createElement("p");
                         var disp_type = "default";
-                        if(max == 0){ // not applicable for this protocol
+                        if(proto == null){ // all completed
+                            disp_type = "none";
+                        }else if(max == 0){ // not applicable for this protocol
                             disp_type = "na";
                         }else if(val["fail"] > 0){
                             disp_type = "fail"
@@ -179,6 +181,10 @@ async function populate_table() {
                                 e_i.classList.add("bi-arrow-repeat");
                                 e_i.classList.add("rerun");
                                 e_td.appendChild(e_i);
+                                break;
+                            case "none":
+                                e_num.classList.add("text-muted");
+                                e_num.innerHTML = `?`;
                                 break;
                             case "unknown":
                                 var val = {"ok": 0};
@@ -225,7 +231,7 @@ async function populate_table() {
 
 };
 
-async function populate_new_entry(){
+async function populate_new_entry(sub=null, ses=null, proj=null, wave=null){
     const r_tasks_g = await fetch_json("get_tasks.cgi");
     body = document.createElement("form");
     body.setAttribute("onsubmit", "return add_new_entry()");
@@ -259,6 +265,9 @@ async function populate_new_entry(){
         body_id_input.setAttribute("aria-describedby", `new-${x}`);
         body_id_input.setAttribute("required", true);
         body_id_input.id = `new-${x}-input`;
+        if(eval(x) != null && eval(x) != "unknown"){
+            body_id_input.value = eval(x);
+        }
         body_id.appendChild(body_id_input);
         body.appendChild(body_id);
     })
@@ -275,7 +284,11 @@ async function populate_new_entry(){
 async function populate_edit_entry(text) {
     tsplit = text.split("_");
     n = '';
-
+    if(text.includes("unknown")){
+        console.log(tsplit)
+        populate_new_entry(tsplit[0], tsplit[1], tsplit[2], tsplit[3])
+        return
+    }
     const r_tasks_g = await fetch_json("get_tasks.cgi");
     const r_process_s = await fetch_json(`get_protocol.cgi?proj=${tsplit[2]}&wave=${tsplit[3]}&out=single`);
     const r_data_s = await fetch_json(`get_data.cgi?sub=${tsplit[0]}&ses=${tsplit[1]}&out=single`);
