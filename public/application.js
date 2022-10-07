@@ -6,6 +6,13 @@ async function fetch_json(string){
     return(r);
 };
 
+function alert_refresh(msg){
+    if(confirm(msg)){
+        window.location.reload()}
+    ;
+}
+
+
 ////////////////////////////////////
 //        POPULATE ELEMENTS       //
 async function populate_moddate(){
@@ -526,23 +533,22 @@ function add_new_entry(){
     ses = document.getElementById("new-ses-input").value;
     proj = document.getElementById("new-proj-input").value;
     wave = document.getElementById("new-wave-input").value;
-    populate_edit_entry(`sub-${sub}_ses-${ses}_${proj}_${wave}`);
+    populate_edit_entry(`${sub}_${ses}_${proj}_${wave}`);
     return false;
 }
 
 async function delete_entry(idses){
     tsplit = idses.split("&");
-    idses = tsplit.slice(0, tsplit.length - 2).join("&");
-    fetch(`./cgi/delete_entry.cgi?${idses}`).then(r =>{
+    fetch(`./cgi/delete_entry.cgi?sub=${tsplit[0]}&ses=${tsplit[1]}`).then(r =>{
         switch(r.status){
             case 200:
-                alert("Entry deleted.");
+                alert_refresh("Entry deleted.");
                 break;
             case 201:
-                alert(`Unknown error occured.`);
+                alert_refresh(`Unknown error occured.`);
                 break;
             case 203:
-                alert(`Deletion needs arguments for id, session (optional) and key (optional).`);
+                alert_refresh(`Deletion needs arguments for id, session (optional) and key (optional).`);
                 break;
         }
     })
@@ -558,13 +564,13 @@ function update_process(){
     fetch(getstr).then(r =>{
         switch(r.status){
             case 201:
-                alert("Process updated.");
+                alert_refresh("Process updated.");
                 break
             case 204:
-                alert(`Some requested process value is not valid. Not updating process.`);
+                alert_refresh(`Some requested process value is not valid. Not updating process.`);
                 break
             case 203:
-                alert(`Some requested process keys already exist. Not updating process.`);
+                alert_refresh(`Some requested process keys already exist. Not updating process.`);
                 break
         }
         location.reload();
