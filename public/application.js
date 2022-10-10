@@ -431,7 +431,6 @@ async function populate_edit_entry(text) {
 async function populate_delete_entry(idses){
     del = idses.split("_");
     del = `sub=${del[0]}&ses=${del[1]}`
-    console.log(del)
     const r_data_s =  await fetch_json(`get_data.cgi?${del}`);
     body = create_modal_json(r_data_s, "danger")
     mod_foot = document.createElement("div");
@@ -530,7 +529,6 @@ function add_new_entry(){
     ses = document.getElementById("new-ses-input").value;
     proj = document.getElementById("new-proj-input").value;
     wave = document.getElementById("new-wave-input").value;
-    console.log(`${sub}_${ses}_${proj}_${wave}`)
     populate_edit_entry(`${sub}_${ses}_${proj}_${wave}`);
     return false;
 }
@@ -592,7 +590,6 @@ function save_entry(){
     sub=`sub=${subses[0].replace("sub-", "")}`;
     ses=`ses=${subses[1].replace("ses-", "")}`;
     let getstr = `./cgi/update_data.cgi?${sub}&${ses}&${sel_vals.join('&')}`;
-    console.log(getstr)
     fetch(getstr).then(r =>{
         mod_body = document.createElement("div");
         mod_body.classList = `modal-body alert`;
