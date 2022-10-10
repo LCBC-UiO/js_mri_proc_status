@@ -38,9 +38,9 @@ calc_status <- function(data, sub, ses, type, status, sums){
 get_args <- function(){
     args <- commandArgs(trailingOnly = TRUE)
     args <- gsub("^=", "", args)
+    if(any(is.null(args), length(args) == 0)) return(NULL)
     args <- utils::URLdecode(args)
     args <- unlist(strsplit(args, "\\&"))
-    if(is.null(args)) return(NULL)
     tmp <- lapply(args, function(x) 
                     gsub("sub-|ses-", "",
                     strsplit(x, "=")[[1]][-1])
