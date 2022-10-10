@@ -581,7 +581,7 @@ function save_entry(){
         if(x.value == "unknown" || x.value == "undefined"){
             return null
         }
-        return(`${x.id}=${encodeURI(x.value)}`)
+        return(`${x.id}=${x.value}`)
     }).filter(el => {
         return el !== null;
     })
@@ -589,7 +589,7 @@ function save_entry(){
     subses = subses.innerHTML.split("    ");
     sub=`sub=${subses[0].replace("sub-", "")}`;
     ses=`ses=${subses[1].replace("ses-", "")}`;
-    let getstr = `./cgi/update_data.cgi?${sub}&${ses}&${sel_vals.join('&')}`;
+    let getstr = `./cgi/update_data.cgi?${sub}&${ses}&${encodeURI(sel_vals.join('&'))}`;
     fetch(getstr).then(r =>{
         mod_body = document.createElement("div");
         mod_body.classList = `modal-body alert`;

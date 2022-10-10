@@ -2,7 +2,7 @@
   "0022": {
     "01Avanto": {
       "project_id": "MemP",
-      "wave_code": 1,
+      "wave_code": "1",
       "sorted": "ok",
       "sorted_comments": "changed incorrect id",
       "bids": "ok",
@@ -27,6 +27,7 @@
       "sorted": "rerun",
       "bids": "ok",
       "t1_rating": "2",
+      "func_aquisition_comments": "this+is+a+longer+comment;+that+will+be+fixed+on+send.",
       "anat_fs_recon": "ok",
       "anat_mriqc": "ok",
       "anat_mriqc_comments": "had to tweak xx parameter. Added more twaeks"
