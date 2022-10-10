@@ -32,13 +32,12 @@ keys <- match.arg(keys, types, several.ok = TRUE)
 
 status <- 201
 out <- list()
-
 # If no subject specified, return all
 if(run_all){
-    subjects <- gsub("sub-", "", names(data))
+    subjects <- names(data)
     for(subject in subjects){
-        sub <- data[[sprintf("sub-%s", subject)]]
-        for(session in gsub("ses-", "", names(sub))){
+        sub <- data[[subject]]
+        for(session in names(sub)){
             checks <- lapply(keys, function(x){
                 calc_status(data = data,
                             sub = subject,
@@ -48,11 +47,11 @@ if(run_all){
                             sums = sums)
             })
             names(checks) <- keys
-            sub[[sprintf("ses-%s", session)]] <- checks
+            sub[[session]] <- checks
         }
         out <- c(out, list(sub))
     }
-    names(out) <- sprintf("sub-%s", subjects)
+    names(out) <- subjects
     status <- 200
 }else if(length(ses) != 0){
     tmp <- list()
@@ -66,10 +65,10 @@ if(run_all){
                         sums = sums)
         })
         names(checks) <- keys
-        tmp[[sprintf("ses-%s", session)]] <- checks
+        tmp[[session]] <- checks
     }
     out <- list(tmp)
-    names(out) <- sprintf("sub-%s", sub)
+    names(out) <- sub
     status <- 200
 }
 

@@ -255,8 +255,6 @@ async function populate_table() {
 };
 
 async function populate_new_entry(sub=null, ses=null, proj=null, wave=null){
-    sub = sub.replace("sub-", "");
-    ses = ses.replace("ses-", "");
     const r_tasks_g = await fetch_json("get_tasks.cgi");
     body = document.createElement("form");
     body.setAttribute("onsubmit", "return add_new_entry()");
@@ -308,7 +306,6 @@ async function populate_new_entry(sub=null, ses=null, proj=null, wave=null){
 
 async function populate_edit_entry(text) {
     tsplit = text.split("_");
-    n = '';
     if(text.includes("unknown")){
         populate_new_entry(tsplit[0], tsplit[1], tsplit[2], tsplit[3])
         return
@@ -316,18 +313,13 @@ async function populate_edit_entry(text) {
     const r_tasks_g = await fetch_json("get_tasks.cgi");
     const r_process_g = await fetch_json("get_process.cgi");
     const r_proto_s = await fetch_json(`get_protocol.cgi?proj=${tsplit[2]}&wave=${tsplit[3]}&out=single`);
-    const r_data_s = await fetch_json(`get_data.cgi?sub=${tsplit[0]}&ses=${tsplit[1]}&out=single`);
+    const r_data_s = await fetch_json(`get_data.cgi?sub=${tsplit[0]}&ses=${tsplit[1]}&output=single`);
     mod_body = document.createElement("div");
     mod_body.classList = `modal-body alert`;
     e_row = document.getElementsByClassName(text);
     var arr = [].slice.call(e_row);
     for(col in r_proto_s){
         item = r_proto_s[col];
-        if(arr.length !== 0){
-            val = arr.slice(arr.findIndex(j => j.classList.value.split(' ')[1] == col), 
-                            arr.findIndex(j => j.classList.value.split(' ')[1] == col)+1)[0]
-                            .classList.value.split(' ')[4];
-        }
         e_input = document.createElement("div");
         e_input.classList = "input-group mb-3 w-100";
         e_input.setAttribute("data-width", "100%");
@@ -432,19 +424,22 @@ async function populate_edit_entry(text) {
     mod_foot_btn     = create_mod_btn("Save changes", 'save_entry()', "secondary"); 
     mod_foot.appendChild(mod_foot_btn_del);
     mod_foot.appendChild(mod_foot_btn);
-
-    display_modal(`${tsplit.join(' ')}`, mod_body, null, mod_foot)
+    title = `sub-${tsplit[0]}    ses-${tsplit[1]}    proj-${tsplit[2]}    wave-${tsplit[3]}`
+    display_modal(title, mod_body, null, mod_foot)
 }
 
 async function populate_delete_entry(idses){
-    delentry = idses.split("_").join("&").split("-").join("=");
-    const r_data_s =  await fetch_json(`get_data.cgi?=${delentry}`);
+    del = idses.split("_");
+    del = `sub=${del[0]}&ses=${del[1]}`
+    console.log(del)
+    const r_data_s =  await fetch_json(`get_data.cgi?${del}`);
     body = create_modal_json(r_data_s, "danger")
     mod_foot = document.createElement("div");
     mod_foot.classList = "d-flex justify-content-between modal-footer";
-    mod_foot_btn_del =  create_mod_btn("Confirm delete", `delete_entry("${delentry}")`, "danger"); 
+    mod_foot_btn_del =  create_mod_btn("Confirm delete", `delete_entry("${del}")`, "danger"); 
     mod_foot.appendChild(mod_foot_btn_del);
-    display_modal(idses.split("_").join(" "), body=body, type="danger", footer=mod_foot)
+    title = `sub-${tsplit[0]}    ses-${tsplit[1]}    proj-${tsplit[2]}    wave-${tsplit[3]}`
+    display_modal(title, body=body, type="danger", footer=mod_foot)
 }
 
 ////////////////////////////////////
@@ -535,13 +530,14 @@ function add_new_entry(){
     ses = document.getElementById("new-ses-input").value;
     proj = document.getElementById("new-proj-input").value;
     wave = document.getElementById("new-wave-input").value;
+    console.log(`${sub}_${ses}_${proj}_${wave}`)
     populate_edit_entry(`${sub}_${ses}_${proj}_${wave}`);
     return false;
 }
 
 async function delete_entry(idses){
     tsplit = idses.split("&");
-    fetch(`./cgi/delete_entry.cgi?sub=${tsplit[0]}&ses=${tsplit[1]}`).then(r =>{
+    fetch(`./cgi/delete_entry.cgi?${idses}`).then(r =>{
         switch(r.status){
             case 200:
                 alert_refresh("Entry deleted.");
@@ -562,7 +558,7 @@ function update_process(){
     if(value == "array"){
         value = document.getElementById("process-custom-input").value.replaceAll(" ", "");
     }
-    let getstr = `./cgi/update_process.cgi?=${key.replaceAll(" ", "_")}=${value}`;
+    let getstr = `./cgi/update_process.cgi?${key.replaceAll(" ", "_")}=${value}`;
     fetch(getstr).then(r =>{
         switch(r.status){
             case 201:
@@ -592,10 +588,11 @@ function save_entry(){
         return el !== null;
     })
     subses = document.getElementById("edit-selection");
-    subses = subses.innerHTML.split(" ");
-    sub=`sub=${subses[0]}`;
-    ses=`ses=${subses[1]}`;
-    let getstr = `./cgi/update_data.cgi?=${sub}&${ses}&${sel_vals.join('&')}`;
+    subses = subses.innerHTML.split("    ");
+    sub=`sub=${subses[0].replace("sub-", "")}`;
+    ses=`ses=${subses[1].replace("ses-", "")}`;
+    let getstr = `./cgi/update_data.cgi?${sub}&${ses}&${sel_vals.join('&')}`;
+    console.log(getstr)
     fetch(getstr).then(r =>{
         mod_body = document.createElement("div");
         mod_body.classList = `modal-body alert`;

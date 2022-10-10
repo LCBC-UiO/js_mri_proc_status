@@ -1,16 +1,16 @@
 #!/usr/bin/env Rscript
 source("utils.R")
-datadir <- Sys.getenv("DATADIR")
-
 args <- get_args()
-subject <- sprintf("sub-%s", args[["sub"]])
-session <- sprintf("ses-%s", args[["ses"]])
+
+data <- read_json( "data.json")
+
+subject <- args["sub"]
+session <- args["ses"]
 output <- "json"
-if("out" %in% names(args)){
-    output <- match.arg(args[["out"]], c("json", "single"))
+if("output" %in% names(args)){
+    output <- match.arg(args["output"], c("json", "single"))
 }
-data <- jsonlite::read_json(file.path(datadir, "data.json"))
-tasks <- names(jsonlite::read_json(file.path(datadir, "tasks.json")))
+tasks <- names(read_json( "tasks.json"))
 tasks <- tasks[tasks %in% names(args)]
 if(length(tasks) > 0)
     data <- filter_data(data, args, tasks)
@@ -27,8 +27,8 @@ if(length(args) == 0){
     status <- 202
 }else if(all(c("sub", "ses", "key") %in% names(args))){
     ses <- sub[[session]]
-    keys <- lapply(match(args[["key"]], names(ses)), function(x) ses[[x]])
-    names(keys) <- args[["key"]]
+    keys <- lapply(match(args["key"], names(ses)), function(x) ses[[x]])
+    names(keys) <- args["key"]
     out <- list(list(keys))
     names(out[[1]]) <- session
     names(out) <- subject

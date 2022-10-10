@@ -1,6 +1,6 @@
 {
-  "sub-0022": {
-    "ses-01Avanto": {
+  "0022": {
+    "01Avanto": {
       "project_id": "MemP",
       "wave_code": 1,
       "sorted": "ok",
@@ -11,16 +11,16 @@
       "anat_mriqc": "ok",
       "anat_mriqc_comments": "had to tweak xx parameter. Added more twaeks"
     },
-    "ses-02Avanto": {
+    "02Avanto": {
       "project_id": "MemP",
-      "wave_code": 2,
+      "wave_code": "2",
       "sorted": "ok",
       "bids": "rerun",
       "t1_rating": "1",
       "anat_fs_recon": "ok",
       "anat_mriqc": "ok"
     },
-    "ses-02Skyra": {
+    "02Skyra": {
       "project_id": "MemP",
       "wave_code": 2,
       "sorted": "rerun",
@@ -30,8 +30,8 @@
       "anat_mriqc": "ok"
     }
   },
-  "sub-0156": {
-    "ses-01Avanto": {
+  "0156": {
+    "01Avanto": {
       "project_id": "MemC",
       "wave_code": 1,
       "sorted": "rerun",
@@ -39,7 +39,7 @@
       "anat_fs_recon": "ok",
       "anat_mriqc": "fail"
     },
-    "ses-02Avanto": {
+    "02Avanto": {
       "project_id": "MemC",
       "wave_code": 2,
       "sorted": "ok",
@@ -48,17 +48,17 @@
       "anat_mriqc": "rerun"
     }
   },
-  "sub-1700158": {
-    "ses-01Avanto": {
+  "1700158": {
+    "01Avanto": {
       "sorted": "ok",
       "bids": "fail",
       "anat_fs_recon": "ok"
     }
   },
-  "sub-22": {
-    "ses-26": {
+  "22": {
+    "26": {
       "project_id": "S2C",
-      "wave_code": 1,
+      "wave_code": "1",
       "sorted": "ok"
     }
   }

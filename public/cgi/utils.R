@@ -1,10 +1,29 @@
+datadir <- Sys.getenv("DATADIR")
+
 tojson <- function(data){
     jsonlite::toJSON(data, pretty = TRUE, auto_unbox = TRUE)
 }
 
+write_json <- function(data, file){
+    jsonlite::write_json(
+        x = data,
+        path = file.path(datadir, file),
+        pretty = TRUE,
+        auto_unbox = TRUE
+    )
+}
+
+read_json <- function(file){
+    jsonlite::read_json(
+        path = file.path(datadir, file),
+        simplifyVector = TRUE
+    )
+}
+
+
 calc_status <- function(data, sub, ses, type, status, sums){
-    sub <- data[[sprintf("sub-%s", sub)]]
-    ses <- sub[[sprintf("ses-%s", ses)]]
+    sub <- data[[sub]]
+    ses <- sub[[ses]]
     tmp <- ses[grep(type, names(ses))]
     tmp <- tmp[grep("comment", names(tmp), invert = TRUE)]
     if(length(tmp) == 0) return("unknown")
