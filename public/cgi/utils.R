@@ -1,3 +1,4 @@
+options(stringsAsFactors = FALSE)
 datadir <- Sys.getenv("DATADIR")
 
 tojson <- function(data){
@@ -37,6 +38,7 @@ calc_status <- function(data, sub, ses, type, status, sums){
 get_args <- function(){
     args <- commandArgs(trailingOnly = TRUE)
     args <- gsub("^=", "", args)
+    args <- utils::URLdecode(args)
     args <- unlist(strsplit(args, "\\&"))
     if(is.null(args)) return(NULL)
     tmp <- lapply(args, function(x) 
@@ -46,7 +48,6 @@ get_args <- function(){
     names(tmp) <- sapply(args, function(x) strsplit(x, "=")[[1]][1])
     tmp <- na.omit(tmp)
     tmp <- tmp[which(sapply(tmp, function(x) length(x) > 0))]
-    tmp <- sapply(tmp, utils::URLdecode)
     unlist(tmp)
 }
 

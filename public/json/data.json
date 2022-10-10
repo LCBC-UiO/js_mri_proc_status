@@ -18,7 +18,8 @@
       "bids": "rerun",
       "t1_rating": "1",
       "anat_fs_recon": "ok",
-      "anat_mriqc": "ok"
+      "anat_mriqc": "ok",
+      "anat_mriqc_comments": "had to tweak xx parameter. Added more twaeks"
     },
     "02Skyra": {
       "project_id": "MemP",
@@ -27,7 +28,8 @@
       "bids": "ok",
       "t1_rating": "2",
       "anat_fs_recon": "ok",
-      "anat_mriqc": "ok"
+      "anat_mriqc": "ok",
+      "anat_mriqc_comments": "had to tweak xx parameter. Added more twaeks"
     }
   },
   "0156": {
@@ -37,7 +39,8 @@
       "sorted": "rerun",
       "bids": "ok",
       "anat_fs_recon": "ok",
-      "anat_mriqc": "fail"
+      "anat_mriqc": "fail",
+      "anat_mriqc_comments": "had to tweak xx parameter. Added more twaeks"
     },
     "02Avanto": {
       "project_id": "MemC",
@@ -45,21 +48,24 @@
       "sorted": "ok",
       "bids": "ok",
       "anat_fs_recon": "ok",
-      "anat_mriqc": "rerun"
+      "anat_mriqc": "rerun",
+      "anat_mriqc_comments": "had to tweak xx parameter. Added more twaeks"
     }
   },
   "1700158": {
     "01Avanto": {
       "sorted": "ok",
       "bids": "fail",
-      "anat_fs_recon": "ok"
+      "anat_fs_recon": "ok",
+      "anat_mriqc_comments": "had to tweak xx parameter. Added more twaeks"
     }
   },
   "22": {
     "26": {
       "project_id": "S2C",
       "wave_code": "1",
-      "sorted": "ok"
+      "sorted": "ok",
+      "anat_mriqc_comments": "had to tweak xx parameter. Added more twaeks"
     }
   }
 }
