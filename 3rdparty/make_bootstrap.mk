@@ -10,8 +10,7 @@ bsicons := \
 	arrow-repeat \
 	x-circle-fill \
 	check-circle-fill \
-	dash-circle-fill \
-	123
+	dash-circle-fill 
 
 bssrcs := \
 	https://github.com/twbs/bootstrap/releases/download/v${bsversion}/bootstrap-${bsversion}-dist.zip \

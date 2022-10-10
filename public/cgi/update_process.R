@@ -15,7 +15,7 @@ types <- sapply(args, function(x){
    unname(x)
 })
 valid_types <- c("icons", "numeric", "array", "asis")
-proc <- jsonlite::read_json(file.path(datadir, "process.json"), simplifyVector = TRUE)
+proc <- read_json( "process.json"), simplifyVector = TRUE)
 idx <- unique(na.omit(match(names(proc), names(args))))
 if(length(idx) > 0){
     status <- 203
@@ -32,7 +32,7 @@ if(length(idx) > 0){
     status <- 201
     msg <- "Process updated"
     out <- jsonlite::toJSON(proc, pretty = TRUE, auto_unbox = TRUE)
-    jsonlite::write_json(proc,
+    write_json(proc,
         file.path(datadir, "process.json"),
         pretty = TRUE,
         auto_unbox = TRUE)

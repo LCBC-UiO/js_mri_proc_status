@@ -38,14 +38,16 @@ get_args <- function(){
     args <- commandArgs(trailingOnly = TRUE)
     args <- gsub("^=", "", args)
     args <- unlist(strsplit(args, "\\&"))
-    if(is.null(args)) return(c(n = ""))
+    if(is.null(args)) return(NULL)
     tmp <- lapply(args, function(x) 
                     gsub("sub-|ses-", "",
                     strsplit(x, "=")[[1]][-1])
                 )
     names(tmp) <- sapply(args, function(x) strsplit(x, "=")[[1]][1])
     tmp <- na.omit(tmp)
-    tmp[which(sapply(tmp, function(x) length(x) > 0))]
+    tmp <- tmp[which(sapply(tmp, function(x) length(x) > 0))]
+    tmp <- sapply(tmp, utils::URLdecode)
+    unlist(tmp)
 }
 
 filter_data <- function(data, args, tasks){
@@ -55,7 +57,7 @@ filter_data <- function(data, args, tasks){
             k <- logical()
             if(length(idx) == 0) k <- FALSE
             k <- all(k, sapply(idx, function(i){
-                ses[tasks[i]] == args[[tasks[i]]]
+                ses[tasks[i]] == args[tasks[i]]
             }))
             if(k) return(ses)
             return(NULL)

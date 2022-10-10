@@ -1,21 +1,19 @@
 #!/usr/bin/env Rscript
 source("utils.R")
 args <- get_args()
-
-datadir <- Sys.getenv("DATADIR")
-data <- jsonlite::read_json(file.path(datadir, "data.json"))
-process <- jsonlite::read_json(file.path(datadir, "process.json"))
+data <- read_json( "data.json")
+process <- read_json( "process.json")
 types <- names(process)
 sums <- names(process[process == "sum"])
 output <- "json"
 idx <- grepl("output", names(args))
 if(all(length(args) > 0, any(idx))){
-    output <- match.arg(args[[which(idx)]], c("json", "table"))
+    output <- match.arg(args[which(idx)], c("json", "table"))
 }
 stat <- c("ok", "fail", "rerun")
 idx <- which(names(args) %in% "status")
 if(length(idx) > 0){
-    stat <- sapply(idx, function(x) match.arg(args[[x]], stat, several.ok = TRUE))
+    stat <- sapply(idx, function(x) match.arg(args[sub][x], stat, several.ok = TRUE))
 }
 sub <- unlist(args[grepl("sub", names(args))])
 ses <- unlist(args[grepl("ses", names(args))])
@@ -23,7 +21,7 @@ keys <- unlist(args[grepl("key", names(args))])
 
 run_all <- TRUE
 if(length(ses) == 0 & length(sub) == 1){
-    ses <- gsub("ses-", "", names(data[[sprintf("sub-%s", sub)]]))
+    ses <- gsub("ses-", "", names(data[[sub]]))
     run_all <- FALSE
 }
 if(length(ses) != 0) run_all <- FALSE

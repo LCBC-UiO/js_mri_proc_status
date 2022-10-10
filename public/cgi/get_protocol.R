@@ -1,15 +1,14 @@
 #!/usr/bin/env Rscript
 source("utils.R")
 
-datadir <- Sys.getenv("DATADIR")
-proto <- jsonlite::read_json(file.path(datadir, "protocol.json"))
+proto <- read_json( "protocol.json")
 
 args <- get_args()
 out <- proto
 
 output <- "json"
 if("out" %in% names(args)){
-    output <- match.arg(args[["out"]], c("json", "single"))
+    output <- match.arg(args["out"], c("json", "single"))
 }
 
 idx <- names(out) %in% unlist(args[grepl("proj", names(args))])

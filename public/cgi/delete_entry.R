@@ -1,11 +1,9 @@
 #!/usr/bin/env Rscript
 source("utils.R")
 
-datadir <- Sys.getenv("DATADIR")
-data <- jsonlite::read_json(file.path(datadir, "data.json"))
+data <- read_json("data.json")
 
 args <- get_args()
-
 status <- 200
 msg <- "success"
 if(length(args) == 0){
@@ -13,40 +11,40 @@ if(length(args) == 0){
     msg <- "Deletion needs arguments for id, session (optional) and key (optional)."
     data <- ""
 }else if(all(c("sub", "ses", "key") %in% names(args))){
-    sub <- data[[sprintf("sub-%s", args["sub"])]]
-    ses <- sub[[sprintf("ses-%s", args["ses"])]]
-    kidx <- !names(ses) %in% args[["key"]]
+    sub <- data[[args["sub"]]]
+    ses <- sub[[args["ses"]]]
+    kidx <- !names(ses) %in% args["key"]
     keys <- lapply(which(kidx), function(x) ses[[x]])
     names(keys) <- names(ses)[kidx]
     if(length(keys) == 0){
-        sub[[sprintf("ses-%s", args["ses"])]] <- NULL
+        sub[[args["ses"]]] <- NULL
     }else{
-        sub[[sprintf("ses-%s", args["ses"])]] <- keys
+        sub[[args["ses"]]] <- keys
     }
     if(length(sub) == 0){
-        data[[sprintf("sub-%s", args["sub"])]] <- NULL 
+        data[[args["sub"]]] <- NULL 
     }else{
-        data[[sprintf("sub-%s", args["sub"])]] <- sub
+        data[[args["sub"]]] <- sub
     }
 }else if(all(c("sub", "ses") %in% names(args))){
-    sub <- data[[sprintf("sub-%s", args["sub"])]]
-    kidx <- !names(sub) %in% sprintf("ses-%s", args["ses"])
+    sub <- data[[args["sub"]]]
+    print(sub)
+    kidx <- !names(sub) %in% args["ses"]
     ses <- lapply(which(kidx), function(x) sub[[x]])
     names(ses) <- names(sub)[kidx]
-    data[[sprintf("sub-%s", args["sub"])]] <- ses
-    if(length(data[[sprintf("sub-%s", args["sub"])]]) == 0){
-       data[[sprintf("sub-%s", args["sub"])]] <- NULL 
+    data[[args["sub"]]] <- ses
+    if(length(data[[args["sub"]]]) == 0){
+       data[[args["sub"]]] <- NULL 
     }
 }else if("sub" %in% names(args)){
-    kidx <- !names(data) %in% sprintf("sub-%s", args["sub"])
+    kidx <- !names(data) %in% args["sub"]
     data <- lapply(which(kidx), function(x) data[[x]])
     names(data) <- names(datao)[kidx]
 }else{
     status <- 201
 }
 if(status == 200){
-    jsonlite::write_json(data, file.path(datadir, "data.json"), 
-        pretty = TRUE, auto_unbox = TRUE )
+    write_json(data, "data.json")
 }
 cat(
     "Content-Type: application/json; charset=UTF-8\r",
