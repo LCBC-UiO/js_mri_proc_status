@@ -120,6 +120,7 @@
             <div class="col">
               <pre><code>
 curl -i WEBSITEURL/cgi/get_data.cgi
+curl -i WEBSITEURL/cgi/get_status.cgi
 curl -i WEBSITEURL/cgi/get_process.cgi
 curl -i WEBSITEURL/cgi/get_tasks.cgi
 curl -i WEBSITEURL/cgi/get_protocol.cgi
@@ -141,8 +142,9 @@ curl -i WEBSITEURL/cgi/get_protocol.cgi
 curl -G \
   -d "sub=0022" \
   -d "ses=02Avanto" \
-  -d "key=sorted,bids" \
+  -d "key=sorted" \
   WEBSITEURL/cgi/get_data.cgi
+
               </code></pre>
             </div>
           </div>
@@ -159,7 +161,6 @@ curl -G \
 curl -G \
     -d "sub=0022" \
     -d "ses=02Avanto" \
-    -d "key=[sorted,bids,func]" \
     WEBSITEURL/cgi/get_status.cgi
 
   curl -G \
@@ -191,8 +192,8 @@ curl -G \
             <div class="col">
               <pre><code>
 curl -i -G \
-    -d 'id=sub-0022' \
-    -d 'ses=ses-02Skyra' \
+    -d 'sub=0022' \
+    -d 'ses=02Skyra' \
     -d 'sorted=rerun'  \
     WEBSITEURL/cgi/update_data.cgi
               </code></pre>
@@ -209,9 +210,9 @@ curl -i -G \
             <div class="col">
               <pre><code>
 curl -i -G \
-    -d 'id=sub-0022' \
-    -d 'ses=ses-02Skyra' \
-    --data-urlencode 'func_comment=this is a longer comment; that will be fixed on send.'  \
+    -d 'sub=0022' \
+    -d 'ses=02Skyra' \
+    --data-urlencode 'func_aquisition_comments=this is a longer comment; that will be fixed on send.'  \
     WEBSITEURL/cgi/update_data.cgi
               </code></pre>
             </div>
