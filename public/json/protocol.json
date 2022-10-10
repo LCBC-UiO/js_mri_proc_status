@@ -6,6 +6,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -15,6 +16,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -24,6 +26,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -33,6 +36,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ]
@@ -44,6 +48,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -53,6 +58,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -62,6 +68,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -71,6 +78,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -80,6 +88,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ]
@@ -91,6 +100,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -100,6 +110,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -109,6 +120,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -118,6 +130,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -127,6 +140,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -136,6 +150,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -145,6 +160,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ]
@@ -156,6 +172,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -165,6 +182,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -174,6 +192,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ]
@@ -185,6 +204,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -194,6 +214,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -203,6 +224,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ]
@@ -214,6 +236,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -223,6 +246,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -232,13 +256,14 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon",
             "anat_mriqc",
             "func_behav", 
             "func_fmriprep",
             "func_summary", 
             "func_tedana", 
-            "func_comments"
+            "func_aquisition_comments"
         ]
     },
     "ACon": {
@@ -248,6 +273,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc"
         ],
@@ -257,13 +283,14 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc", 
             "func_behav", 
             "func_fmriprep",
             "func_summary", 
             "func_tedana", 
-            "func_comments",
+            "func_aquisition_comments",
             "eeg_check"
         ]
     },
@@ -274,6 +301,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc", 
             "func_behav", 
@@ -281,13 +309,14 @@
             "func_summary",
             "func_tedana", 
             "func_hcsegmentation", 
-            "func_comments"],
+            "func_aquisition_comments"],
         "2": [
             "project_id",
             "wave_code",
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon", 
             "anat_mriqc", 
             "func_behav",
@@ -295,7 +324,7 @@
             "func_summary", 
             "func_tedana", 
             "func_hcsegmentation", 
-            "func_comments"
+            "func_aquisition_comments"
         ],
         "3": [
             "project_id",
@@ -303,6 +332,7 @@
             "sorted",
             "bids",
             "t1_rating",
+"func_aquisition_comments",
             "anat_fs_recon",
             "anat_mriqc",
             "func_behav",
@@ -310,7 +340,7 @@
             "func_summary",
             "func_tedana",
             "func_hcsegmentation",
-            "func_comments"
+            "func_aquisition_comments"
         ]
     }
 }

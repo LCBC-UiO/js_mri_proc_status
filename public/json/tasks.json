@@ -47,8 +47,13 @@
         "value": "icons",
         "url": null
     },
-    "func_comments": "asis",
-    "func_hcsegmentation": "icons", 
+    "func_aquisition_comments": {
+        "value": "asis"
+    },
+    "func_hcsegmentation": {
+        "comments": "yes",
+        "value": "icons"
+    }, 
     "func_summary":  {
         "comments": "yes",
         "value": "icons",
